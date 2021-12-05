@@ -241,12 +241,15 @@ BootVars
 	runtime[2] = 0
 	AutoUpdates[1] = 0
 	booting = 0
+	waitingcommuS = IARRAY
+	waitingcommuM = IARRAY
 }
 
-//These are new variables to initialize after an update. By checking if the variable is NULL before initializing it, we prevent variables already in use from being overwritten. This is VERY IMPORTANT, or you risk resetting the user's progress on your new variables every time they update.
+//These are new variables to initialize after an update. By checking if the variable doesn't exist before initializing it, we prevent variables already in use from being overwritten. This is VERY IMPORTANT, or you risk resetting the user's progress on your new variables every time they update.
+//ISVAR is a built in YAYA function that checks if a variable exists(is initialized) or not. It returns 0 if the variable doesn't exist, and 1 if it does.
 UpdateVars
 {
-	//if examplevariable == NULL; examplevariable = 0
+	//if ISVAR("examplevariable") == 0; examplevariable = 0
 }
 
 //These are all the variables that need to be initialized when the user first installs the ghost.
@@ -277,4 +280,6 @@ FirstBootVars
 	//nowmode = "Default" //Uncomment if you plan to add more modes
 	installdate = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)","%(ghostver)") //This tracks the exact day and time the ghost was installed, in case you want to mess around with that later. It also tracks what version the user installed, which may be helpful for debugging!
 	booting = 1 //This will be set to 0 after firstboot is complete
+	waitingcommuS = IARRAY //These two arrays handle the non-interrupt system for communication. They're for storing messages from other ghosts when your ghost is busy talking.
+	waitingcommuM = IARRAY
 }

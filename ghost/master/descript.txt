@@ -1,6 +1,6 @@
 charset,UTF-8
 
-name,X. Template YAYA - v1.0.2
+name,X. Template YAYA - v1.0.3
 type,ghost
 
 sakura.name,X. Template

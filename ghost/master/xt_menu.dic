@@ -5,7 +5,7 @@ OpenSakuraMenu
 		"\0\s[0]An update is available!\w8\w8 Do you want to download it?"
 		--
 		//Note: the download it now option will go straight into updating without directing to another function. You can do this with some things using 'script:' in the function name, but it's finicky. If this gives you issues feel free to replace it.
-		"\n\n\![*]\q[Download it now,script:\![updatebymyself\]]\n/
+		"\_q\n\n\![*]\q[Download it now,script:\![updatebymyself\]]\n/
 		\![*]\q[Maybe later,UpdateLater]\n\n/
 		\![*]\q[Turn off auto updates,UpdateOff]\e"
 	}
@@ -149,11 +149,9 @@ Select.BugReport
 	"\n\n\![*]\q[Back to functions,OnFunctionMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 }
 
-Select.UpdateCheck //This only checks if an update is ready, it does not perform an actual update until the user confirms they want to. If you want to change this, remove the checkonly bit from the command
+Select.UpdateCheck //Starts an update check
 {
-	"\0\s[0]Ok,\w4 I'll check and see if there's an update!"
-	--
-	"\![updatebymyself,checkonly]\e"
+	"\![updatebymyself]\e"
 }
 
 

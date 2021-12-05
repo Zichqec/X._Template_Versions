@@ -7,8 +7,37 @@ OnCommunicate
  	else
 	{
  		//Answering another ghost
-		ReplyToGhost
+		_b = BalloonCheck
+		if _b == 1 && "\![commu-%(reference0)]" !_in_ SHIORI3FW.LastTalk //If the balloon is open and the commu tag does NOT match the current conversation, or does not exist, store this message in the arrays so it can be responded to later
+		{
+			_check = ASEARCH(reference0,waitingcommuS)
+			if _check == -1 //If there are no other messages from this ghost waiting in the queue
+			{
+				waitingcommuS ,= reference0 //Sender - Stores the name of the ghost in an array
+				waitingcommuM ,= reference1 //Message - Stores the message that was sent in an array
+			}
+			else //If there is a message from this ghost waiting in the queue, replace it with the one that was just received
+			{
+				waitingcommuS[_check] = reference0
+				waitingcommuM[_check] = reference1
+			}
+		}
+		else //The balloon is not open, or the conversation tag matches the ghost that is currently sending a message
+		{
+			if reference0 == "|-|waitingcommu|-|" //If this was called because there was a commu waiting
+			{
+				reference0 = waitingcommuS[0]; waitingcommuS[0] = IARRAY //Sets the name of the ghost as reference0 and clears the first element of the array
+				reference1 = waitingcommuM[0]; waitingcommuM[0] = IARRAY //Sets reference1 as the message that was saved and clears the first element of the array
+			}
+			--
+			ReplyToGhost
+		}
  	}
+}
+
+WaitingCommu //If a commu message is waiting, trigger OnCommunicate and tell it to use the stored messages
+{
+	"\![raise,OnCommunicate,|-|waitingcommu|-|]"
 }
 
 //This is your ghost starting a conversation with another ghost. It will choose a random one from the currently open ghosts.
@@ -48,15 +77,11 @@ ReplyToGhost //This is your ghost receiving a communication.
 {
 	_Speech = SPLIT(reference1,"\e")[0] //Everything the ghost said that the user can see
 	ConvoTag = SPLIT(reference1,"\e")[1] //Everything after the \e, which will be the invisible tags that track the conversation
-	_Last = SPLIT(reference1,"::")[1] //Ghosts using the reflect system send ":%(_Speech)" at the end of every communication, so _Last is what THIS ghost last said. See below.
+	_Last = SPLIT(reference1,"::")[1] //Ghosts using the reflect system send "::%(_Speech)" at the end of every communication, so _Last is what THIS ghost last said. See below.
 	
-	_Last = REPLACE(_Last,"\![quicksection,true]","") //Removing the quicksection tags or they overlap and break...
-	_Last = REPLACE(_Last,"\![quicksection,false]","")
-	_Last = REPLACE(_Last,"\w1","")
-	_Last = REPLACE(_Last,"\w4","")
-	_Last = REPLACE(_Last,"\w8","")
-	//You'll need to add any weight tags that you use in dialogue here so they'll be removed. I only use these ones.
-	
+	_Last = RemovePauses(_Last) //Removes pauses and quicksection tags so it can display properly
+	"\![commu-%(reference0)]" //This isn't a real sakurascript tag, but structuring it like one means it wont show in dialogue. This is for the non-interrupt system and loop prevention.
+	--
 	case reference0
 	{
 		when "Girl"
@@ -67,18 +92,38 @@ ReplyToGhost //This is your ghost receiving a communication.
 			--
 			"::%(_Speech)" //Reflects back what the other ghost said, only put it here if you're talking to a ghost that uses the same system or things may break
 		}
+		when "RYS-0825"
+		{
+			"\![quicksection,true]%(_Last)\![quicksection,false]"
+			--
+			if "Test01" _in_ ConvoTag
+			{
+				res_reference0 = "RYS-0825"
+				"\n\nResponse 1\e Test02"
+			}
+			elseif "Test03" _in_ ConvoTag
+			{
+				res_reference0 = "RYS-0825"
+				"\n\nResponse 2\e Test04"
+			}
+			else
+			{
+				res_reference0 = "RYS-0825"
+				"Convo start.\e Test00"
+			}
+			--
+			"::%(_Speech)"
+		}
 		others //Responses to unknown ghosts. AlreadyResponded keeps them from getting stuck in a loop.
 		{
-			if AlreadyResponded == 0
+			if "\![commu-%(reference0)]" !_in_ SHIORI3FW.LastTalk //This checks for that commu tag up above! So, if the last dialogue was NOT a response to the ghost that just pinged us, give a normal response
 			{
-				AlreadyResponded = 1
 				res_reference0 = reference0
 				
 				"\0\s[0]Hey there %(reference0)!\w8\w8\e"
 			}
-			else
+			else //If this IS a response to a ghost we already spoke to, say the alternate response and end the conversation
 			{
-				AlreadyResponded = 0
 				res_reference0 = ""
 				
 				"Hope you're doing well.\e"
@@ -108,4 +153,20 @@ TalkToGirl //All responses to Girl would be here. Make one of these for each gho
 		
 		"\0\s[0]Hi Girl!\e"
 	}
+}
+
+RemovePauses //Removes \w tags and quicksection tags - Add more tags if you need to
+{
+	_argv[0] = REPLACE(_argv[0],"\![quicksection,true]","")
+	_argv[0] = REPLACE(_argv[0],"\![quicksection,false]","")
+	_argv[0] = REPLACE(_argv[0],"\w9","")
+	_argv[0] = REPLACE(_argv[0],"\w8","")
+	_argv[0] = REPLACE(_argv[0],"\w7","")
+	_argv[0] = REPLACE(_argv[0],"\w6","")
+	_argv[0] = REPLACE(_argv[0],"\w5","")
+	_argv[0] = REPLACE(_argv[0],"\w4","")
+	_argv[0] = REPLACE(_argv[0],"\w3","")
+	_argv[0] = REPLACE(_argv[0],"\w2","")
+	_argv[0] = REPLACE(_argv[0],"\w1","")
+	_argv[0]
 }

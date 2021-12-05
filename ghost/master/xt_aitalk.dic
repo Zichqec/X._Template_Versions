@@ -243,7 +243,7 @@ OnMinuteChange
 		}
 		else
 		{
-			"\0\s[0]It's %(hour12)'o clock.\e"
+			"\0\s[0]It's %(hour12) o'clock.\e"
 		}
 	}
 	elseif mikireflag == 1 //If the ghost is off the screen, it will run the off screen dialogue every minute
@@ -280,15 +280,20 @@ OnSecondChange
 	{
 		MikireTalk
 	}
-	if mikireflag == 1 && reference1 == 0 //Dialogue for coming back on the screen
+	elseif mikireflag == 1 && reference1 == 0 //Dialogue for coming back on the screen
 	{
 		EndMikireTalk
 	}
-	mikireflag = reference1 //reference1 is if the ghost is offscreen or not
-	if reference2 == 1 //This is for if your Sakura and Kero are overlapping. \4 will move the speaking character away from the other character.
+	elseif reference2 == 1 //This is for if your Sakura and Kero are overlapping. \4 will move the speaking character away from the other character.
 	{
 		"\0\s[0]Me and %(keroname) are overlapping.\4\e"
 	}
+	elseif ARRAYSIZE(waitingcommuS) > 0 && second % 5 == 0 //Every 5 seconds, check if the balloon is closed and a communication is waiting, and if so trigger a response
+	{
+		_b = BalloonCheck
+		if _b == 0; WaitingCommu
+	}
+	mikireflag = reference1 //reference1 is if the ghost is offscreen or not
 }
 
 MikireTalk //Off the screen dialogue. Ctrl Shift F12 will bring characters back onto the screen

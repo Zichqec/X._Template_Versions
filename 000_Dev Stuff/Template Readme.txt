@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.2
+You're using X. Template YAYA - v1.0.3
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -75,6 +75,20 @@ Differences devs will see:
 
 
 ---Changelog---
+
+-v1.0.3-
+
+-Fixed an incorrect variable name when updates finish. 'updateavailable' should be 'AutoUpdates[1]'
+-Changed "'o clock" in the hour notifications to "o'clock"
+-Added a better loop prevention system in commu dialogue
+-Added a non-interrupt system in commu dialogue
+-Slightly restructured things in OnSecondChange
+-Checking for an update from the ghost's menu now actually starts an update, not just a check (sorry, I keep changing my mind lol)
+-Changed the recommendations for UpdateVars, now it has a proper check to see if the variable exists
+-Made a tweak to nowday and nowmonth. If you call them and include 'last' or 'next' as the second argument, you'll get the previous day/month or next day/month, respectively.
+-Added the Capitalize function
+-When done creating a .nar file, the ghost will give you a link to click that will open the folder you made the .nar in.
+
 
 -v1.0.2-
 

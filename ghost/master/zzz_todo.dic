@@ -7,7 +7,7 @@
 //This is the stuff for checking if your template is up to date. I've put it here because the end user won't need this at all, and you can remove it along with the todo list when you're done. If you've put in enough work on your ghost to no longer need the to do list, you're not gonna want to switch to a new template haha
 TemplateVer
 {
-	"1.0.2"
+	"1.0.3"
 }
 
 OnTemplateUpdate

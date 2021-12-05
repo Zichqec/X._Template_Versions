@@ -2,9 +2,9 @@
 
 exampleenvelope
 {
-	"Result 1"
-	"Result 2"
-	"Result 3"
+	"result 1"
+	"result 2"
+	"result 3"
 }
 
 
@@ -44,6 +44,16 @@ filetype
 	".psd"
 	".mp4"
 	".ttf"
+}
+
+//If you write all your envelopes as lowercase, you can send them through this function whenever you need the first letter capitalized! It'd look something like this: "%(Capitalize(exampleenvelope))"
+Capitalize
+{
+	_word = _argv[0] //Sets _word to the word the user sent
+	_buffer = SUBSTR(_word,0,1) //Storing the first character in _buffer
+	_word = ERASE(_word,0,1) //Erasing the first character from _word
+	_word = INSERT(_word,0,TOUPPER(_buffer)) //Making the character in _buffer uppercase and inserting it back into _word
+	_word //Returns the capitalized word
 }
 
 //-----Menu stuff-----
@@ -102,28 +112,52 @@ wd //Abbreviated week day
 
 nowday //Full week day
 {
-	if weekday == 0; "Sunday"
-	elseif weekday == 1; "Monday"
-	elseif weekday == 2; "Tuesday"
-	elseif weekday == 3; "Wednesday"
-	elseif weekday == 4; "Thursday"
-	elseif weekday == 5; "Friday"
+	_day = weekday
+	if _argv[0] == "next"
+	{
+		_day++
+		if _day > 6; _day = 1
+	}
+	if _argv[0] == "last"
+	{
+		_day--
+		if _day < 1; _day = 6
+	}
+	
+	if _day == 0; "Sunday"
+	elseif _day == 1; "Monday"
+	elseif _day == 2; "Tuesday"
+	elseif _day == 3; "Wednesday"
+	elseif _day == 4; "Thursday"
+	elseif _day == 5; "Friday"
 	else; "Saturday"
 }
 
 nowmonth //The current month name
 {
-	if month == 1; "January"
-	elseif month == 2; "February"
-	elseif month == 3; "March"
-	elseif month == 4; "April"
-	elseif month == 5; "May"
-	elseif month == 6; "June"
-	elseif month == 7; "July"
-	elseif month == 8; "August"
-	elseif month == 9; "September"
-	elseif month == 10; "October"
-	elseif month == 11; "November"
+	_month = month
+	if _argv[0] == "next"
+	{
+		_month++
+		if _month > 12; _month = 1
+	}
+	if _argv[0] == "last"
+	{
+		_month--
+		if _month < 1; _month = 12
+	}
+	
+	if _month == 1; "January"
+	elseif _month == 2; "February"
+	elseif _month == 3; "March"
+	elseif _month == 4; "April"
+	elseif _month == 5; "May"
+	elseif _month == 6; "June"
+	elseif _month == 7; "July"
+	elseif _month == 8; "August"
+	elseif _month == 9; "September"
+	elseif _month == 10; "October"
+	elseif _month == 11; "November"
 	else; "December"
 }
 

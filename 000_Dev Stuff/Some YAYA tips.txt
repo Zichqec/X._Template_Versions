@@ -550,15 +550,22 @@ _Last = SPLIT(reference1,"|:|")[1]
 //This sends the other ghost's last message back to them! So they keep displaying their old messages instantly, then adding more to it, and sending it back over to the other one.
 //There are also some REPLACE lines, those remove tags like \w, and also removes the quicksection tags. If you don't remove those, your dialogue will not display instantly and it's bad.
 
+
+//-------------------------Commu non-interrupt and loop prevention systems-------------------------
+//So what's the deal with the non-interrupt stuff in commu, and the new loop prevention? I'll explain it here, but you don't need to touch any of it unless you don't like it!
+//First of all, the non-interrupt system is based off some work by Levidre, though I did not look at any of their code (besides the balloon check code) before writing my own. So, they might work vastly different. What does non-interrupt mean? Well, when a ghost receives a communication from another ghost, they'll generally reply even if they were in the middle of a random dialogue, or if you were in their menus or something. As you can imagine, that could get pretty annoying if you have a bunch of ghosts that randomly ping other ghosts!
+//What the non-interrupt system does is check if the ghost is busy saying something already, and if it is, it stores the other ghost's message for later. Later, when the balloon is closed, it will check and see if any conversations are waiting, and if there are, it'll respond to those old messages. There's a check in OnSecondChange, which you might notice only happens every 5 seconds. I did this because I didn't want the balloon check to be happening every second, but you could change that if you like.
+//What about the loop prevention system? Well, there's something really handy I found out about. SHIORI3FW.LastTalk is a built in YAYA variable that you can check, it holds the contents of whatever your ghost last said, no matter what it was! Often, it's just the surface restore script. However, this means if we were to stick some sort of unique tag in all commu dialogues, we could recognize if the ghost was in the middle of a commu conversation or not!
+//Another thing to note, if you make a tag like \![this] that is not a valid sakurascript tag, nothing will happen, but the tag will not show up in dialogue! So, we can just stick a tag at the front of all commu dialogues that shouldn't have any effect and shouldn't be seen by the user! I've chosen to write it like this: \![commu-%(reference0)]
+//With that, you can also track which ghost you're in conversation with and see if it matches! So, if they get a commu from another ghost, they won't interrupt the conversation they were already having.
+//Again, you shouldn't need to touch these systems unless you don't like them. But hopefully that explains a little of what's going on! When a conversation is received, it checks to see if the balloon is open, and if so, if this is a response to a conversation it's in the middle of. If not, it stores it for later. If this is a ghost it doesn't know and it's not the first message, it ends the conversation so that it doesn't get stuck in loops.
+
+
 //-------------------------Capitalizing the first letter of an envelope-------------------------
-//Sometimes you've got an envelope, like say a list of ingredients, where it makes sense to have all the words in it be lowercase because most of the time they won't be used as the first word in a sentence. But what if you do want to use them as the first word in a sentence? It would look incorrect then. Not to worry! There's a simple solution. Inside the brackets where the dialogue is, you'll want to put these lines of code (or something like them)
+//Sometimes you've got an envelope, like say a list of ingredients, where it makes sense to have all the words in it be lowercase because most of the time they won't be used as the first word in a sentence. But what if you do want to use them as the first word in a sentence? It would look incorrect then. Not to worry! There's a simple solution.
+//UPDATE: I made a function that'll do this for you! It's included in word.dic. To use it, just write your envelope like this if you need the first letter capitalized.
 
-Ingredients = ingredients //Picks 1 ingredient from the envelope 'ingredients' and stores it in _Ingredients
-_buffer = TOUPPER(SUBSTR(_Ingredients,0,1)) //Stores the first character separately, and capitalizes it
-_Ingredients = ERASE(_Ingredients,0,1) //Erases the first character from _Ingredients
-_Ingredients = INSERT(_Ingredients,0,_buffer) //Inserts the capital letter
-
-//Once you've done that, you'd just use %(_Ingredients) in the dialogues where it's the first word!
+"%(Capitalize(ingredients))"
 
 
 //-------------------------Including a balloon with your ghost-------------------------
