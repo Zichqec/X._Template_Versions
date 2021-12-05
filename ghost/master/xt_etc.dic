@@ -210,11 +210,7 @@ OnNarCreated //Finished creating
 //When you click on the anchor in the OnNarCreated dialogue, this function will open the folder you created the .nar in
 OnNarLocation
 {
-	_path = reference0
-	_path = REPLACE(_path,"/","\")
-	SETDELIM(_path,"\")
-	_len = ARRAYSIZE(_path) - 1
-	_path[_len] = IARRAY
+	_path = SPLITPATH(reference0)[0] + SPLITPATH(reference0)[1]
 	
 	"\C\![open,file,%(_path)]"
 }

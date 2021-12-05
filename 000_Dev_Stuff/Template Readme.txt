@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.6
+You're using X. Template YAYA - v1.0.7
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -74,6 +74,15 @@ Differences devs will see:
 
 
 ---Changelog---
+
+-v1.0.7-
+
+-Added the Pool function for creating pools of dialogue with proper probabilities.
+-Added the FormatLinks function and changed the links in string.dic to use a cleaner format.
+-Added the br function, for balloon-specific manual linebreaks.
+-Added a note about the LOGGING function in the test variable.
+-Edited some documentation with new information.
+
 
 -v1.0.6-
 

@@ -149,7 +149,7 @@ Function
 	}
 }
 //If you didn't have the set of brackets around the non-if dialogues up there, each coffee related dialogue would only have a 1/56 chance of being called! But now, each set of brackets has a 1/3rd chance of being called, and then each dialogue inside them gets picked at random. That gives each coffee dialogue a 1/24 chance of being chosen. Much better.
-//Where it gets really messy is if you want to gate certain dialogues WITHIN ifs to only happen above certain friendship thresholds. The best advice I have for this is to use whitespace to your advantage. You don't want to make sets of brackets with multiple dialogues inside of another set of brackets, or they'll have an even lower chance of being called. (If you want the dialogue to be rare, go ahead, but this is assuming you don't want that.)
+//Where it gets really messy is if you want to gate certain dialogues WITHIN ifs to only happen above certain friendship thresholds. Something you can do if you only have a couple dialogues that need the extra check is to add it to each one, like so:
 Function
 {
 	{
@@ -157,7 +157,7 @@ Function
 		"Non-if dialogue 2.\e"
 		"Non-if dialogue 3.\e"
 		"Non-if dialogue 4.\e"
-if frnd >= 100;"Non-if dialogue 5.\e"
+		if friendship >= 100; "Non-if dialogue 5.\e"
 	}
 	if knowaboutcoffee == 1
 	{
@@ -167,8 +167,8 @@ if frnd >= 100;"Non-if dialogue 5.\e"
 		"Coffee dialogue 4.\e"
 		"Coffee dialogue 5.\e"
 		"Coffee dialogue 6.\e"
-if frnd >= 100;"Coffee dialogue 7.\e"
-if frnd >= 100;"Coffee dialogue 8.\e"
+		if friendship >= 100; "Coffee dialogue 7.\e"
+		if friendship >= 100; "Coffee dialogue 8.\e"
 	}
 	if season == "Summer"
 	{
@@ -177,13 +177,60 @@ if frnd >= 100;"Coffee dialogue 8.\e"
 		"Summer dialogue 3.\e"
 		"Summer dialogue 4.\e"
 		"Summer dialogue 5.\e"
-if frnd >= 100;"Summer dialogue 6.\e"
-if frnd >= 100;"Summer dialogue 7.\e"
+		if friendship >= 100; "Summer dialogue 6.\e"
+		if friendship >= 100; "Summer dialogue 7.\e"
 	}
 }
-//So this is using a couple different things. First of all, I've used a short variable name and pushed it as far left as it'll go, to try and stop it interrupting my nice neat lines as much as possible. This works a lot better if you have more whitespace on the left because you have a lot of nested ifs. The other thing we're using here is that, if an IF has a single line of dialogue, you don't have to use brackets! Also, I'm using semicolons, as I talked about above, to keep them on the same line.
+//This makes use of semicolons to keep the if check inline with the dialogue, which helps keep it from getting too bulky
 //Now then, this has a few major drawbacks. One, it can be very messy. And two, all these duplicate ifs are probably very inefficient. Ghosts tend to be very light, so I probably wouldn't stress about that too much? But it's still something to consider.
-//And that's the probability problem! It sucks. You can also get around this by having a totally different pool of dialogues for each friendship stage, but that makes it hard to have multiple stages, and it also is a pain trying to remember what lines to copy where as you update. Whatever you decide to do, think hard about it before you commit to a solution because it's a massive pain to change later. And if you come up with a better solution, please for the love of god tell me.
+
+//There is another solution, though! I set up a function called Pool, which will let you add several dialogues easily! It looks a little complicated at first, but once you understand the syntax it's actually fairly simple.
+
+Function
+{
+	"Non-if dialogue 1.\e"
+	"Non-if dialogue 2.\e"
+	"Non-if dialogue 3.\e"
+	"Non-if dialogue 4.\e"
+	"Non-if dialogue 5.\e"
+	
+	parallel Pool("Pool_CoffeeDialogue","%(knowaboutcoffee == 1)")
+	parallel Pool("Pool_SummerDialogue","%(season == 'Summer')")
+	
+}
+
+Pool_CoffeeDialogue : array //knowaboutcoffee == 1
+{
+	"Coffee dialogue 1.\e"
+	"Coffee dialogue 2.\e"
+	"Coffee dialogue 3.\e"
+	"Coffee dialogue 4.\e"
+	"Coffee dialogue 5.\e"
+	"Coffee dialogue 6.\e"
+	"Coffee dialogue 7.\e"
+	"Coffee dialogue 8.\e"
+}
+
+Pool_SummerDialogue : array //season == 'Summer'
+{
+	"Summer dialogue 1.\e"
+	"Summer dialogue 2.\e"
+	"Summer dialogue 3.\e"
+	"Summer dialogue 4.\e"
+	"Summer dialogue 5.\e"
+	"Summer dialogue 6.\e"
+	"Summer dialogue 7.\e"
+}
+
+//With these pools set up, all of these dialogues will have an equal chance of being called! Perfect! The actual Pool function is set up over in Anchor if you want to look at it, but you really don't need to touch it. Pools are just separate functions filled with dialogue, and you need to add : array after the function name. You can name the function whatever you like, but I always put Pool_ at the start to make it clear what it is. I also recommend adding a comment to remind you what if check leads to this pool.
+
+//Then, wherever you want this pool of dialogue to be available, you add a line like this:
+
+parallel Pool("Pool_CoffeeDialogue","%(knowaboutcoffee == 1)")
+
+//Let me break this down. parallel is a built in YAYA function, it makes it so that all array elements are set up as output candidates. Pool calls the Pool function, and inside the parenthesis are two arguments. The first is the name of the pool you want to call, in quotes. The second is an envelope with the if check in it! When you write %(knowaboutcoffee == 1), it will display 1 in dialogue if the check is true, and 0 if it isn't. You can write all kinds of checks like this! For example, %(ASEARCH('some string',SomeArray)), %(username == 'Dev'), or even something complicated like %(day > 15 && (minute < 20 || debug == 'true')).
+
+//And that's it! Be mindful of your brackets and how they affect probabilities, and if you really *need* dialogues to have the same chance of being output, give them individual ifs if it's just a couple, or set up a pool if it's a lot. Happy dynamic dialogue writing!
 
 
 

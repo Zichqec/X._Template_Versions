@@ -319,6 +319,8 @@ Select.Cancel //If the main menu has been cancelled
 OnTestVar
 {
 	"Testing!\e"
+	
+	LOGGING("This is a debug function! This text will show up in Tama, or in the SHIORI log! You can also output variables and such with this function. This is super handy for debugging without having to output data to your ghost's balloon! Especially for things like loops, where you need to see certain variables at every step of the loop. Make good use of it!")
 }
 
 

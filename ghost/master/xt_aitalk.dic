@@ -25,7 +25,7 @@ AiTalk
 	}
 }
 
-//nonoverlap means that all possible dialogue candidates will be chosen at least once before any dialogues are repeated. Note that anything within brackets counts as a single dialogue candidate! This causes the probability issues mentioned in the YAYA tips file, and also, if you separate your RandomTalk into different modes or something, you'll have to make them separate functions if you still want to use nonoverlap!
+//nonoverlap means that all possible dialogue candidates will be chosen at least once before any dialogues are repeated. Note that anything within brackets counts as a single dialogue candidate! This causes the probability issues mentioned in the YAYA tips file. I included an example of a dialogue pool here, if you set those up they'll work properly with nonoverlap. Also note, though: if you set up something like different modes, you should give each one it's own function for dialogue! If you have all your dialogues in one big if, nonoverlap won't have any effect.
 RandomTalk : nonoverlap
 {
 	"\0\s[0]All your random dialogue goes here!\e"
@@ -33,18 +33,20 @@ RandomTalk : nonoverlap
 	"\0\s[0]Today is %(nowday)!\e"
 	"\0\s[0]Tomorrow will be %(nowday('next'))!\e"
 	"\0\s[0]Yesterday was %(nowday('last'))!\e"
+	"\0\s[0]Don't forget you can use the Hook Current Time API in the dev pallete to artificially change the time!\w8\w8 It's great for testing time and date based dialogues.\e"
 	
+	//This will call the example pool I've set up below. The second argument, %(username != ''), means that this pool will be available so long as the username is not blank. You can put any if check in there! For example: %(month == 2) would make a pool only available in February, while %(nowmode == 'Ultimate Form') would make a pool only available while the nowmode variable is set to "Ultimate Form".
+	parallel Pool("Pool_Example","%(username != '')")
 	
-	
-	//User Environment Ifs - Use as many of these as you like for dynamic dialogue
+	//User Environment Ifs - Use as many of these as you like for dynamic dialogue (Note, if you'd like to make these Pools instead, I've included a file in the 000_Dev_Stuff folder with blank pools.)
 	//---Timeslots---
 	if timeslot == "earlymorning" //5am - 8am
 	{
-		if runtime[0] > 3 //Been open for 3 hours or more, so the user has probably been up all night
+		if runtime[0] >= 3 //Been open for 3 hours or more, so the user has probably been up all night
 		{
 			
 		}
-		else //Just got up
+		else //Probably just got up
 		{
 			
 		}
@@ -186,29 +188,26 @@ RandomTalk : nonoverlap
 		
 	}
 	
-	
-	//---Noticing and commenting on other ghosts. You MUST have an option for 'others' in the case/when, or the ghost will eventually stop talking at all!
-	if ghostexcount > 0 //Based on code from Zarla's Gaster
+	//---Noticing and commenting on other ghosts---
+	//Remember that you have to check for the sakura name of another ghost, not the ghost name.
+	if "Girl" _in_ ghostexlist
 	{
-		_num = RAND(ghostexcount)
-		_randghost = "%(ghostexlist[_num])"
-		--
-		//"\0\s[0]Ghost List: %(ghostexlist)\n\nNoticed %(_randghost), %(_num) of %(ghostexcount)\x"
-		--
-		case _randghost
-		{
-			when "Girl"
-			{
-				"\0\s[0]Another template ghost!\w8\w8 Hi Girl!\e"
-			}
-			others //Don't get rid of this. You can replace the dialogue if you want.
-			{
-				"\![raise,OnAiTalk]"
-			}
-		}
+		"\0\s[0]Another template ghost!\w8\w8 Hi Girl!\e"
 	}
 }
 
+
+//-----------Pools-----------
+
+//Example of a pool. You can name pools whatever you like. I always start them with Pool_ so that it's clear what they are. They MUST have : array after the function name, or they won't work. I also recommend putting a comment with what if check activates this pool, so it's easy to remember later.
+Pool_Example : array //username != ""
+{
+	"\0\s[0]This is the first dialogue from the pool!\w8\w8 Your username isn't blank,\w4 so all these dialogues are available with equal probability!\e"
+	"\0\s[0]This is the second dialogue from the pool!\w8\w8 You wouldn't see these nearly so often if they were just in a plain if check.\e"
+	"\0\s[0]This is the third dialogue from the pool!\w8\w8 Putting dialogues in a pool like this means that nonoverlap can affect them properly, so long as nothing else interferes!\e"
+	"\0\s[0]This is the fourth dialogue from the pool!\w8\w8 You could nest another pool inside this pool,\w4 and all the dialogues in there would also display with equal probabilities!\e"
+	"\0\s[0]This is the fifth dialogue from the pool!\w8\w8 Pools can be placed anywhere,\w4 not just RandomTalk!\e"
+}
 
 //-----------Chains-----------
 

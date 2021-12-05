@@ -1,7 +1,7 @@
 //Network Update URL. I recommend using Github Pages to set up a site and store their files! It's free and reliable. I've written up a guide on how to do this here https://zichqec.github.io/s-the-skeleton/github.html
 On_homeurl
 {
-	if betaTester == "On" //You don't need to include beta testing if you don't want to
+	if betaTester == "On" //You don't need to include beta testing if you don't want to. If you want to get rid of it, replace this whole bit with a single homeurl link.
 	{
 		"https://YourBetaDirectoryHere.com/YourGhost/"
 	}
@@ -11,25 +11,22 @@ On_homeurl
 	}
 }
 
-On_recommendrootbutton.caption //Change this to your username, or change the whole caption to whatever you want. This is the top list of websites
+On_recommendrootbutton.caption //Change [Your Username] to your username, or change the whole caption to whatever you want. This is the top list of websites in the right click menu.
 {
-	"More from Your Username"
+	"More from [Your Username]"
 }
 
-On_sakura.recommendsites //Websites under the top dropdown menu, make em whatever you want
+On_sakura.recommendsites
 {
-	"Your Ghost Website"
-	--
-	"%ASC(1)https://yourwebsite.githubb.io/yoursite/index.html%ASC(2)"
-	--
- 	"Your Social"
-	--
-	"%ASC(1)https://www.socialmediaexample.com/you%ASC(2)"
-	--
-	"Your Character's Toyhouse"
-	--
-	"%ASC(1)https://toyhou.se/yourcharacter%ASC(2)"
-	--
+	FormatLinks(recommendsites_sakura)
+}
+
+//These are the websites linked in the top option of the right click menu. Add your websites here! Follow the format carefully here, on the left is the name you want to display, on the right is the url you want it to link to, and between them should be a | with at least one space on either side. You can add as many spaces as you like, but there always has to be at least one. The links will be given the proper formatting by the FormatLinks function below.
+recommendsites_sakura : array
+{
+	"Your Ghost Website        | https://yourwebsite.githubb.io/yoursite/index.html"
+	"Your Social               | https://www.socialmediaexample.com/you"
+	"Your Character's Toyhouse | https://toyhou.se/yourcharacter"
 }
  
 On_portalrootbutton.caption //Caption for the second list of websites
@@ -37,43 +34,24 @@ On_portalrootbutton.caption //Caption for the second list of websites
 	"Reference Sites"
 }
 
-On_sakura.portalsites //You can make these anything you like. I've set them to link to my template, Zarla's template, and anything else helpful for making ghosts.
+//You can make these anything you like. I've set them to link to my template, Zarla's template, and anything else helpful for making ghosts.
+On_sakura.portalsites 
 {
-	"Built on X. Template YAYA - v.1.0.6" //I'd appreciate it if you left this link in your ghost so that other people can find the source <3
-	--
-	"%ASC(1)https://zichqec.github.io/s-the-skeleton/xtemplate.html%ASC(2)"
-	--
-	"How to set up updates with Github"
-	--
-	"%ASC(1)https://zichqec.github.io/s-the-skeleton/github.html%ASC(2)"
-	--
-	"Zarla's Ghost Template Walkthrough"
-	--
-	"%ASC(1)http://www.ashido.com/ukagaka/walkthrough.html%ASC(2)"
-	--
-	"Ukagaka Dream Team Discord"
-	--
-	"%ASC(1)https://ukagakadreamteam.tumblr.com/discord%ASC(2)"
-	--
-	"SSP"
-	--
-	"%ASC(1)http://ssp.shillest.net/%ASC(2)"
-	--
-	"Ukadoc (Translated)"
-	--
-	"%ASC(1)https://translate.google.com/translate?hl=&sl=ja&tl=en&u=http%3A%2F%2Fssp.shillest.net%2Fukadoc%2Fmanual%2Flist_sakura_script.html%ASC(2)"
-	--
-	"YAYA Wiki (Translated)"
-	--
-	"%ASC(1)https://translate.google.com/translate?hl=&sl=ja&tl=en&u=http%3A%2F%2Femily.shillest.net%2Fayaya%2F%3FFrontPage%ASC(2)"
-	--
-	"Crow + SSP Reference (J)"
-	--
-	"%ASC(1)http://crow.aqrs.jp/reference/all/index.html%ASC(2)"
-	--
-	"Ghost Documentation (J)"
-	--
-	"%ASC(1)http://usada.sakura.vg/contents/specification.html%ASC(2)"
+	FormatLinks(portalsites_sakura)
+}
+
+//Same deal as above with the formatting. //I'd appreciate it if you left the X. Template link in your ghost so that other people can find the source <3
+portalsites_sakura : array
+{
+	"Built on X. Template YAYA - v.1.0.7 | https://zichqec.github.io/s-the-skeleton/xtemplate.html"
+	"Zarla's Ghost Template Walkthrough  | https://zichqec.github.io/s-the-skeleton/github.html"
+	"How to set up updates with Github   | http://www.ashido.com/ukagaka/walkthrough.html"
+	"Ukagaka Dream Team Discord          | https://ukagakadreamteam.tumblr.com/discord"
+	"SSP (J)                             | http://ssp.shillest.net/"
+	"Ukadoc (J)                          | http://ssp.shillest.net/ukadoc/manual/list_shiori_event.html"
+	"YAYA Wiki (J)                       | http://emily.shillest.net/ayaya/index.php?"
+	"Crow + SSP Reference (J)            | http://crow.aqrs.jp/reference/all/index.html"
+	"Ghost Documentation (J)             | http://usada.sakura.vg/contents/specification.html"
 }
  
 On_kero.recommendbuttoncaption //Caption for the Kero's website list
@@ -81,15 +59,29 @@ On_kero.recommendbuttoncaption //Caption for the Kero's website list
 	"More websites"
 }
 
-On_kero.recommendsites //Put anything you like here
+On_kero.recommendsites
 {
-	"Github Pages"
-	--
-	"%ASC(1)https://pages.github.com/%ASC(2)"
-	--
-	"w3 schools"
-	--
-	"%ASC(1)https://www.w3schools.com/%ASC(2)"
+	FormatLinks(recommendsites_kero)
+}
+
+recommendsites_kero : array //Put any websites you want here, I just included some stuff that was helpful to me when making my website.
+{
+	"Github Pages | https://pages.github.com/"
+	"w3 schools   | https://www.w3schools.com/"
+}
+
+//This is the function that formats the links above! This is based on a function in Konno Yayame that serves a similar purpose. You can see that one here: http://emily.shillest.net/ayaya/index.php?Tips/%E3%81%8A%E6%B0%97%E3%81%AB%E5%85%A5%E3%82%8A%E3%82%92%E6%9B%B8%E3%81%8D%E3%82%84%E3%81%99%E3%81%8F%E3%81%99%E3%82%8B
+//Mine is a bit simpler, but it requires you to leave a space before and after the |. So long as you do that, it'll add the rest of the formatting for you! CUTSPACE is a built in function that gets rid of whitespace characters on the left and right of text.
+FormatLinks
+{
+	_output = ""
+	foreach _argv; _element
+	{
+		_name = CUTSPACE(_element[0,' | '])
+		_link = CUTSPACE(_element[1,' | '])
+		_output += _name + "%ASC(1)" + _link + "%ASC(2)"
+	}
+	_output
 }
 
 On_updatebutton.caption //Caption for the update button

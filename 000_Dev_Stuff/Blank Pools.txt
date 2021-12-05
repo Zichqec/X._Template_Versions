@@ -1,0 +1,234 @@
+//If you're interested in using my Pool function instead of simple if checks (to make all your dialogues have the same probability of showing), all of these pools are set up the same as the if checks in X. Template's RandomTalk! Add the parallel commands in to RandomTalk, and add the pools somewhere else in the ghost's code, and fill them with dialogue. You can add your own pools if you follow this same format!
+
+//These go in RandomTalk
+parallel Pool("Pool_timeslot_earlymorning","%(timeslot == 'earlymorning')")
+parallel Pool("Pool_timeslot_morning","%(timeslot == 'morning')")
+parallel Pool("Pool_timeslot_lunch","%(timeslot == 'lunch')")
+parallel Pool("Pool_timeslot_afternoon","%(timeslot == 'afternoon')")
+parallel Pool("Pool_timeslot_evening","%(timeslot == 'evening')")
+parallel Pool("Pool_timeslot_latenight","%(timeslot == 'latenight')")
+parallel Pool("Pool_timeslot_midnight","%(timeslot == 'midnight')")
+
+parallel Pool("Pool_wd_Sun","%(wd == 'Sun')")
+parallel Pool("Pool_wd_Mon","%(wd == 'Mon')")
+parallel Pool("Pool_wd_Tue","%(wd == 'Tue')")
+parallel Pool("Pool_wd_Wed","%(wd == 'Wed')")
+parallel Pool("Pool_wd_Thu","%(wd == 'Thu')")
+parallel Pool("Pool_wd_Fri","%(wd == 'Fri')")
+parallel Pool("Pool_wd_Sat","%(wd == 'Sat')")
+
+parallel Pool("Pool_startmonth","%(day < 5)")
+parallel Pool("Pool_midmonth","%(day > 13 && day < 17)")
+parallel Pool("Pool_endmonth","%(day > 26)")
+
+parallel Pool("Pool_month_Jan","%(month == 1)")
+parallel Pool("Pool_month_Feb","%(month == 2)")
+parallel Pool("Pool_month_Mar","%(month == 3)")
+parallel Pool("Pool_month_Apr","%(month == 4)")
+parallel Pool("Pool_month_May","%(month == 5)")
+parallel Pool("Pool_month_Jun","%(month == 6)")
+parallel Pool("Pool_month_Jul","%(month == 7)")
+parallel Pool("Pool_month_Aug","%(month == 8)")
+parallel Pool("Pool_month_Sep","%(month == 9)")
+parallel Pool("Pool_month_Oct","%(month == 10)")
+parallel Pool("Pool_month_Nov","%(month == 11)")
+parallel Pool("Pool_month_Dec","%(month == 12)")
+
+parallel Pool("Pool_season_Spring","%(season == 'Spring')")
+parallel Pool("Pool_season_Summer","%(season == 'Summer')")
+parallel Pool("Pool_season_Autumn","%(season == 'Autumn')")
+parallel Pool("Pool_season_Winter","%(season == 'Winter')")
+
+
+
+
+
+//These go below RandomTalk, or wherever you want them really.
+
+//---Timeslots---
+Pool_timeslot_earlymorning : array //timeslot == 'earlymorning' (5am - 8am)
+{
+	
+	//These are sub-pools, I've put them just below this one. Any dialogues you put in them will also get the same probabilities as all other dialogue.
+	parallel Pool("Pool_timeslot_earlymorning_uplate","%(runtime[0] >= 3)") //Been open for 3 hours or more, so the user has probably been up all night
+	parallel Pool("Pool_timeslot_earlymorning_upearly","%(runtime[0] < 3)") //Probably just got up
+}
+
+Pool_timeslot_earlymorning_uplate : array //runtime[0] >= 3 (Been open for 3 hours or more, so the user has probably been up all night)
+{
+	
+}
+
+Pool_timeslot_earlymorning_upearly : array //runtime[0] < 3 (Probably just got up)
+{
+	
+}
+
+Pool_timeslot_morning : array //timeslot == 'morning' (9am - 11am)
+{
+	
+}
+
+Pool_timeslot_lunch : array //timeslot == 'lunch' (12pm - 2pm)
+{
+	
+}
+
+Pool_timeslot_afternoon : array //timeslot == 'afternoon' (3pm - 5pm)
+{
+	
+}
+
+Pool_timeslot_evening : array //timeslot == 'evening' (6pm - 8pm)
+{
+	
+}
+
+Pool_timeslot_latenight : array //timeslot == 'latenight' (9pm - 12am)
+{
+	
+}
+
+Pool_timeslot_midnight : array //timeslot == 'midnight' (1am - 4am)
+{
+	
+}
+
+
+//---Days of the week---
+
+Pool_wd_Sun : array //wd == "Sun"
+{
+	
+}
+
+Pool_wd_Mon : array //wd == "Mon"
+{
+	
+}
+
+Pool_wd_Tue : array //wd == "Tue"
+{
+	
+}
+
+Pool_wd_Wed : array //wd == "Wed"
+{
+	
+}
+
+Pool_wd_Thu : array //wd == "Thu"
+{
+	
+}
+
+Pool_wd_Fri : array //wd == "Fri"
+{
+	
+}
+
+Pool_wd_Sat : array //wd == "Sat"
+{
+	
+}
+
+
+//---Days in the month---
+Pool_startmonth : array //day < 5 (start of the month)
+{
+	
+}
+
+Pool_midmonth : array //day > 13 && day < 17 (middle of the month)
+{
+	
+}
+
+Pool_endmonth : array //day > 26 (end of the month)
+{
+	
+}
+
+
+//---Months--- (Northern hemisphere/Southern hemisphere)
+Pool_month_Jan : array //month == 1
+{
+	
+}
+
+Pool_month_Feb : array //month == 2
+{
+	
+}
+
+Pool_month_Mar : array //month == 3 (Spring start/Autumn start)
+{
+	
+}
+
+Pool_month_Apr : array //month == 4
+{
+	
+}
+
+Pool_month_May : array //month == 5
+{
+	
+}
+
+Pool_month_Jun : array //month == 6 (Summer start/Winter start)
+{
+	
+}
+
+Pool_month_Jul : array //month == 7
+{
+	
+}
+
+Pool_month_Aug : array //month == 8
+{
+	
+}
+
+Pool_month_Sep : array //month == 9 (Autumn start/Spring start)
+{
+	
+}
+
+Pool_month_Oct : array //month == 10
+{
+	
+}
+
+Pool_month_Nov : array //month == 11
+{
+	
+}
+
+Pool_month_Dec : array //month == 12 (Winter start/Summer start)
+{
+	
+}
+
+
+//---Seasons---
+Pool_season_Spring : array //season == 'Spring'
+{
+	
+}
+
+Pool_season_Summer : array //season == 'Summer'
+{
+	
+}
+
+Pool_season_Autumn : array //season == 'Autumn'
+{
+	
+}
+
+Pool_season_Winter : array //season == 'Winter'
+{
+	
+}
