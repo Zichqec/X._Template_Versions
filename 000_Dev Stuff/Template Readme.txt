@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.5
+You're using X. Template YAYA - v1.0.6
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -74,6 +74,11 @@ Differences devs will see:
 
 
 ---Changelog---
+
+-v1.0.6-
+
+-Fixed the nowday function, it now correctly handles Sunday.
+
 
 -v1.0.5-
 
