@@ -15,14 +15,14 @@ OnFileDrop2
 			
 			"\0\s[0]\b[2]This is %(_filename)%(_fileext)!\w8\w8 I can set it as your wallpaper,\w4 how do you want it?\n\n"
 			--
-			"\![*]\q[Centered,OnWallpaper,%(_file),center]\n/
-			\![*]\q[Tiled,OnWallpaper,%(_file),tile]\n/
-			\![*]\q[Stretched,OnWallpaper,%(_file),stretch]"
+			--; "\![*]\q[Centered,OnWallpaper,%(_file),center]\n"
+			--; "\![*]\q[Tiled,OnWallpaper,%(_file),tile]\n"
+			--; "\![*]\q[Stretched,OnWallpaper,%(_file),stretch]"
 			--
 			if "Windows 7" || "Windows 10" _in_ NotifyOS //These are the 'fit' and 'fill' options available from win 7 on. NotifyOS is set just below, to check what OS you're on
 			{
-				"\n\![*]\q[Fill,OnWallpaper,%(_file),stretch-x]/
-				\n\![*]\q[Fit,OnWallpaper,%(_file),stretch-y]"
+				--; "\n\![*]\q[Fill,OnWallpaper,%(_file),stretch-x]"
+				--; "\n\![*]\q[Fit,OnWallpaper,%(_file),stretch-y]"
 			}
 			--
 			if "Windows 10" _in_ NotifyOS; "\n\![*]\q[Spanned,OnWallpaper,%(_file),span]" //Same as above, but for the span option since that's win10 and above
@@ -84,9 +84,9 @@ OnInstallComplete
 	{
 		"\0\s[0]I've installed %(reference1)!\w8\w8 Do you want to bring them here?\n\n"
 		--
-		"\![*]\q[Call %(reference1),CallGhost]\n/
-		\![*]\q[Change to %(reference1),ChangeToGhost]\n\n/
-		\![*]\q[No thanks,cancelnodialogue]\e"
+		--; "\![*]\q[Call %(reference1),CallGhost]\n"
+		--; "\![*]\q[Change to %(reference1),ChangeToGhost]\n\n"
+		--; "\![*]\q[No thanks,cancelnodialogue]\e"
 	}
 	elseif reference0 == "shell"
 	{
@@ -166,24 +166,28 @@ OnInstallRefuse
 	"\0\s[0]I can't install this %(reference1).\w8\w8 Seems like it's meant for %(reference0) instead.\e"
 }
 
-OnUpdatedataCreating //Creating an updates2.dau
+//Creating an updates2.dau
+OnUpdatedataCreating
 {
 	"\0\s[0]Creating an updates2.dau file!\e"
 }
 
-OnUpdatedataCreated //Finished creating
+//Finished creating
+OnUpdatedataCreated
 {
 	"\0\s[0]Finished making the updates2.dau!\e"
 }
 
+//Creating a .nar
 //reference0 is the name of what you're making a nar for, reference2 is what you're making (balloon/ghost/etc)
-OnNarCreating //Creating a .nar
+OnNarCreating
 {
 	"\0\s[0]Creating a .nar for your %(reference2), '%(reference0)'!\w8\e"
 }
 
+//Finished creating
 //reference0 is the name of what you're making a nar for, reference2 is what you're making (balloon/ghost/etc)
-OnNarCreated //Finished creating
+OnNarCreated
 {
 	"\0\s[0]Finished making a .nar for your %(reference2)!\w8 You can see it \_a[OnNarLocation,%(reference1)]here.\_a\e"
 }
@@ -222,11 +226,18 @@ OnVanishButtonHold
 	"\0\s[0]Changed your mind?\e"
 }
 
-//When another ghost has been uninstalled and it switches to this ghost - Also happens if this ghost is open when another is uninstalled
+//When another ghost has been uninstalled and it switches to this ghost
 //reference0 is the name of the uninstalled ghost
 OnVanished
 {
 	"\0\s[0]You uninstalled %(reference0).\e"
+}
+
+//When you uninstall another ghost while this ghost is open. If you remove this event, it will just use OnVanished instead.
+//reference0 is the name of the uninstalled ghost
+OnOtherGhostVanish
+{
+	"\0\s[0]Farewell,\w4 %(reference0).\e"
 }
 
 //----Mail checking----
@@ -280,7 +291,7 @@ OnSeeHeaders
 		foreach headers; _header
 		{
 			_display += "\![*]"
-			_display += _header
+			_display += SHIORI3FW.EscapeAllTags(_header)
 			_display += "\n\n"
 		}
 		"\0\s[0]\b2\_q%(_display)\*\n\n\![*]\q[Done,cancelnodialogue]"
@@ -393,64 +404,25 @@ Select.NoChangelog
 	"\0\s[0]Ok,\w4 you can see it in the functions menu later if you want!\e"
 }
 
-//Taken from the GT template because I see no reason to redo this and probably break it
-//reference0 is the file currently being downloaded
+//Revamped this code! It's a lot more concise now
+//reference0 is the name of the file currently being downloaded
 OnUpdate.OnDownloadBegin
 {
+	_progress = TOINT(reference1) + 1
+    _total = TOINT(reference2) + 1
+	
 	"\0\s[0]\b2\_qDownloading %(reference0)...\n\n"
 	--
-	_Update_Progress = TOINT(reference1) + 1
-	_Update_Total = TOINT(reference2) + 1
-	Update_Remaining = _Update_Total - _Update_Progress
-
-	//defining starting points
-	_PointA = 1
-	_PointB = 1
-
-	//defining text buffers beforehand, otherwise they don't display right
-	_txt = ""
-
-	//loop calculates how many check boxes to display based on the variables above
-
-	while _PointA <= _Update_Progress
-	{
-		_txt += ">"
-		_PointA++
-	}
-	//see above except for blank boxes
-	while _PointB <= Update_Remaining
-	{
-		_txt += "<"
-		_PointB++
-	}
-	--
-	//using the text buffers to display the correct number of boxes
-	"%(_txt)\n\n%(_Update_Progress) of %(_Update_Total)"
-	--
-	//flavortext
-
-	/*if "aitalk" _in_ reference0 //this is checking to see what kind of files are being downloaded. In this case, it's looking for files called aitalk in the download queue. I prefer to leave these out because they can be a bit jarring.
-	{
- 		"\n\nNew random dialogue!\w8"
- 	}
-	elseif "mouse" _in_ reference0
-	{
-		"\n\nNew petting dialogue!\w8"
-	}
-	else //for files not specified above
-	{
-		""
-	}*/
-	--
-	"\e"
-} 
-
-//_remaining should be the number of the file that's giving the error, in the order they're being downloaded. currentfile will be the file path.
-OnUpdate.OnMD5CompareFailure
-{
-	_remaining = Update_Remaining + 1
-	_currentfile = SPLITPATH(reference0)[2] + SPLITPATH(reference0)[3] //This gets the name and extension of the offending file
-	"\0\s[0]The MD5 values don't match on file %(_remaining) - '%(_currentfile)'.\w8\w8\e"
+    _display = ""
+	_display += "\f[name,courier new]"
+    for _i = 0; _i < _total; _i++
+    {
+		//Loading bar display - customize with text or images or whatever
+        if _i < _progress; _display += "■" //Files that have already been downloaded
+        else; _display += "□" //Files that have not been downloaded yet
+    }
+    --
+    "%(_display)\n\n%(_progress)/%(_total)\e"
 }
 
 //reference0 is the reason the update failed
@@ -562,8 +534,9 @@ OnSNTPBegin
 //reference0 is the name of the server it's connecting to, reference1 is the server's time, reference2 is the computer's time, reference3 is the difference (in seconds)
 OnSNTPCompare
 {
- 	"Retrieved Time: %reference1[1]/%reference1[2]/%reference1[0] %reference1[3]:%reference1[4]:%reference1[5]\w2\n/
-	Your Time: %reference2[1]/%reference2[2]/%reference2[0] %reference2[3]:%reference2[4]:%reference2[5]\w2\n\n"
+ 	"Retrieved Time: %reference1[1]/%reference1[2]/%reference1[0] %reference1[3]:%reference1[4]:%reference1[5]\w2\n"
+	--
+	"Your Time: %reference2[1]/%reference2[2]/%reference2[0] %reference2[3]:%reference2[4]:%reference2[5]\w2\n\n"
 	--
  	if reference3 == 0 //if your clock is already accurate.
 	{
@@ -573,9 +546,9 @@ OnSNTPCompare
 	{
 		"\0\s[0]Your clock doesn't match.\w8\w8 Should I fix it?"
 		--
-		"\n\n/
-		\![*]\q[Fix it,OnSNTPExecute]\n/
-		\![*]\q[Leave it alone,OnSNTPCancel]\e" 
+		--; "\n\n"
+		--; "\![*]\q[Fix it,OnSNTPExecute]\n"
+		--; "\![*]\q[Leave it alone,OnSNTPCancel]\e" 
 	}
 }
 
@@ -628,14 +601,27 @@ OnBatteryCritical
 //reference0 is the new size, reference1 is the previous size. Sadly, you can't check for the Y scale.
 OnShellScaling
 {
-	nowscale = reference0
+	nowscale[0] = reference0 //X
+	nowscale[1] = reference2 //Y
+	
 	if reference0 == 100
 	{
 		"\0\s[0]I'm back to normal size.\e"
 	}
 	elseif reference0 < 0 //If it's backwards
 	{
-		"\0\s[0]Backwards!\w8\w8 And upside down if you didn't unlink the scaling.\e"
+		"\0\s[0]Backwards"
+		--
+		if reference2 < 0 //If it's also upside down
+		{
+			" and upside down"
+		}
+		--
+		"!\e"
+	}
+	elseif reference2 < 2 //Upside down but not backwards
+	{
+		"Upside down!\e"
 	}
 	elseif reference0 > reference1
 	{

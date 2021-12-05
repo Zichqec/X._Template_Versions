@@ -298,6 +298,7 @@ achain
 OnMinuteChange
 {
 	if hour == 0 && minute == 0; AutoUpdates[1] = 0 //Resetting auto updates
+	if runtime[1] == 0; totalhours++ //I tried to use ghostupmin_total for this, but for some of my ghosts it's super far into the negatives for some reason... This is gonna be off but not THAT far off lol
 	
 	if minute == 0 && HourNotifs == "On" //Top of the hour notifications
 	{
@@ -336,29 +337,9 @@ OnMinuteChange
 
 OnSecondChange
 {
-	if runtime[2] >= 59
-	{
-		runtime[2] = 0
-		runtime[1]++
-		if runtime[1] >= 59
-		{
-			runtime[1] = 0
-			runtime[0]++
-			totalhours++
-		}
-	}
-	else
-	{
-		runtime[2]++
-	}
-	if reference2 == 1 //This is for if your Sakura and Kero are overlapping. \4 will move the speaking character away from the other character.
+	if reference2 == 1 //This is for if your Sakura and Kero are overlapping. \4 will move the speaking character away from the other character. If you need something more complicated you can use OnOverlap instead of this
 	{
 		"\0\s[0]Me and %(keroname) are overlapping.\4\e"
-	}
-	elseif ARRAYSIZE(waitingcommuS) > 0 && second % 5 == 0 //Every 5 seconds, check if the balloon is closed and a communication is waiting, and if so trigger a response
-	{
-		_b = BalloonCheck
-		if _b == 0; WaitingCommu
 	}
 }
 

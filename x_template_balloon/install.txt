@@ -1,0 +1,4 @@
+charset,UTF-8
+type,balloon
+name,X. Template Balloon
+directory,x_template_balloon

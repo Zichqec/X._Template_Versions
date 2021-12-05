@@ -142,6 +142,12 @@ OnClose
 	"\w8\w8\-\e"
 }
 
+//When you minimize the ghost
+OnWindowStateMinimize
+{
+	"\0\s[0]Minimizing.\w8 You can bring me back by double clicking my icon in the task tray!\e"
+}
+
 OnWindowStateRestore //When you bring the ghost back up after minimizing it.
 {
 	"\0\s[0]I'm back!\e"
@@ -192,8 +198,6 @@ OnGhostChanged //After switching.
 
 OnShellChanging //Starting to change the shell
 {
-	"\![get,property,OnGetCoords,currentghost.scope(0).rect]" //This gets the current ghost coordinates so that they don't jump around the screen when they change shells
-	--
 	if reference0 == nowshell
 	{
 		"\0\s[0]I'm already wearing that?\w8\w8 But ok I guess!"
@@ -208,9 +212,12 @@ OnShellChanging //Starting to change the shell
 
 OnShellChanged //After the shell has changed
 {
-	"\1\s[-1]\0\![move,--X=%(shellchange[0]),--Y=%(shellchange[1]),--base=primaryscreen]" //Moves the ghost to where they were on the previous shell. You might want to get rid of this if your shells are drastically different. This also has the tags to hide the kero, remove them if you want.
+	_old = nowshell
+	nowshell = reference0 //Sets nowshell to the new value
+	
+	"\1\s[-1]" //This hides the kero, get rid of it if you want a kero
 	--
-	if reference0 == nowshell //If the user switches to the shell they're already using
+	if reference0 == _old //If the user switches to the shell they're already using
 	{
 		"\0\s[0]Nothing has changed.\e"
 	}
@@ -222,31 +229,21 @@ OnShellChanged //After the shell has changed
 	{
 		"\0\s[0]Some other shell!\e"
 	}
-	nowshell = reference0 //Sets nowshell to the new value
-}
-
-OnGetCoords //This gets the x and y coordinates when changing shells
-{
-	shellchange[0] = reference0[0]
-	shellchange[1] = reference0[1]
 }
 
 //These are all the variables you want to set during a normal boot. So every time the ghost opens, we reset the timekeeping, whether the ghost has checked for updates, and if they've said anything yet.
 BootVars
 {
+	FixDefaultOptions //In case variables get erased, they should be fixed here
 	lastTalk = ""
-	runtime[0] = 0
-	runtime[1] = 0
-	runtime[2] = 0
 	AutoUpdates[1] = 0
-	waitingcommuS = IARRAY
-	waitingcommuM = IARRAY
 }
 
 //These are new variables to initialize after an update. By checking if the variable doesn't exist before initializing it, we prevent variables already in use from being overwritten. This is VERY IMPORTANT, or you risk resetting the user's progress on your new variables every time they update.
 //ISVAR is a built in YAYA function that checks if a variable exists(is initialized) or not. It returns 0 if the variable doesn't exist, and 1 if it does.
 UpdateVars
 {
+	FixDefaultOptions //Putting this here too, since the variable issues I've had seemed to happen mostly when updates went wrong!
 	//if ISVAR("examplevariable") == 0; examplevariable = 0
 }
 
@@ -254,36 +251,30 @@ UpdateVars
 FirstBootVars
 {
 	lastTalk = ""
-	runtime[0] = 0		//Hours, replaces passhour
-	runtime[1] = 0		//Minutes, replaces passmin
-	runtime[2] = 0		//Seconds, replaces passsec
-	totalhours = 0		//Total number of hours the ghost has been run
 	nowshell = "Default Shell" //Make sure to change this if you change your shell name
 	username = "User"
 	heshe = "they"
 	himher = "them"
 	hisher = "their"
 	hesshes = "they're"
-	birthday[0] = "???"	//The user's birthday, written out with words
-	birthday[1] = "???"	//The user's birthday, written in DD/MM format
+	birthday[0] = "???"	 //The user's birthday, written out with words
+	birthday[1] = "???"	 //The user's birthday, written in DD/MM format
 	talkrate = "every 5 minutes"
 	aitalkinterval = 300
 	totalpunches = 0
-	nowscale = 100		//Current scale, as a percentage
+	nowscale = (100,100) //Current scale, as a percentage
 	//---Petting related variables---
-	stroke[0] = 0		//The stroke value, which resets after each pet
-	stroke[1] = 0		//The stroke value, but it doesn't reset after each pet
-	stroke[2] = 0		//The current streak of successful pets
-	pethighscore[0] = 0	//The petting high score, as the number of the stroke value
-	pethighscore[1] = 0	//The petting high score, as the number of pets
-	totalpets = 0		//The total times the ghost has been pet
+	stroke[0] = 0		 //The stroke value, which resets after each pet
+	stroke[1] = 0		 //The stroke value, but it doesn't reset after each pet
+	stroke[2] = 0		 //The current streak of successful pets
+	pethighscore[0] = 0	 //The petting high score, as the number of the stroke value
+	pethighscore[1] = 0	 //The petting high score, as the number of pets
+	totalpets = 0		 //The total times the ghost has been pet
 	offscreen = IARRAY
 	//---
 	deleteshitai = "Off"
-	betaTester = "Off"
 	AutoUpdates = ("On",0)
 	//nowmode = "Default" //Uncomment if you plan to add more modes
 	installdate = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)","%(ghostver)") //This tracks the exact day and time the ghost was installed, in case you want to mess around with that later. It also tracks what version the user installed, which may be helpful for debugging!
-	waitingcommuS = IARRAY //These two arrays handle the non-interrupt system for communication. They're for storing messages from other ghosts when your ghost is busy talking.
-	waitingcommuM = IARRAY
+	MiscFlags = IARRAY
 }

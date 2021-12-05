@@ -1,14 +1,7 @@
 //Network Update URL. I recommend using Github Pages to set up a site and store their files! It's free and reliable. I've written up a guide on how to do this here https://zichqec.github.io/s-the-skeleton/github.html
 On_homeurl
 {
-	if betaTester == "On" //You don't need to include beta testing if you don't want to. If you want to get rid of it, replace this whole bit with a single homeurl link.
-	{
-		"https://YourBetaDirectoryHere.com/YourGhost/"
-	}
-	else
-	{
-		"https://YourGhostDirectoryHere.com/YourGhost/"
-	}
+	"https://YourGhostDirectoryHere.com/YourGhost/"
 }
 
 On_recommendrootbutton.caption //Change [Your Username] to your username, or change the whole caption to whatever you want. This is the top list of websites in the right click menu.
@@ -43,7 +36,7 @@ On_sakura.portalsites
 //Same deal as above with the formatting. //I'd appreciate it if you left the X. Template link in your ghost so that other people can find the source <3
 portalsites_sakura : array
 {
-	"Built on X. Template YAYA - v.1.0.9 | https://zichqec.github.io/s-the-skeleton/xtemplate.html"
+	"Built on X. Template YAYA - v.1.1.0 | https://zichqec.github.io/s-the-skeleton/xtemplate.html"
 	"Zarla's Ghost Template Walkthrough  | http://www.ashido.com/ukagaka/walkthrough.html"
 	"How to set up updates with Github   | https://zichqec.github.io/s-the-skeleton/github.html"
 	"Ukagaka Dream Team Discord          | https://ukagakadreamteam.tumblr.com/discord"
@@ -89,11 +82,6 @@ On_updatebutton.caption //Caption for the update button
 	"Check for updates"
 }
 
-On_dressuprootbutton.caption //Caption for the dressup button
-{
-	"Accessories"
-}
-
 On_headlinesenserootbutton.caption //Caption for the RSS/Headlines button
 {
 	"Headlines and RSS"
@@ -134,11 +122,6 @@ On_quitbutton.caption //Caption for the quit button
 	"Quit"
 }
 
-On_calendarbutton.caption //The default right click menu has this typoed as 'Calender'
-{
-	"Calendar"
-}
-
 
 
 
@@ -162,20 +145,27 @@ On_vanishbutton.visible
 //---- 딳벍뭷궻뫜궻긕?긚긣뼹롦벦 -------------------------------------------------------
 On_otherghostname
 {
+	// ghostexlist = ""
+	// _i = 0
+	// while _i >= 0
+	// {
+		// _ghostname = NAMETOVALUE("reference%_i")
+		// if _ghostname != ""
+		// {
+			// if _i > 0; ghostexlist += ","
+			// ghostexlist += _ghostname[0]
+			// _i++
+		// }
+		// else; _i = -1
+	// }
+	//Rewrote this... because I wanted to split it up by C_BYTE1 and I figured this is probably more efficient
 	ghostexlist = ""
-	_i = 0
-	while _i >= 0
+	foreach reference; _ghost
 	{
-		_ghostname = NAMETOVALUE("reference%_i")
-		if _ghostname != ""
-		{
-			if _i > 0; ghostexlist += ","
-			ghostexlist += _ghostname[0]
-			_i++
-		}
-		else; _i = -1
+		if ghostexlist != ""; ghostexlist += C_BYTE1
+		ghostexlist += _ghost[0]
 	}
-	ghostexcount = ARRAYSIZE(ghostexlist)
+	ghostexcount = ARRAYSIZE(SPLIT(ghostexlist,C_BYTE1))
 }
 
 On_installedballoonname

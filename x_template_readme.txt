@@ -1,6 +1,6 @@
 This template is originally based on Zarla's GT Template, though I have made numerous changes since then. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.9
+You're using X. Template YAYA - v1.1.0
 You can use the 'Check Template Version' button to check if there's a new version! Or you can check on my website here: https://zichqec.github.io/s-the-skeleton/xtemplate
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -48,6 +48,37 @@ Having feedback from other people is incredibly helpful, and we're always glad t
 
 
 ---Changelog---
+
+-v1.1.0-
+
+-Tweaked BalloonCheck function and fixed it.
+-Updated the pool function to be simpler and more efficient.
+-Changed the label of the dressup button back to default.
+-Improved RemovePauses function (now erases more variants of quicksection tags, \_q tags, and \_w[] tags).
+-Removed the bit in string.dic that fixed the 'calendar' typo, since it's been fixed in SSP now.
+-Added center align tag to the config menu, and center and right align tags to the todo list!
+-Added newline function to help with align tags.
+-Removed OnUpdate.OnMD5CompareFailure event since my use of it was redundant.
+-Revamped the code for the update progress bar.
+-Added loremipsum function.
+-Removed beta tester toggle since I never ended up using it like I meant to.
+-Shuffled stuff around in the config menu a bit.
+-Changed the formatting of the code in the menus. Maybe I'll change it back later, we'll see!
+-Improved the readability of the system info and config menus by using anchors to highlight information.
+-Added Sanitize function.
+-Made name changing escape sakurascript tags.
+-Changed ghostexlist to use C_BYTE1 as a delimiter.
+-Added protection to email headers so that sakurascript tags cannot be executed from displaying headers.
+-Shell scaling function can now check for Y scaling as well. nowscale has been updated to an array, where element 0 is the X scaling and element 1 is the Y scaling.
+-Changed runtime array to a function rather than a variable. It will also reset if you reload the ghost now, because of the system it's using. No more clutter in OnSecondChange related to this, though!
+-Removed non-interrupt system in the commu file, and replaced it with a new timerraise system where if the ghost can't talk, it will attempt to receive the communication a second time after 5 seconds. If that also fails, it will give up on it.
+-Added dialogue for minimizing the ghost.
+-Added Flag functions for easy flags.
+-Removed system for moving shells to the same position when changing to them, since I don't think I'll make much use of this system in the future and it was causing some issues.
+-Added OnOtherGhostVanished, so that you can now have different dialogues based on whether the ghost was open when another ghost was uninstalled or not.
+-Added OnStatsRequested in commu.dic, a function for sending your ghost's stats to other ghosts who ask for them. The details of this will vary from ghost to ghost, but the structure is there now.
+-Added X. Template Balloon, a simple and rough balloon that can be used as a template for a balloon if you want.
+
 
 -v1.0.9-
 

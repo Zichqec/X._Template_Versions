@@ -6,7 +6,7 @@
 //This is the stuff for checking if your template is up to date. I've put it here because the end user won't need this at all, and you can remove it along with the todo list when you're done. If you've put in enough work on your ghost to no longer need the to do list, you're not gonna want to switch to a new template haha
 TemplateVer
 {
-	"1.0.9"
+	"1.1.0"
 }
 
 OnTemplateUpdate
@@ -16,7 +16,7 @@ OnTemplateUpdate
 
 OnCheckTemplateVer
 {
-    _file = "var\\weatherregex.html"
+    _file = "var/weatherregex.html"
     _buff = ""
 	_ver = ""
 	_changelog = ""
@@ -69,7 +69,7 @@ OnTemplateTodo
 	if ARRAYSIZE(TemplateTodoArray) == 0; TemplateTodoArray = ("4","1","8","1","11","7","2","3","1","1","3","6","2","5")
 	
 	_str = "\f[strike,1]"
-	_df = "\f[default]"
+	_df = "\f[strike,default]"
 	
 	_totaltasks = 0
 	_tasksdone = 0
@@ -86,22 +86,23 @@ OnTemplateTodo
 	
 	_menuoptions = ("Aitalk","Anchor","Bootend","Commu","Etc","Menu","Mouse","Nameteach","String","Word","Miscellaneous","Surfaces","Misc Shell","Balloon")
 	
-	_display = "\0\*\_q\b2\![set,autoscroll,disable]\_l[75]———Programming———\n\n[20]"
+	_display = "\0\*\_q\b2\![set,autoscroll,disable]\f[align,center]—Programming—%(newline)\n\n[20]\f[align,default]"
 	
 	_i = 0
 	foreach _menuoptions; _option
 	{
 		if ARRAYSIZE(TemplateTodoArray[_i]) - 1 == TOINT(TemplateTodoArray[_i][0]); _display += "%(_str)"
-		_display += "\q[%(_option),OnTemplateTodoSub,%(_i),%(_option)]%(_df)\_l[100](%(ARRAYSIZE(TemplateTodoArray[_i]) - 1)/%(TemplateTodoArray[_i][0]))\n"
+		_display += "\q[%(_option),OnTemplateTodoSub,%(_i),%(_option)]%(_df)"
+		_display += "%(newline)\f[align,right](%(ARRAYSIZE(TemplateTodoArray[_i]) - 1)/%(TemplateTodoArray[_i][0]))%(newline)\n\f[align,default]"
 		_i++
-		if _i == 11; _display += "\_l[105]———Art———\n\n[20]"
+		if _i == 11; _display += "\f[align,center]—Art—%(newline)\n\n[20]\f[align,default]"
 	}
 	--
 	"%(_display)"
 	--
-	"\n[20]\_l[52]%(_tasksdone)/%(_totaltasks) completed, %(_totalpercent)%"
+	"\n[20]\f[align,center]%(_tasksdone)/%(_totaltasks) completed, %(_totalpercent)%"
 	--
-	"\n\n\![*]\q[Back to the Menu,OnMenuRun]  \![*]\q[Close,cancelnodialogue]\e"
+	"\n\n\f[align,default]\![*]\q[Back to the Menu,OnMenuRun]  \![*]\q[Close,cancelnodialogue]\e"
 }
 
 OnTemplateTodoSub
@@ -118,7 +119,7 @@ OnTemplateTodoSub
 	_totaltasks = SPLIT(_totaltasks,".")[0]
 	
 	_menuoptions = IARRAY
-	_display = "\0\*\_q\b2———%(reference1)———\n\n"
+	_display = "\0\*\_q\b2\f[align,center]—%(reference1)—\n\f[align,default] \n"
 	--
 	if reference0 == "0"; _menuoptions = ("Random Dialogue","Overlap","Offscreen","Top of the Hour")
 	elseif reference0 == "1"; "\![raise,OnTemplateTodoBasic,1,Anchor]\e"
@@ -138,14 +139,14 @@ OnTemplateTodoSub
 	foreach _menuoptions; _option
 	{
 		if _option _in_ TemplateTodoArray[reference0]; _display += "%(_str)"
-		_display += "\q[%(_option),OnTemplateTodoCheck,%(reference0),%(reference1),%(_option)]%(_df)\n"
+		_display += "\![*]\q[%(_option),OnTemplateTodoCheck,%(reference0),%(reference1),%(_option)]%(_df)\n"
 	}
 	--
 	"%(_display)"
 	--
-	"\n\n%(_tasksdone)/%(_totaltasks) completed, %(_totalpercent)%"
+	"\n\n\f[align,center]%(_tasksdone)/%(_totaltasks) completed, %(_totalpercent)%"
 	--
-	"\n\n\![*]\q[Back to todo menu,OnTemplateTodo]\n\![*]\q[Close,cancelnodialogue]"
+	"\n\n\f[align,default]\![*]\q[Back to todo menu,OnTemplateTodo]\n\![*]\q[Close,cancelnodialogue]"
 }
 
 OnTemplateTodoCheck

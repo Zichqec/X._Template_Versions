@@ -64,31 +64,48 @@ season //Current season
 	}
 }
 
-nowhour //hour12 displays the hour like a 12 hour clock, except for 12 which is displayed as 0
+//hour12 displays the hour like a 12 hour clock, except for 12 which is displayed as 0
+nowhour
 {
 	if hour12 == 0; "12"
 	else; "%(hour12)"
 }
 
-nowmin //Adding a 0 to the minute if it's under 10
+//Adding a 0 to the minute if it's under 10
+nowmin
 {
 	if minute < 10; "0%(minute)"
 	else; "%(minute)"
 }
 
-runmin //Same as above but with the runtime minutes
+//Same as above but with the runtime minutes
+runmin
 {
 	if runtime[1] < 10; "0%(runtime[1])"
 	else; "%(runtime[1])"
 }
 
-ap //AM or PM - ampm is 0 during am, and 1 during pm
+//Tracks the hours and minutes that the ghost has been open. This will reset if you reload
+runtime : array
+{
+	ghostupmin / 60
+	ghostupmin % 60
+}
+
+// totalhours //Would like to find out why this is so far into the negatives for me... How strange.
+// {
+	// ghostupmin_total / 60
+// }
+
+//AM or PM - ampm is 0 during am, and 1 during pm
+ap
 {
  	if ampm == 0; "AM"
  	else; "PM"
 }
 
-wd //Abbreviated week day
+//Abbreviated week day
+wd
 {
 	if weekday == 0; "Sun"
 	elseif weekday == 1; "Mon"
@@ -99,7 +116,8 @@ wd //Abbreviated week day
 	else; "Sat"
 }
 
-nowday //Full week day
+//Full week day
+nowday
 {
 	_weekday = weekday
 	if _argv[0] == "next"
@@ -129,7 +147,8 @@ nowday //Full week day
 	else; "Saturday"
 }
 
-nowmonth //The current month name
+//The current month name
+nowmonth
 {
 	_month = month
 	
@@ -165,7 +184,8 @@ nowmonth //The current month name
 	else; "December"
 }
 
-leapyear //Checks if this is a leap year
+//Checks if this is a leap year
+leapyear
 {
 	if year % 4 != 0; 0
 	elseif year % 100 != 0; 1
@@ -173,7 +193,8 @@ leapyear //Checks if this is a leap year
 	else; 1
 }
 
-timeslot //From the GT template. Breaking down the day into a few distinct chunks so you dont have to add checks for every hour.
+//From the GT template. Breaking down the day into a few distinct chunks so you dont have to add checks for every hour.
+timeslot
 {
 	if hour >= 5 && hour <= 8; "earlymorning" //5-8am
 	elseif hour >= 9 && hour <= 11; "morning" //9-11am

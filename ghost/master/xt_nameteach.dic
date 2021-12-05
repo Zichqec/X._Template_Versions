@@ -4,7 +4,7 @@ OnChangeName
 {
 	"\0\s[0]Ok,\w4 what should I call you?"
 	--
-	"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled name change]\![set,balloontimeout,-1]\![open,inputbox,OnNameTeach,-1]\e"
+	"\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]\![set,balloontimeout,-1]\![open,inputbox,OnNameTeach,-1]\e"
 }
 
 OnNameTeach
@@ -28,7 +28,7 @@ OnNameTeach
 	{
 		"\0\s[0]That's my name!\w8\w8 I can't call you that!\w8\w8 Try again."
 		--
-		if !_firstboot; "\n\n\![*]\q[Cancel,OnConfigMenu,cancelled name change]\*" //If changing name through the menu
+		if !_firstboot; "\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]\*" //If changing name through the menu
 		--
 		"\![open,inputbox,OnNameTeach,-1]\e"
 	}
@@ -40,7 +40,7 @@ OnNameTeach
 	}
 	else //if it's none of these above names, we can use it. You can add names that just have comments and can still be used, just don't add a \e at the end.
 	{
-		username = _tempname
+		username = SHIORI3FW.EscapeAllTags(_tempname) //Escape any tags the user might've stuck in there
 		"\0\s[0]Ok,\w4 I'll call you %(username) then."
 	}
 	--
@@ -52,9 +52,9 @@ OnNameTeach
 	{
 		"\w8\w8 Good to meet you!\w8\w8 And how should I refer to you?\n\n"
 		--
-		"\![*]\q[He/Him/His,OnPronouns,masc]\n/
-		\![*]\q[She/Her/Hers,OnPronouns,fem]\n/	
-		\![*]\q[They/Them/Their,OnPronouns,undef]\*\e"
+		--;"\![*]\q[He/Him/His,OnPronouns,masc]\n"
+		--; "\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
+		--; "\![*]\q[They/Them/Their,OnPronouns,undef]\*\e"
 	}
 }
 
@@ -62,10 +62,11 @@ OnChangePronoun //Envelope names are the same as the GT template, since I figure
 {
 	"\0\s[0]How should I refer to you?"
 	--
-	"\n\n\_q/
-	\![*]\q[He/Him/His,OnPronouns,masc]\n/
-	\![*]\q[She/Her/Hers,OnPronouns,fem]\n/	
-	\![*]\q[They/Them/Their,OnPronouns,undef]\e"
+	--; "\n\n\_q"
+	--;"\![*]\q[He/Him/His,OnPronouns,masc]\n"
+	--; "\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
+	--; "\![*]\q[They/Them/Their,OnPronouns,undef]\n\n"
+	--; "\![*]\q[Cancel,OnConfigMenu]\e"
 }
 
 
@@ -119,7 +120,7 @@ OnChangeBirthday //Pulled a lot of this from the GT template, but I also modifie
 	
 	"\0\s[0]Sure!\w8\w8 What month were you born in?\w8\w8 Name or number."
 	--
-	"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday month]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\e"
+	"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornMonth]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\e"
 }
 
 //birthday[0] - word birthday
@@ -151,13 +152,13 @@ OnUserBornMonth
 	{
 		"\0\s[0]%(_tempmonth) isn't a valid month,\w4 try again."
 		--
-		"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday month]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\*\e"
+		"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornMonth]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\*\e"
 	}
 	--
 	//If it's a valid month
 	"%(birthday[2]) huh?\w8\w8 Ok,\w4 what day?"
 	--
-	"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday day]\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\*\e"
+	"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornDay]\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\*\e"
 }
 
 OnUserBornDay
@@ -199,7 +200,7 @@ OnUserBornDay
 	{
 		"\0\s[0]That isn't a valid day.\w8\w8 Try again."
 		--
-		"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday day]\![open,inputbox,OnUserBornDay,-1]\*\e"
+		"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornDay]\![open,inputbox,OnUserBornDay,-1]\*\e"
 	}
 	
 }
