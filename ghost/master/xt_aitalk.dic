@@ -27,9 +27,9 @@ AiTalk
 
 RandomTalk : nonoverlap
 {
-	"\0\s[0]All your random dialogue goes here!\e"
+	//"\0\s[0]All your random dialogue goes here!\e"
 	"\0\s[0]Here's a chain!\e:chain=achain"
-	"\0\s[0]Today is %(nowday)!\e"
+	//"\0\s[0]Today is %(nowday)!\e"
 	
 	
 	

@@ -144,9 +144,9 @@ Select.SystemInfo //Partially copied from the GT template, but I tweaked a few t
 
 Select.BugReport
 {
-	"\0\s[0]Bugs can be reported to the dev \_a[https://www.YourUrlforBugReports.com]here\_a!\x"
+	"\0\s[0]Bugs can be reported to the dev \_a[https://www.YourUrlforBugReports.com]here\_a!"
 	--
-	OnFunctionMenu
+	"\n\n\![*]\q[Back to functions,OnFunctionMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 }
 
 Select.UpdateCheck //This only checks if an update is ready, it does not perform an actual update until the user confirms they want to. If you want to change this, remove the checkonly bit from the command
@@ -178,7 +178,7 @@ OnConfigMenu //I moved changing name/pronouns/birthday over to Nameteach, becaus
 	Your birthday: \q[%(birthday[0]),OnChangeBirthday]\n/
 	Your hemisphere: \q[%(hemisphere),ToggleHemisphere]\n\n/
 	Talk rate: \q[%(talkrate),ChangeTalk]\n\n/
-	\![*]Enable Auto Update checks?\n(Currently: \q[%(AutoUpdate),ToggleUpdate])\n/
+	\![*]Enable Auto Update checks?\n(Currently: \q[%(AutoUpdates[0]),ToggleUpdate])\n/
 	\![*]Opt in to beta updates? (Currently: \q[%(betaTester),ToggleBeta])\n\n/
 	\![*]Enable Uninstall? (Currently: \q[%(deleteshitai),ToggleUninstall])\n\n/
 	\![*]\q[Back to the menu,OnMenuRun]\e"
@@ -216,38 +216,38 @@ OnTalkRate
 		talkrate = "every 30 seconds" //this displays the talk rate in the menu
 		aitalkinterval = 30 //this changes the talk rate, in seconds
 		
-		"\0\s[0]Ok,\w4 every 30 seconds it is!\x"
+		"\0\s[0]Ok,\w4 every 30 seconds it is!"
 	}
 	elseif reference0 == "Minute"
 	{
 		talkrate = "every minute"
 		aitalkinterval = 60
 		
-		"\0\s[0]Ok,\w4 every minute it is!\x"
+		"\0\s[0]Ok,\w4 every minute it is!"
 	}
 	elseif reference0 == "ThreeMin"
 	{
 		talkrate = "every 3 minutes"
 		aitalkinterval = 180
 		
-		"\0\s[0]Ok,\w4 every 3 minutes!\x"
+		"\0\s[0]Ok,\w4 every 3 minutes!"
 	}
 	elseif reference0 == "FiveMin"
 	{
 		talkrate = "every 5 minutes"
 		aitalkinterval = 300
 		
-		"\0\s[0]Ok,\w4 every 5 minutes!\x"
+		"\0\s[0]Ok,\w4 every 5 minutes!"
 	}
 	else
 	{
 		talkrate = "never"
 		aitalkinterval = 0
 		
-		"\0\s[0]Ok, I won't talk at all.\x"
+		"\0\s[0]Ok, I won't talk at all."
 	}
 	--
-	OnConfigMenu
+	"\n\n\![*]\q[Back to config,OnConfigMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 }
 
 Select.ToggleUpdate

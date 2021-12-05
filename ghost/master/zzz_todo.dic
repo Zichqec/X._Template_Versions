@@ -7,7 +7,7 @@
 //This is the stuff for checking if your template is up to date. I've put it here because the end user won't need this at all, and you can remove it along with the todo list when you're done. If you've put in enough work on your ghost to no longer need the to do list, you're not gonna want to switch to a new template haha
 TemplateVer
 {
-	"1.0.0"
+	"1.0.1"
 }
 
 OnTemplateUpdate
@@ -41,7 +41,7 @@ OnCheckTemplateVer
 	}
 	else
 	{
-		"\0\s[0]\b2Your template is not up to date.\w8\w8 The latest version is %(_ver).\w8\w8 You can get the latest version \_a[https://zichqec.github.io/s-the-skeleton/xtemplate.html]here.\_a\w8\w8\n\nHere's the changelog:\n\n%(_changelog)\e"
+		"\0\s[0]\b2Your template is not up to date.\w8\w8 The latest version is %(_ver).\w8\w8 You can get the latest version \_a[https://zichqec.github.io/s-the-skeleton/xtemplate.html]here.\_a\w8\w8\n\nHere's the changelog:\n\n\_q%(_changelog)\n\n\![*]\q[Back to the menu,OnMenuRun]\n\![*]\q[I'm done,cancelnodialogue]\e"
 	}
 }
 //---

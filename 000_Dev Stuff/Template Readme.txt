@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.0
+You're using X. Template YAYA - v1.0.1
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -73,3 +73,21 @@ Differences devs will see:
 -Commu.dic should be ready to use, and offers a method of doing commu dialogue that is much more readable.
 -You can have the template ghost check if there is a new version of the template.
 
+
+---Changelog---
+
+-v1.0.1-
+
+-Fixed email checking, it should no longer spew headers all over the place before you've asked.
+-Fixed the header code, it's much simpler, cleaner, and works properly now.
+-Fixed an issue where the auto updates button wasn't appearing in the config menu.
+-Changed some options in the config menu to display a 'Back to menu' and 'I'm done' button, instead of clicking the balloon to go back.
+-Changed how new variables are added in updates, and removed that section from the 'Some YAYA tips' file since it's no longer relevant (new explanation is in Bootend because it's very short)
+-Changed the URL that links to the template in the right click menu; it now correctly points to X. Template's page instead of the website's homepage.
+-Changed wallpaper code so that it can see what OS you're running without needing the Saori, meaning that the span option should always appear if available.
+-Changed the function that checks the template's version number, the changelog will now be displayed instantly.
+
+
+-v1.0.0-
+
+-Initial release

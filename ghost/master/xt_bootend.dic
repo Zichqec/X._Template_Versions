@@ -206,7 +206,7 @@ OnShellChanging //Starting to change the shell
 
 OnShellChanged //After the shell has changed
 {
-	"\1\s[-1]\0\![move,--X=%(shellchange[0]),--Y=%(shellchange[1]),--base=primaryscreen]" //Moves the ghost to where they were on the previous shell. You might want to get rid of this if your shells are drastically different. This also has the tags to hide the kero.
+	"\1\s[-1]\0\![move,--X=%(shellchange[0]),--Y=%(shellchange[1]),--base=primaryscreen]" //Moves the ghost to where they were on the previous shell. You might want to get rid of this if your shells are drastically different. This also has the tags to hide the kero, remove them if you want.
 	--
 	if reference0 == nowshell //If the user switches to the shell they're already using
 	{
@@ -243,26 +243,10 @@ BootVars
 	booting = 0
 }
 
-//These are new variables to initialize after an update. Check 'Some YAYA tips.txt' if you're not sure how to use this
+//These are new variables to initialize after an update. By checking if the variable is NULL before initializing it, we prevent variables already in use from being overwritten. This is VERY IMPORTANT, or you risk resetting the user's progress on your new variables every time they update.
 UpdateVars
 {
-	
-	//Here's an example of how to initialize new variables upon updating. The problem with initializing new variables after an update is that you want it to happen ONLY THE FIRST TIME. If you just have it set the variables on every update, it might reset some people's progress with those new variables.
-	//So, for every new version, we check and see if the version number has been stored in the InstalledUpdates array yet. If not, we store the version number, and apply any new variables! That way, they'll be initialized one time, and then left alone.
-	/*
-	if InstalledUpdates[0] != "1.0.1"
-	{
-		InstalledUpdates[0] = "1.0.1"
-		NewVariable = 0
-		AnotherVariable = "Default"
-		WowItsAnArray = IARRAY
-	}
-	if InstalledUpdates[1] != "1.1.0"
-	{
-		InstalledUpdates[1] = "1.1.0"
-		ItsAnotherArrayWow = "Thing1,Thing2,Thing3"
-	}
-	*/
+	//if examplevariable == NULL; examplevariable = 0
 }
 
 //These are all the variables that need to be initialized when the user first installs the ghost.
@@ -291,7 +275,6 @@ FirstBootVars
 	deleteshitai = "Off"
 	AutoUpdates = ("On",0)
 	//nowmode = "Default" //Uncomment if you plan to add more modes
-	InstalledUpdates = ("1.0.0") //You can remove this if you don't plan to ever use UpdateVars above
-	installdate = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)") //This tracks the exact day and time the ghost was installed, in case you want to mess around with that later.
+	installdate = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)","%(ghostver)") //This tracks the exact day and time the ghost was installed, in case you want to mess around with that later. It also tracks what version the user installed, which may be helpful for debugging!
 	booting = 1 //This will be set to 0 after firstboot is complete
 }

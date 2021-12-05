@@ -15,9 +15,7 @@ OnNameTeach
 	
 	if _tempname == username && booting != 1 //If the user gives the exact same name as before. The booting check has to be there in case they put in 'user'
 	{
-		"\0\s[0]Oh,\w4 did you change your mind?\x"
-		--
-		OnConfigMenu
+		"\0\s[0]Oh,\w4 did you change your mind?"
 	}
 	elseif "template" _in_ reference0 || _tempname == "X." || _tempname == "x." //Checking with _tempname because 'X.' has a period, which would be removed. I don't want to stop someone putting in just X
 	{
@@ -37,9 +35,7 @@ OnNameTeach
 	--
 	if booting == 0 //If the user was changing their name through the config menu
 	{
-		"\x"
-		--
-		OnConfigMenu
+		"\n\n\![*]\q[Back to config,OnConfigMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 	}
 	else //This is continuing from FirstBoot
 	{
@@ -94,9 +90,9 @@ OnPronouns
 	}
 	else //This is if the user is changing their pronouns through the menu
 	{
-		"\0\s[0]Ok,\w4 I'll use %(heshe) %(himher) and %(hisher).\x"
+		"\0\s[0]Ok,\w4 I'll use %(heshe) %(himher) and %(hisher)."
 		--
-		OnConfigMenu
+		"\n\n\![*]\q[Back to config,OnConfigMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 	}
 }
 //Pronoun examples for my own sake:
@@ -189,9 +185,7 @@ OnUserBornDay
 		"\0\s[0]Ok, your birthday is %(birthday[0]).\w8\w8 I'll remember."
 	}
 	--
-	"\x"
-	--
-	OnConfigMenu
+	"\n\n\![*]\q[Back to config,OnConfigMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 }
 
 Printday //Sets the appropriate suffix

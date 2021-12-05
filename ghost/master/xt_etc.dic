@@ -17,8 +17,7 @@ OnFileDrop2
 			\![*]\q[Tiled,OnWallpaper,Tile,%(reference0)]\n/
 			\![*]\q[Stretched,OnWallpaper,Stretch,%(reference0)]"
 			--
-			_osver = TOINT(os_version) //Checks to see if the user is using windows 10, and if so offers the span option since it's compatible. Note that this requires to user to have done the system information check in the functions menu first, though.
-			if "Windows" _in_ os_name && _osver >= 10
+			if "Windows 10" _in_ NotifyOS //NotifyOS is set just below. The Span option is only available if you're on Win 10, so this means it won't display unless you're on Win 10
 			{
 				"\n\![*]\q[Spanned,OnWallpaper,Span,%(reference0)]"
 			}
@@ -41,6 +40,12 @@ OnFileDrop2
 			}
 		}
 	}		
+}
+
+//You can get other information about the OS here, it's in the other references. Reference0 includes the OS system, version, and display name
+OnNotifyOSInfo
+{
+	NotifyOS = reference0
 }
 
 OnWallpaper
@@ -245,41 +250,26 @@ OnBIFFComplete
 	}
 	elseif reference0 < 100 //less than 100 new emails
 	{
-		_headerlist = ""
-		if reference7 != "" //Reference7 is the headers. If it's empty(if the user has headers off), no need to run this loop. I STRONGLY ENCOURAGE YOU not to run this loop for more than 100 headers, as it may cause severe amounts of lag/freezing
-		{//I recommend you collapse this entire set of brackets here, you don't need to touch any of it!
-			_headers = reference7
-			_headercount = ARRAYSIZE(_headers) //see how long the list is
-			_headerlist = ""
+		
+		if reference7 != "" //Reference7 is the headers. If it's empty(if the user has headers off), no need to run this loop. I STRONGLY ENCOURAGE YOU not to run this loop for more than 100 headers, as it may cause severe amounts of lag/freezing. Also, that's a lot to scroll through.
+		{
+			_buff = reference7
+			_len = ARRAYSIZE(_buff)
+			headers = ""
 			_i = 0
-			while _i < _headercount
+			while _i < _len //Runs through all the elements of the array
 			{
-				_headernext = (_i + 1) //Look at the next header
-				if "<" _in_ _headers[_headernext] && "@" _in_ _headers[_headernext] && ">" _in_ _headers[_headernext] //If it's got an email address, it must be a legit one
+				if "<" _in_ _buff[_i] && "@" _in_ _buff[_i] && "." _in_ _buff[_i] && ">" _in_ _buff[_i] //If it has an email address
 				{
-					_headerlist += "|br%(_headers[_i])" //Add the current header we have to the header list, move on to the next
+					if _i != 0; _display += "\n\n[half]" //Add line breaks
+					headers += "\![*]%(_buff[_i])" //Add a menu option and the header text
 				}
-				else
+				else //If it does not have an email address, it must be a particle
 				{
-					_headerlist += "|br%(_headers[_i])" //Add the first part to the header list, then do a loop to gather the remaining pieces
-					
-					_ii = 0
-					while _ii < (_headercount - _i - 1) //The amount of headers - how far we are through them (-1) so that if you're at the end of the headers it'll stop instead of just making commas
-					{
-						_headernext = (_i + 1) //Look at the next header
-						if "<" !_in_ _headers[_headernext] && "@" !_in_ _headers[_headernext] && ">" !_in_ _headers[_headernext] //If there is no email address, add the particle to the list
-						{
-							headerlist += ",%(_headers[_headernext])"
-							_headers[_headernext] = IARRAY //Erase the duplicate header
-						}
-						_ii++
-					}
-				}
-				_headercount = ARRAYSIZE(_headers) //Recount how many headers we got
+					headers += ",%(_buff[_i])" //Add the text
+				}	
 				_i++
 			}
-			_headerlist = ERASE(_headerlist,0,3) //erases the first |br so it doesn't start on a line break
-			_headerlist = REPLACE(_headerlist,"|br","\n\n") //Replace the |brs with line breaks
 		}
 		--
 		_s = ""; if reference0 != 1; _s = "s" //Plural check, adds an s if the number of emails is not 1
@@ -289,7 +279,7 @@ OnBIFFComplete
 		{
 			"\w8\w8 Do you want to see the header%(_s)?"
 			--
-			"\n\n\![*]\q[Yes,OnSeeHeaders,%(_headerlist)]\n\*\![*]\q[No,cancelnodialogue]"
+			"\n\n\![*]\q[Yes,OnSeeHeaders]\n\*\![*]\q[No,cancelnodialogue]"
 		}
 		--
 		"\e"
@@ -303,7 +293,9 @@ OnBIFFComplete
 //Displaying the headers. No need to touch this other than changing the surface, or if you want to make the buttons different or something. Reference0 is the list of headers
 OnSeeHeaders
 {
-	"\0\s[0]\b2\_q%(reference0)\*\n\n\![*]\q[Done,cancelnodialogue]"
+	"\0\s[0]\b2\_q%(headers)\*\n\n\![*]\q[Done,cancelnodialogue]"
+	--
+	headers = NULL //This erases the variable so you're not storing all those headers and bloating your save. Also, privacy reasons.
 }
 
 //Email checking failed

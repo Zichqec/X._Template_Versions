@@ -561,42 +561,6 @@ _Ingredients = INSERT(_Ingredients,0,_buffer) //Inserts the capital letter
 //Once you've done that, you'd just use %(_Ingredients) in the dialogues where it's the first word!
 
 
-//-------------------------Initializing new variables after updates-------------------------
-//If you do big updates like I do, sometimes you'll add new mechanics that require variables that have been initialized properly. After all, you can't add 1 to a variable that doesn't exist, right?
-//You can't just initialize the variables in OnUpdateComplete, otherwise the variables will be reset EVERY time the user updates, which might erase their progress on your new additions. So instead, I've set up a system that uses an array to see which updates the user already has, and wont initialize variables unless they haven't been yet.
-//In Bootend, I've put a function near the bottom called UpdateVars. It'll be called every time the user successfully updates. I've put it in bootend so it's easier to remember to initialize all your variables in one place.
-//First of all, if you've added some new variables you should always add them to FirstBootVars, so that new users have them initialized properly. Then, you'll want to add them to the InstalledUpdates array.
-//Basically, we're going to set a variable with the version number of your update in it. When the ghost updates, if that variable does not say the version number, it knows that it hasn't initialized the variables yet and does so. Then it adds the version number to that variable so it does not initialize them again. However, instead of using a bunch of variables, we're just going to use an array!
-
-UpdateVars
-{
-	if InstalledUpdates[0] != "1.0.1"
-	{
-		InstalledUpdates[0] = "1.0.1"
-		NewVariable = 0
-		AnotherVariable = "Default"
-		WowItsAnArray = IARRAY
-	}
-	if InstalledUpdates[1] != "1.1.0"
-	{
-		InstalledUpdates[1] = "1.1.0"
-		ItsAnotherArrayWow = "Thing1,Thing2,Thing3"
-	}
-}
-
-//Every time you release an update, you'll need to pick the next element of the array so you don't overwrite any of the old entries. This is very important, if someone still has v1.0.0 of your ghost and they update all the way up to 1.5.7, you still need the code there to initialize ALL the variables they have missed. You can never erase these bits of code when you add them, otherwise you'll break older versions that still need to update.
-//So, if I released a 1.1.1 update, I'd add this to UpdateVars:
-
-if InstalledUpdates[2] != "1.1.1"
-{
-	InstalledUpdates[2] = "1.1.1"
-	NewVar = 1
-	FavoriteColor = "Blue"
-	ExtraMode = "Off"
-}
-
-//Just increment the number on the array by 1 each time, and make sure you set the variable properly so that this bit of code never runs more than once, and you're golden! I've used this many times and had no issue, even updating from very old versions of my ghosts up to the latest versions all in one go.
-
 //-------------------------Including a balloon with your ghost-------------------------
 //This is also not technically a YAYA tip, but shh.
 //If you've created a custom balloon for your ghost, you probably want it to install at the same time as your ghost so that when it first boots it's already using it!

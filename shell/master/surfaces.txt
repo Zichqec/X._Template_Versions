@@ -48,7 +48,7 @@ surface0
 //Also here for reference. If you want your blink/talk frames in subfolders, you must define them first. This is where you can put the subfolder. You should be able to hide them from surface test again by putting that option into your surfacetable.
 //surface100
 //{
-	//element0,overlay,surface100.png,0,0
+	//element0,overlay,ExampleFolder/surface100.png,0,0
 //}
 
 //Kero surfaces - If you want a kero, uncomment the line below and create an image for surface10
