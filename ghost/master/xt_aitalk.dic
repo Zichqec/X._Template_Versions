@@ -25,11 +25,14 @@ AiTalk
 	}
 }
 
+//nonoverlap means that all possible dialogue candidates will be chosen at least once before any dialogues are repeated. Note that anything within brackets counts as a single dialogue candidate! This causes the probability issues mentioned in the YAYA tips file, and also, if you separate your RandomTalk into different modes or something, you'll have to make them separate functions if you still want to use nonoverlap!
 RandomTalk : nonoverlap
 {
-	//"\0\s[0]All your random dialogue goes here!\e"
+	"\0\s[0]All your random dialogue goes here!\e"
 	"\0\s[0]Here's a chain!\e:chain=achain"
-	//"\0\s[0]Today is %(nowday)!\e"
+	"\0\s[0]Today is %(nowday)!\e"
+	"\0\s[0]Tomorrow will be %(nowday('next'))!\e"
+	"\0\s[0]Yesterday was %(nowday('last'))!\e"
 	
 	
 	

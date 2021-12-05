@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.3
+You're using X. Template YAYA - v1.0.4
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -49,7 +49,6 @@ Differences users will see:
 -Right clicking the ghost will not cause their personal menu to open.
 -Changing name/birthday/pronouns will lead back to the config menu.
 -Offers a changelog after updating!
--When checking for updates through the menu, they check first and ask for confirmation before updating.
 -Hitting the ghost for the first time will pop up a confirmation dialogue, to prevent accidental punches.
 -You can type in the name of the month you were born instead of just the number.
 -Petting ghosts repeatedly without taking your mouse off of them will have special dialogue.
@@ -75,6 +74,13 @@ Differences devs will see:
 
 
 ---Changelog---
+
+-v1.0.4-
+
+-Removed some testing stuff I left in commu.dic by mistake
+-Uncommented some stuff that I had commented in aitalk.dic by mistake
+-Added some clarification about nonoverlap in aitalk.dic
+
 
 -v1.0.3-
 

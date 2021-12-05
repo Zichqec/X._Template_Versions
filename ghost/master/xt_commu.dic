@@ -92,28 +92,6 @@ ReplyToGhost //This is your ghost receiving a communication.
 			--
 			"::%(_Speech)" //Reflects back what the other ghost said, only put it here if you're talking to a ghost that uses the same system or things may break
 		}
-		when "RYS-0825"
-		{
-			"\![quicksection,true]%(_Last)\![quicksection,false]"
-			--
-			if "Test01" _in_ ConvoTag
-			{
-				res_reference0 = "RYS-0825"
-				"\n\nResponse 1\e Test02"
-			}
-			elseif "Test03" _in_ ConvoTag
-			{
-				res_reference0 = "RYS-0825"
-				"\n\nResponse 2\e Test04"
-			}
-			else
-			{
-				res_reference0 = "RYS-0825"
-				"Convo start.\e Test00"
-			}
-			--
-			"::%(_Speech)"
-		}
 		others //Responses to unknown ghosts. AlreadyResponded keeps them from getting stuck in a loop.
 		{
 			if "\![commu-%(reference0)]" !_in_ SHIORI3FW.LastTalk //This checks for that commu tag up above! So, if the last dialogue was NOT a response to the ghost that just pinged us, give a normal response

@@ -8,6 +8,7 @@ surface0
 	element0,overlay,surface0.png,0,0
 	//As a note, you can put your images in subfolders! I'd be careful doing it, but it could be very helpful! It would look something like this
 	//element0,overlay,yourfolder/surface0.png,0,0
+	//Any images in subfolders HAVE to be defined in a surface before you can use them in animations, though.
 	
 	//Collisions
 	collision0,50,8,95,27,Head
