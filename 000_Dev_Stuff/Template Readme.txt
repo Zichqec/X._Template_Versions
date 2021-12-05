@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.7
+You're using X. Template YAYA - v1.0.8
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -74,6 +74,15 @@ Differences devs will see:
 
 
 ---Changelog---
+
+-v1.0.8-
+
+-Fixed an issue where auto updates were broken.
+-Fixed a couple of incorrect links in the right click menu.
+-Removed the booting variable, and replaced it with a system that checks for certain tags during the firstboot dialogues. Please let me know if you have any issues using this! This also means I've introduced the OnUserInputCancel function, which I stuck in etc.dic for now.
+-Updated the OnOffscreen function, made it a little better and easier to understand.
+-Added some new functionality to nowday and nowmonth; you can now send them integers to get days even further in the future/past. The randomtalk has an example of how this is used.
+
 
 -v1.0.7-
 

@@ -112,30 +112,38 @@ wd //Abbreviated week day
 
 nowday //Full week day
 {
-	_day = weekday
+	_weekday = weekday
 	if _argv[0] == "next"
 	{
-		_day++
-		if _day > 6; _day = 0
+		_weekday++
+		if _weekday > 6; _weekday = 0
 	}
 	if _argv[0] == "last"
 	{
-		_day--
-		if _day < 0; _day = 6
+		_weekday--
+		if _weekday < 0; _weekday = 6
 	}
 	
-	if _day == 0; "Sunday"
-	elseif _day == 1; "Monday"
-	elseif _day == 2; "Tuesday"
-	elseif _day == 3; "Wednesday"
-	elseif _day == 4; "Thursday"
-	elseif _day == 5; "Friday"
+	if GETTYPE(_argv[0]) == 1 //If it's an integer
+	{
+		while _argv[0] > 6; {_argv[0] -= 7}
+		while _argv[0] < 0; {_argv[0] += 7}
+		_weekday = _argv[0]
+	}
+	
+	if _weekday == 0; "Sunday"
+	elseif _weekday == 1; "Monday"
+	elseif _weekday == 2; "Tuesday"
+	elseif _weekday == 3; "Wednesday"
+	elseif _weekday == 4; "Thursday"
+	elseif _weekday == 5; "Friday"
 	else; "Saturday"
 }
 
 nowmonth //The current month name
 {
 	_month = month
+	
 	if _argv[0] == "next"
 	{
 		_month++
@@ -145,6 +153,13 @@ nowmonth //The current month name
 	{
 		_month--
 		if _month < 1; _month = 12
+	}
+	
+	if GETTYPE(_argv[0]) == 1 //If it's an integer
+	{
+		while _argv[0] > 12; {_argv[0] -= 12}
+		while _argv[0] < 1; {_argv[0] += 12}
+		_month = _argv[0]
 	}
 	
 	if _month == 1; "January"

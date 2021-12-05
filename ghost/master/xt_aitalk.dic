@@ -6,7 +6,7 @@ AiTalk
 	}
  	else
 	{
- 		if ARRAYSIZE(offscreen) == 0
+ 		if STRLEN(offscreen) == 0
 		{
 			if CHAIN.IDName == ""
 			{
@@ -20,7 +20,7 @@ AiTalk
 		}
  		else
 		{ 
-			OffscreenTalk
+			OffscreenTalk(ANY(offscreen))
  		}
 	}
 }
@@ -32,6 +32,7 @@ RandomTalk : nonoverlap
 	"\0\s[0]Here's a chain!\e:chain=achain"
 	"\0\s[0]Today is %(nowday)!\e"
 	"\0\s[0]Tomorrow will be %(nowday('next'))!\e"
+	"\0\s[0]In two days it'll be %(nowday(weekday + 2))!\e"
 	"\0\s[0]Yesterday was %(nowday('last'))!\e"
 	"\0\s[0]Don't forget you can use the Hook Current Time API in the dev pallete to artificially change the time!\w8\w8 It's great for testing time and date based dialogues.\e"
 	
@@ -291,32 +292,53 @@ OnSecondChange
 
 OnOffscreen
 {
-	offscreen = IARRAY //Makes offscreen IARRAY if there's no value
-	_lastvalue = IARRAY
-	if reference0 != ""; offscreen = SPLIT(reference0,",") //An array of the IDs of characters currently off screen. 0 is Sakura, 1 is Kero, etc
-	if reference1 != ""; _lastvalue = SPLIT(reference1,",")
-	//If a character is currently off the screen, their ID will be in the offscreen array, and you can find it with ASEARCH.
-	//reference1 has the values of reference0 from the last time this function ran, so you can use it to tell if a character has been moved back on screen.
-	//I've only set this up for the Sakura, but you can copy this format for other characters too. Just change the number in the ASEARCH.
+	//I've tinkered a lot with this function to get it working for multiple characters. If you need more than 2, just copy the format below very carefully, and make sure you increment the numbers. It's not perfect; if you have multiple characters off screen at once it might pick the wrong dialogues, but you can add more elseifs to handle those cases if you really want them.
+	offscreen = TOSTR(reference0)
+	CVSTR(reference0)
+	CVSTR(reference1)
 	
-	if ASEARCH("0",offscreen) != -1 //Checks if the sakura was moved off screen
+	if "0" _in_ reference0 //Checks if the sakura was moved off screen
 	{
-		OffscreenTalk
+		OffscreenTalk("0")
 	}
-	elseif ASEARCH("0",_lastvalue) != -1 //Checks if the sakura is no longer off screen
+	elseif "1" _in_ reference0 //Checks if the kero was moved off screen
 	{
-		EndOffscreenTalk
+		OffscreenTalk("1")
+	}
+	
+	//Coming back on screen
+	elseif "0" _in_ reference1 //Checks if the sakura is no longer off screen
+	{
+		EndOffscreenTalk("0")
+	}
+	elseif "1" _in_ reference1 //Checks if the kero is no longer off screen
+	{
+		EndOffscreenTalk("1")
 	}
 }
 
-OffscreenTalk //Off the screen dialogue. Ctrl Shift F12 will bring characters back onto the screen
+OffscreenTalk //Off the screen dialogue. Ctrl Shift F12 will bring characters back onto the screen. _argv[0] here contains the number of the character who is off screen, 0 for sakura, 1 for kero, 2 and up for extra chars
 {
-	"\0\s[0]I'm off the screen.\w8\w8 You can press Ctrl Shift F12 to bring me back.\e"
+	if _argv[0] == "0" //If the sakura is off screen
+	{
+		"\0\s[0]I'm off the screen.\w8\w8 You can press Ctrl Shift F12 to bring me back.\e"
+	}
+	elseif _argv[0] == "1" //If the kero is off screen
+	{
+		"\0\s[0]The kero is off the screen.\w8\w8 You can press Ctrl Shift F12 to bring it back.\e"
+	}
 }
 
-EndOffscreenTalk //Being brought back on the screen.
+EndOffscreenTalk //Being brought back on the screen. _argv[0] here contains the number of the character who was brought back on screen, 0 for sakura, 1 for kero, 2 and up for extra chars
 {
-	"\0\s[0]I'm back!\e"
+	if _argv[0] == "0" //If the sakura was brought back on screen
+	{
+		"\0\s[0]I'm back!\e"
+	}
+	elseif _argv[0] == "1" //If the kero was brought back on screen
+	{
+		"\0\s[0]The kero is back!\e"
+	}
 }
 
 OnSurfaceRestore //OnSurfaceRestore happens around 30 seconds after the ghost's last dialogue. reference0 here stores the number of the previous surface, so you can have them comment when they change back if you like.

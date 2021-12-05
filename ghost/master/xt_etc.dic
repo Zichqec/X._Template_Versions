@@ -349,7 +349,7 @@ OnUpdateCheckComplete
 {
 	if reference0 == "none" //If there are no new files
 	{
-		if AutoUpdates[1] == 1 //Sets it so it won't check again until at least midnight
+		AutoUpdates[1] = 1 //Sets it so it won't check again until at least midnight
 	}
 	else
 	{
@@ -707,4 +707,11 @@ OnKeyPress
 			}
 		}
 	}
+}
+
+//When the user closes an input box. I've only put this here so that the user can't accidentally close it during the first boot, you don't need to mess with it if you don't want to.
+//reference0 here is the event that the input box was going to lead to, and reference1 is either timeout or close based on if it timed out or was closed by the user
+OnUserInputCancel
+{
+	if reference0 == "OnNameTeach" && "VeryFirstBoot" _in_ SHIORI3FW.LastTalk; "\C\![open,inputbox,%(reference0)]\e VeryFirstBoot"
 }

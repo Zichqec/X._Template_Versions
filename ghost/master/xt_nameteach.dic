@@ -9,13 +9,17 @@ OnChangeName
 
 OnNameTeach
 {
+	_firstboot = 0; if "VeryFirstBoot" _in_ SHIORI3FW.LastTalk; _firstboot = 1 //If this is during first boot, set a temp flag
+	
 	_tempname = reference0 //this stores the original name in _tempname
 	reference0 = TOLOWER(reference0) //changes it to lowercase
 	reference0 = REPLACE(reference0," ","") //removes spaces
 	reference0 = REPLACE(reference0,".","") //removes periods
 	reference0 = REPLACE(reference0,"-","") //removes dashes
 	
-	if _tempname == username && booting != 1 //If the user gives the exact same name as before. The booting check has to be there in case they put in 'user'
+	if _firstboot; "\_l[-10000,-10000]\q[ ,VeryFirstBoot]\_l[0,0]" //Prevents balloon from timing out if this is during first boot. Also prevents the user from closing out the input box
+	--
+	if _tempname == username && !_firstboot //If the user gives the exact same name as before. The firstboot check has to be there in case they put in 'user'
 	{
 		"\0\s[0]Oh,\w4 did you change your mind?"
 	}
@@ -23,7 +27,9 @@ OnNameTeach
 	{
 		"\0\s[0]That's my name!\w8\w8 I can't call you that!\w8\w8 Try again."
 		--
-		"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled name change]\![open,inputbox,OnNameTeach,-1]\e"
+		if !_firstboot; "\n\n\![*]\q[Cancel,OnConfigMenu,cancelled name change]\*" //If changing name through the menu
+		--
+		"\![open,inputbox,OnNameTeach,-1]\e"
 	}
 	elseif reference0 == "" //If the user doesn't put in anything
 	{
@@ -37,7 +43,7 @@ OnNameTeach
 		"\0\s[0]Ok,\w4 I'll call you %(username) then."
 	}
 	--
-	if booting == 0 //If the user was changing their name through the config menu
+	if !_firstboot //If the user was changing their name through the config menu
 	{
 		"\n\n\![*]\q[Back to config,OnConfigMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 	}
@@ -47,7 +53,7 @@ OnNameTeach
 		--
 		"\![*]\q[He/Him/His,OnPronouns,masc]\n/
 		\![*]\q[She/Her/Hers,OnPronouns,fem]\n/	
-		\![*]\q[They/Them/Their,OnPronouns,undef]\e"
+		\![*]\q[They/Them/Their,OnPronouns,undef]\*\e"
 	}
 }
 
@@ -87,10 +93,11 @@ OnPronouns
 		
 	}
 	--
-	if booting == 1 //This is the end of the firstboot dialogue
+	if "VeryFirstBoot" _in_ SHIORI3FW.LastTalk //This is the end of the firstboot dialogue
 	{
-		booting = 0
-		"Sounds good!\w8\w8 To access the test variable or the to-do list,\w4 you can open script input with ctrl + s and type \%\(debug = 1)\w8\w8\n\nYou can also check if there's a newer version of the template!\w8\w8 Have fun!\![leave,passivemode]\e"
+		"Sounds good!\w8\w8 To access the test variable or the to-do list,\w4 you can open script input with ctrl + s and type \%\(debug = 1)\w8\w8\n\nYou can also check if there's a newer version of the template!\w8\w8 Have fun!"
+		--
+		"\![leave,passivemode]\e"
 	}
 	else //This is if the user is changing their pronouns through the menu
 	{
@@ -143,13 +150,13 @@ OnUserBornMonth
 	{
 		"\0\s[0]%(_tempmonth) isn't a valid month,\w4 try again."
 		--
-		"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday month]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\e"
+		"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday month]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\*\e"
 	}
 	--
 	//If it's a valid month
 	"%(birthday[2]) huh?\w8\w8 Ok,\w4 what day?"
 	--
-	"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday day]\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\e"
+	"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday day]\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\*\e"
 }
 
 OnUserBornDay
@@ -191,7 +198,7 @@ OnUserBornDay
 	{
 		"\0\s[0]That isn't a valid day.\w8\w8 Try again."
 		--
-		"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday day]\![open,inputbox,OnUserBornDay,-1]\e"
+		"\n\n\![*]\q[Cancel,OnConfigMenu,cancelled birthday day]\![open,inputbox,OnUserBornDay,-1]\*\e"
 	}
 	
 }
