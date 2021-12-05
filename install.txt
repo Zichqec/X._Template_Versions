@@ -3,7 +3,7 @@
 charset,UTF-8
 type,ghost
 
-name,X. Template YAYA - v1.0.1
-directory,x_template_yaya_v1_0_1
+name,X. Template YAYA - v1.0.2
+directory,x_template_yaya_v1_0_2
 
 balloon.directory,x_template_balloon

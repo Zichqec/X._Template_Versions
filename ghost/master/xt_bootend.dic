@@ -262,7 +262,7 @@ FirstBootVars
 	birthday[0] = "???"	//The user's birthday, written out with words
 	birthday[1] = "???"	//The user's birthday, written in DD/MM format
 	talkrate = "every 5 minutes"
-	aitalkinterval = 360
+	aitalkinterval = 300
 	totalpunches = 0
 	//---Petting related variables---
 	stroke[0] = 0		//The stroke value, which resets after each pet

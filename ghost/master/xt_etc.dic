@@ -11,18 +11,25 @@ OnFileDrop2
 	{
 		when ".jpg", ".jpeg", ".bmp", ".png" //These are pictures that they can set to wallpapers. Png works for me, but if it doesn't work for you let us know please, I'm curious about this.
 		{
-			"\0\s[0]This is %(_filename)%(_fileext)!\w8\w8 I can set it as your wallpaper,\w4 how do you want it?\n\n"
-			--
-			"\![*]\q[Centered,OnWallpaper,Center,%(reference0)]\n/
-			\![*]\q[Tiled,OnWallpaper,Tile,%(reference0)]\n/
-			\![*]\q[Stretched,OnWallpaper,Stretch,%(reference0)]"
-			--
-			if "Windows 10" _in_ NotifyOS //NotifyOS is set just below. The Span option is only available if you're on Win 10, so this means it won't display unless you're on Win 10
+			if "]" _in_ reference0 //If the file name contains a character that would break the wallpaper command
 			{
-				"\n\![*]\q[Spanned,OnWallpaper,Span,%(reference0)]"
+				"\0\s[0]This is %(_filename)%(_fileext)!\w8\w8 I could set it as your wallpaper,\w4 but you need to remove any ] characters from the title first,\w4 sorry!\e"
 			}
-			--
-			"\n\n\![*]\q[No thanks,WallpaperCancel]\e"
+			else
+			{
+				"\0\s[0]This is %(_filename)%(_fileext)!\w8\w8 I can set it as your wallpaper,\w4 how do you want it?\n\n"
+				--
+				"\![*]\q[Centered,OnWallpaper,Center,%(reference0)]\n/
+				\![*]\q[Tiled,OnWallpaper,Tile,%(reference0)]\n/
+				\![*]\q[Stretched,OnWallpaper,Stretch,%(reference0)]"
+				--
+				if "Windows 10" _in_ NotifyOS //NotifyOS is set just below. The Span option is only available if you're on Win 10, so this means it won't display unless you're on Win 10
+				{
+					"\n\![*]\q[Spanned,OnWallpaper,Span,%(reference0)]"
+				}
+				--
+				"\n\n\![*]\q[No thanks,WallpaperCancel]\e"
+			}
 		}
 		when ".mid", ".wav", ".mp3", ".wma", ".au", ".ogg", ".flac"
 		{
@@ -261,7 +268,7 @@ OnBIFFComplete
 			{
 				if "<" _in_ _buff[_i] && "@" _in_ _buff[_i] && "." _in_ _buff[_i] && ">" _in_ _buff[_i] //If it has an email address
 				{
-					if _i != 0; _display += "\n\n[half]" //Add line breaks
+					if _i != 0; headers += "\n\n[half]" //Add line breaks
 					headers += "\![*]%(_buff[_i])" //Add a menu option and the header text
 				}
 				else //If it does not have an email address, it must be a particle
@@ -320,7 +327,7 @@ OnBIFFFailure
 	{
 		"\0\s[0]Oh,\w4 changed your mind?\e"
 	}
-	else //Some other kind of error. The GT template has this as %(reference[0]), but I don't know which is right.
+	else //Some other kind of error.
 	{
 		"\0\s[0]I can't get in.\w8\w8 The error is '%(reference0)'.\e"
 	}
@@ -334,7 +341,7 @@ OnUpdateCheckComplete
 {
 	if reference0 == "none" //If there are no new files
 	{
-		if AutoUpdates[1] == 1 {"\e"} //This if stops the dialogue from displaying if this check was performed automatically.
+		if AutoUpdates[1] == 1; "\e" //This if stops the dialogue from displaying if this check was performed automatically.
 		--
 		"\0\s[0]There are no new files.\e"
 	}
@@ -514,7 +521,7 @@ OnUpdateFailure //If the update fails
 //reference0 is the reason the check failed
 OnUpdateCheckFailure
 {
-	if AutoUpdates[1] == 1 {"\e"} //Stops the dialogue from showing if it's an auto check
+	if AutoUpdates[1] == 1; "\e" //Stops the dialogue from showing if it's an auto check
 	--
 	if reference0 == "timeout" //If it timed out
 	{
@@ -578,7 +585,7 @@ OnHeadlinesenseFailure
 	}
 	else
 	{
-		"I'm not sure why.\e"
+		"I'm not sure why,\w4 it says '%(reference0)'.\e"
 	}
 }
 
@@ -587,7 +594,7 @@ OnHeadlinesenseFailure
 //reference0 is the name of the server it's connecting to
 OnSNTPBegin
 {
-	"\0\s[0]Sure,\w4 I'll check your time against %(reference0)\w8\w8\e"
+	"\0\s[0]Sure,\w4 I'll check your time against %(reference0).\w8\w8\e"
 }
 
 //Grabbed this from the GT template, don't see a reason to redo this
@@ -626,7 +633,7 @@ OnSNTPCancel
 	"\0\s[0]Ok,\w4 let me know if you change your mind!\e"
 }
 
-//reference0 is the name of the SNTP server
+//reference0 is the name of the SNTP server - Note that this may happen before any other STNP dialogue is said! Keep in mind when writing your dialogue that the user will not necessarily have clicked the yes button.
 OnSNTPFailure
 {
 	"\0\s[0]Sorry,\w4 something went wrong.\e"

@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.1
+You're using X. Template YAYA - v1.0.2
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -75,6 +75,16 @@ Differences devs will see:
 
 
 ---Changelog---
+
+-v1.0.2-
+
+-Fixed email checking again, I forgot to change the name of 1 variable and I'm very sorry for the trouble.
+-Fixed the aitalkinterval being set to 6 minutes instead of 5 during the first boot, and adjusted a check in the config menu as well.
+-Removed some unnecessary brackets in the config menu and some spots in etc, added in some semicolons instead.
+-Made the RSS/Headline failure dialogue tell the user what error it got even if it isn't a recognized error.
+-Added a note about OnSNTPFailure.
+-Added a check for ] characters when setting wallpapers, as a ] in the file name will cause the wallpaper command to break. X. Template will now tell you that you need to remove any ]s from the file name first.
+
 
 -v1.0.1-
 

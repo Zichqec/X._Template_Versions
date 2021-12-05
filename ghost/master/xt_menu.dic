@@ -162,14 +162,14 @@ Select.UpdateCheck //This only checks if an update is ready, it does not perform
 OnConfigMenu //I moved changing name/pronouns/birthday over to Nameteach, because they're info about the user
 {
 	//This is here in case the variables get erased. The buttons will be set to default so the user has something to click. This has happened to my users before and resetting them is a painful process. Do not remove these.
-	if username == "" {username = "User"}
-	if heshe == "" {heshe = "they"; himher = "them"; hisher = "their"; hesshes = "they're"}
-	if birthday[0] == "" {birthday[0] = "???"}
-	if hemisphere == "" {hemisphere = "Northern"}
-	if talkrate == "" {talkrate = "every 5 minutes"; aitalkinterval = 360}
-	if deleteshitai == "" {deleteshitai = "Off"}
-	if AutoUpdates[0] == "" {AutoUpdates[0] = "On"}
-	if betaTester == "" {betaTester = "Off"}
+	if username == ""; username = "User"
+	if heshe == ""; heshe = "they"; himher = "them"; hisher = "their"; hesshes = "they're"
+	if birthday[0] == ""; birthday[0] = "???"
+	if hemisphere == ""; hemisphere = "Northern"
+	if talkrate == ""; talkrate = "every 5 minutes"; aitalkinterval = 300
+	if deleteshitai == ""; deleteshitai = "Off"
+	if AutoUpdates[0] == ""; AutoUpdates[0] = "On"
+	if betaTester == ""; betaTester = "Off"
 	--
 	//the \_l[97] is telling it to put the ---Config--- at x 97, the middle of the balloon I use. Adjust as needed for your balloon, or remove it if you want
 	"\_q\b2\_l[97]---Config---\n\n/
