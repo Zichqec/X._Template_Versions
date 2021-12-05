@@ -21,3 +21,4 @@ dic, zzz_todo.dic
 
 //log, ayame.log
 msglang,english
+messagetxt,system/messagetxt/english.txt

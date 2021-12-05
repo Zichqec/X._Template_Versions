@@ -43,7 +43,7 @@ On_sakura.portalsites
 //Same deal as above with the formatting. //I'd appreciate it if you left the X. Template link in your ghost so that other people can find the source <3
 portalsites_sakura : array
 {
-	"Built on X. Template YAYA - v.1.0.8 | https://zichqec.github.io/s-the-skeleton/xtemplate.html"
+	"Built on X. Template YAYA - v.1.0.9 | https://zichqec.github.io/s-the-skeleton/xtemplate.html"
 	"Zarla's Ghost Template Walkthrough  | http://www.ashido.com/ukagaka/walkthrough.html"
 	"How to set up updates with Github   | https://zichqec.github.io/s-the-skeleton/github.html"
 	"Ukagaka Dream Team Discord          | https://ukagakadreamteam.tumblr.com/discord"
@@ -143,8 +143,8 @@ On_calendarbutton.caption //The default right click menu has this typoed as 'Cal
 
 
 //-----Don't touch these-----
-//This stuff is, I believe, written by Umeici. I added a couple things of my own, but you really don't need to worry about them.
-//What you need to know is this: ghostexlist is a list of the names of ghosts that are currently open, going by the name of the sakura. ghostexcount is the number of opened ghosts. installedlist is a list of all the ghosts the user has installed, by the name that shows in the right click menu. balloonlist is the same as installedlist, but with balloons.
+//This stuff is, I believe, written by Umeici.
+//What you need to know is this: ghostexlist is a list of the names of ghosts that are currently open, going by the name of the sakura. ghostexcount is the number of opened ghosts. balloonlist and ballooncount are the same thing but with balloons. I might've added that one but I'm not sure? I can't remember anymore
 
 //---- 소멸 지시 버튼 표시 교체 -------------------------------------------------------
 On_vanishbutton.visible
@@ -176,24 +176,6 @@ On_otherghostname
 		else; _i = -1
 	}
 	ghostexcount = ARRAYSIZE(ghostexlist)
-}
-
-OnCheckInstalledGhosts //This means you can see what ghosts the user has installed with installedlist
-{
-	installedlist = ""
-	_i = 0
-	while _i >= 0
-	{
-		_ghostname = NAMETOVALUE("reference%_i")
-		if _ghostname != ""
-		{
-			if _i > 0; installedlist += ","
-			installedlist += _ghostname[0]
-			_i++
-		}
-		else; _i = -1
-	}
-	installedcount = ARRAYSIZE(installedlist)
 }
 
 On_installedballoonname

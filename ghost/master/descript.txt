@@ -1,6 +1,6 @@
 charset,UTF-8
 
-name,X. Template YAYA - v1.0.8
+name,X. Template YAYA - v1.0.9
 type,ghost
 
 sakura.name,X. Template
@@ -8,7 +8,7 @@ kero.name,Blank
 
 craftman,Zichqec
 craftmanw,Zichqec
-craftmanurl,https://zichqec.github.io/s-the-skeleton/index.html
+craftmanurl,https://zichqec.github.io/s-the-skeleton/
 
 sstp.allowunspecifiedsend,0
 shiori,yaya.dll

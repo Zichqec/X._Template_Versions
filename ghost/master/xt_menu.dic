@@ -74,8 +74,9 @@ OnFunctionMenu
 	"\0\_q\b2\s[0]Sure, what do you want me to do?"
 	--
 	"\n\n/
+	\![*]\q[Check Email,script:\![biff\]]\n/
+	\![*]\q[Fix the Clock,script:\![execute,sntp\]]\n/
 	\![*]\q[Open Calendar,OpenCalendar]\n/
-	\![*]\q[Check Email,CheckEmail]\n/
 	\![*]\q[Open SSP Preferences,SSPPrefs]\n/
 	\![*]\q[Empty Recycle Bin,RecycleBin]\n/
 	\![*]\q[Show System Information,SystemInfo]\n/
@@ -91,11 +92,6 @@ Select.OpenCalendar
 	"\![open,calendar]\e"
 }
 
-Select.CheckEmail //The dialogue about checking emails will happen in the biff function, no need to add dialogue here
-{
-	"\![biff]\e"
-}
-
 Select.SSPPrefs
 {
 	"\0\s[0]Sure,\w4 here it is!"
@@ -105,13 +101,13 @@ Select.SSPPrefs
 
 Select.RecycleBin
 {
-	_gomicheck = FUNCTIONEX("gomi.dll", "-n") //Gets the number of items in the recycle bin
+	_gomicheck = FUNCTIONEX("saori/gomi.dll", "-n") //Gets the number of items in the recycle bin
 	
 	"Ok,\w4 I'll go empty the recycle bin!\w8\w8\s[-1]\w8\w8\w8\w8\n\n"
 	--
 	if _gomicheck > 0 //If there was something to empty
 	{
-		_gomi = FUNCTIONEX("gomi.dll", "-f") //Calling the Saori to empty the recycle bin
+		_gomi = FUNCTIONEX("saori/gomi.dll", "-f") //Calling the Saori to empty the recycle bin
 		_s = ""; if _gomicheck != 1; _s = "s" //Plural check
 		
 		"\s[0]Done!\w8\w8 %(_gomicheck) item%(_s) cleared."
@@ -126,10 +122,10 @@ Select.RecycleBin
 
 Select.SystemInfo //Partially copied from the GT template, but I tweaked a few things
 {
-	os_name = FUNCTIONEX("saori_cpuid.dll","os.name")
-	os_version = FUNCTIONEX("saori_cpuid.dll","os.version")
-	cpu_name = FUNCTIONEX("saori_cpuid.dll","cpu.name")
-	cpu_clockex = FUNCTIONEX("saori_cpuid.dll","cpu.clockex")
+	os_name = FUNCTIONEX("saori/saori_cpuid.dll","os.name")
+	os_version = FUNCTIONEX("saori/saori_cpuid.dll","os.version")
+	cpu_name = FUNCTIONEX("saori/saori_cpuid.dll","cpu.name")
+	cpu_clockex = FUNCTIONEX("saori/saori_cpuid.dll","cpu.clockex")
 	"/
 	\0\b[2]\_q/
 	OS: %(os_name) %(os_version)\n/
@@ -137,8 +133,9 @@ Select.SystemInfo //Partially copied from the GT template, but I tweaked a few t
 	Physical Memory: %(memoryavailphys) KB\n/
 	CPU: %(cpu_name) %(cpu_clockex)MHz\n/
 	Uptime: %(systemuphour):%(systemupminute):%(systemupsecond)\n\n/
-	Ukagaka: %property[baseware.version]\n\n/
-	\![*]\q[Back to functions,OnFunctionMenu]\n/
+	Ukagaka: %property[baseware.version]\n\n"
+	--
+	"\![*]\q[Back to functions,OnFunctionMenu]\n/
 	\![*]\q[Done,cancelnodialogue]\e"
 }
 
@@ -168,19 +165,21 @@ OnConfigMenu //I moved changing name/pronouns/birthday over to Nameteach, becaus
 	if deleteshitai == ""; deleteshitai = "Off"
 	if AutoUpdates[0] == ""; AutoUpdates[0] = "On"
 	if betaTester == ""; betaTester = "Off"
+	if HourNotifs == ""; HourNotifs = "On"
 	--
-	//the \_l[97] is telling it to put the ---Config--- at x 97, the middle of the balloon I use. Adjust as needed for your balloon, or remove it if you want
 	if reference0 == "cancelled name change"; "\![close,inputbox,OnNameTeach]" //If the user cancels changing their name, it will send them back to the config menu, and run this extra bit of code to close the inputbox. Same deal with the others below, but for the birthday
 	elseif reference0 == "cancelled birthday month"; "\![close,inputbox,OnUserBornMonth]"
 	elseif reference0 == "cancelled birthday day"; "\![close,inputbox,OnUserBornDay]"
 	if "cancelled birthday" _in_ reference0; {birthday = oldbirthday; ERASEVAR("oldbirthday")} //resets the birthday to the old values, erases the temp variable
 	--
+	//the \_l[97] is telling it to put the ---Config--- at x 97, the middle of the balloon I use. Adjust as needed for your balloon, or remove it if you want
 	"\_q\b2\_l[97]---Config---\n\n/
 	Your name: \q[%(username),OnChangeName]\n/
 	Your pronouns: \q[%(heshe)/%(himher)/%(hisher),OnChangePronoun]\n/
 	Your birthday: \q[%(birthday[0]),OnChangeBirthday]\n/
 	Your hemisphere: \q[%(hemisphere),ToggleHemisphere]\n\n/
-	Talk rate: \q[%(talkrate),ChangeTalk]\n\n/
+	Talk rate: \q[%(talkrate),ChangeTalk]\n/
+	Hour Notifications: \q[%(HourNotifs),ToggleHourNotifs]\n\n/
 	\![*]Enable Auto Update checks?\n(Currently: \q[%(AutoUpdates[0]),ToggleUpdate])\n/
 	\![*]Opt in to beta updates? (Currently: \q[%(betaTester),ToggleBeta])\n\n/
 	\![*]Enable Uninstall? (Currently: \q[%(deleteshitai),ToggleUninstall])\n\n/
@@ -189,14 +188,8 @@ OnConfigMenu //I moved changing name/pronouns/birthday over to Nameteach, becaus
 
 Select.ToggleHemisphere
 {
-	if hemisphere != "Northern"
-	{
-		hemisphere = "Northern"
-	}
-	else
-	{
-		hemisphere = "Southern"
-	}
+	if hemisphere != "Northern"; hemisphere = "Northern"
+	else; hemisphere = "Southern"
 	--
 	OnConfigMenu
 }
@@ -210,6 +203,14 @@ Select.ChangeTalk
 	\![*]\q[Every 5 minutes,OnTalkRate,FiveMin]\n/
 	\![*]\q[Don't speak,OnTalkRate,None]\n\n/
 	\![*]\q[Nevermind,OnConfigMenu]\e"
+}
+
+Select.ToggleHourNotifs
+{
+	if HourNotifs != "On"; HourNotifs = "On"
+	else; HourNotifs = "Off"
+	--
+	OnConfigMenu
 }
 
 OnTalkRate
@@ -255,14 +256,8 @@ OnTalkRate
 
 Select.ToggleUpdate
 {
-	if AutoUpdates[0] != "On"
-	{
-		AutoUpdates[0] = "On"
-	}
-	else
-	{
-		AutoUpdates[0] = "Off"
-	}
+	if AutoUpdates[0] != "On"; AutoUpdates[0] = "On"
+	else; AutoUpdates[0] = "Off"
 	--
 	OnConfigMenu
 }
@@ -292,14 +287,8 @@ Select.OptInBeta
 
 Select.ToggleUninstall
 {
-	if deleteshitai != "On"
-	{
-		deleteshitai = "On"
-	}
-	else
-	{
-		deleteshitai = "Off"
-	}
+	if deleteshitai != "On"; deleteshitai = "On"
+	else; deleteshitai = "Off"
 	--
 	OnConfigMenu
 }

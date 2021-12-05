@@ -1,15 +1,15 @@
-This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
+This template is originally based on Zarla's GT Template, though I have made numerous changes since then. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.8
-You can use the 'Check Template Version' button to check if there's a new version!
+You're using X. Template YAYA - v1.0.9
+You can use the 'Check Template Version' button to check if there's a new version! Or you can check on my website here: https://zichqec.github.io/s-the-skeleton/xtemplate
 
 If you find any bugs in this template, please tell me so I can correct them!
 
-Feel free to contact me on Discord, or on any of my social medias. My website is here for more info (my socials are linked at the bottom) https://zichqec.github.io/s-the-skeleton/index.html
+Feel free to contact me on Discord, or on any of my social medias. My website is here for more info (my socials are linked at the bottom) https://zichqec.github.io/s-the-skeleton/
 
 This ghost includes a to-do list of the basic stuff every ghost needs. If you want to use it, type %(debug = 1) into script input to turn on debug mode. That will give you a menu option for the test variable and the todo list. You can turn it off again with %(debug = 0). When you're done with it you can delete the zzz_todo.dic file from the master folder, just make sure you remove it in yaya.txt too.
 
-If you need a place to host network updates, I've set up a tutorial on how you can do that with Github! https://zichqec.github.io/s-the-skeleton/github.html
+If you need a place to host network updates, I've set up a tutorial on how you can do that with Github! https://zichqec.github.io/s-the-skeleton/github
 
 
 I've included 3 Saoris with X. Template. Saoris are basically plugins you can add to your ghost with unique functions. The ones I've included are:
@@ -23,11 +23,11 @@ Here are the resources I most recommend when making ghosts, I use these almost d
 
 http://umeici.onjn.jp/files/tama_v1p1.zip This is Tama, a debugging tool for AYA and YAYA. All you need to do is reload your ghost while Tama is running, and it will show you all kinds of information. If your ghost has errors upon startup, Tama can help you find them.
 
-https://translate.google.com/translate?hl=&sl=ja&tl=en&u=http%3A%2F%2Fssp.shillest.net%2Fukadoc%2Fmanual%2Flist_shiori_event.html This is a list of Shiori events. It's run through google translate since it's in Japanese originally.
+http://ssp.shillest.net/ukadoc/manual/list_shiori_event.html This is a list of Shiori events and what information they give you.
 
-https://translate.google.com/translate?hl=&sl=ja&tl=en&u=http%3A%2F%2Fssp.shillest.net%2Fukadoc%2Fmanual%2Flist_sakura_script.html This is a list of sakurascript tags and what they do. It's run through google translate since it's in Japanese originally.
+http://ssp.shillest.net/ukadoc/manual/list_sakura_script.html This is a list of sakurascript tags and what they do.
 
-https://translate.google.com/translate?hl=&sl=ja&tl=en&u=http%3A%2F%2Femily.shillest.net%2Fayaya%2Findex.php&sandbox=1 This is the YAYA wiki, where you can find more information about programming with YAYA. I'd come here if you're looking to do anything complicated. It's run through google translate since it's in Japanese originally.
+http://emily.shillest.net/ayaya/index.php? This is the YAYA wiki, where you can find more information about programming with YAYA. I'd come here if you're looking to do anything complicated.
 
 https://drive.google.com/file/d/16JYyweRFNPhq-BzLQhPu5EPwG557hFto/view?usp=sharing This is a download for Coordin, a little program that can help you make simple collisions. Just drag and drop your surface onto it, then click and drag an area, and it'll copy the coordinates to your clipboard for you to paste right into surfaces.txt!
 
@@ -36,44 +36,38 @@ Having feedback from other people is incredibly helpful, and we're always glad t
 
 
 
-----------Differences from the GT Template----------
+----------Notable Features----------
 
-Differences users will see:
+-A lot of small QoL tweaks, like offering to open a new ghost you've just installed, displaying email headers, offering a changelog after updating, and much more.
+-Automatic update checks are built in, and will notify the user if an update is available.
+-By default, double clicking on the face will pop up an 'are you sure' box if you've never hit the ghost before, to ensure the user doesn't accidentally punch the ghost.
+-Mostly consistent code formatting, minimal comments unless it's a new feature that I wrote. Optimized for ghosts that have multiple modes, so that they're easier to add in.
+-A kero is not present unless you choose to add them in.
+-It can check for template updates, so that when you start a new ghost you can always be sure you have the latest version.
 
--When installing a ghost with X. Template, you'll be offered the options to call or change to them in dialogue.
--When checking emails, the ghost will offer to display the headers.
--Automatic update checks are built in, and will notify the user if a new update is available.
--The ghost will track when they were last closed, and comment if it's been a long time when you open them.
--The ghost will say 'happy new year' as the year rolls over.
--When changing shells, the ghost will stay in the same position on screen.
--Right clicking the ghost will not cause their personal menu to open.
--Changing name/birthday/pronouns will lead back to the config menu.
--Offers a changelog after updating!
--Hitting the ghost for the first time will pop up a confirmation dialogue, to prevent accidental punches.
--You can type in the name of the month you were born instead of just the number.
--Petting ghosts repeatedly without taking your mouse off of them will have special dialogue.
--Config menu has toggle buttons, and also has options for hemisphere, and to opt in to beta updates.
--Always has dialogue when done installing something, even if it's something niche like a calendar skin.
--There is no title system, since I never include it in my ghosts.
-
-
-Differences devs will see:
-
--Very few tutorial comments, all code is formatted consistently and has been cleaned up where possible.
--A Kero is not present unless you add them in.
--Uses the new seriko definition.
--The test variable will only show up if the variable 'debug' is set to 1, hiding it from the user.
--When 'debug' is set to 1, you can use the test variable by pressing V when the ghost is the active window.
--Sakurascript commands, such as those to open the calendar or set a wallpaper, have been separated from dialogue with --s. This makes it a bit easier to create ghosts with multiple modes, as you won't need to copy the commands into each line of dialogue.
--All menu related envelopes are optimized and have been moved to word.dic.
--Anchor.dic has been updated to allow https links as well as http.
--Removed some functions from etc.dic that were non-functional, and some other redundant functions.
--Much fewer global variables, some variables have been changed to arrays, notably the birthday variables (bithday[0] to see the written birthday and birthday[1] to see it written DD/MM) and the passhour/min/sec variables (are now runtime[0], [1], and [2]).
--Commu.dic should be ready to use, and offers a method of doing commu dialogue that is much more readable.
--You can have the template ghost check if there is a new version of the template.
 
 
 ---Changelog---
+
+-v1.0.9-
+
+-Updated to YAYA tc559-1.
+-Added emergency mode files; if the ghost fails to load it will now direct you to the error log, where the current error should display. If there are too many errors, it won't be able to display them all! You can use Tama to see them all in that case.
+-Overhauled the Todo list. The code is much cleaner now!
+-Changed randomtalk to use Pools by default, instead of normal if checks.
+-Updated wallpaper function; it can now accept files with brackets in the name, and if you're on windows 7 or 10 it will offer you the 'Fill' and 'Fit' options.
+-Added SNTP option to the functions menu.
+-Added an option in the config menu to turn off top of the hour notifications.
+-Changed name teaching to use reference.raw, so that auto type convert doesn't mess with the user's input. Also made it cut out spaces on the left and right.
+-Changed email headers to use reference.raw, so that getting the headers no longer requires a loop! It should be much better now.
+-Added OnUserInputCancel in xt_etc.dic, to prevent the user from accidentally closing the input box in OnFirstBoot and locking themselves out of the ghost. Updated that whole system in general to work better.
+-Moved Capitalize function to xt_anchor.dic, to make it more clear how it's meant to be used.
+-Removed some of the extra documentation files; a lot of the concepts covered in them are now on my website, or eventually will be.
+-Moved SAORIs and SAORI readmes into a saori folder, to keep things clean.
+-Removed an unneccessary function in xt_string.dic, which would create a list of installed ghosts. Such a list already exists as a part of the normal system files.
+-Fixed the pronoun variables not being initialized in OnFirstBoot.
+-Fixed a few typos and missing tags.
+
 
 -v1.0.8-
 

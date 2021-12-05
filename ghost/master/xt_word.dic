@@ -7,8 +7,6 @@ exampleenvelope
 	"result 3"
 }
 
-
-
 usersfolder
 {
 	"start bar"
@@ -44,16 +42,7 @@ filetype
 	".psd"
 	".mp4"
 	".ttf"
-}
-
-//If you write all your envelopes as lowercase, you can send them through this function whenever you need the first letter capitalized! It'd look something like this: "%(Capitalize(exampleenvelope))"
-Capitalize
-{
-	_word = _argv[0] //Sets _word to the word the user sent
-	_buffer = SUBSTR(_word,0,1) //Storing the first character in _buffer
-	_word = ERASE(_word,0,1) //Erasing the first character from _word
-	_word = INSERT(_word,0,TOUPPER(_buffer)) //Making the character in _buffer uppercase and inserting it back into _word
-	_word //Returns the capitalized word
+	".rar"
 }
 
 //-----Menu stuff-----

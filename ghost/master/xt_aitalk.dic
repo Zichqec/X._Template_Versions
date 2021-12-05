@@ -1,31 +1,24 @@
 AiTalk
 {
-	if RAND(100) < communicateratio
- 	{
- 		StartCommunicate
-	}
- 	else
+	if STRLEN(offscreen) == 0
 	{
- 		if STRLEN(offscreen) == 0
+		if CHAIN.IDName == ""
 		{
-			if CHAIN.IDName == ""
-			{
- 				lastTalk = RandomTalk
-			}
-			else
-			{
-				lastTalk = ChainTalk
-			}
-			lastTalk
+			lastTalk = RandomTalk
 		}
- 		else
-		{ 
-			OffscreenTalk(ANY(offscreen))
- 		}
+		else
+		{
+			lastTalk = ChainTalk
+		}
+		lastTalk
+	}
+	else
+	{ 
+		OffscreenTalk(ANY(offscreen))
 	}
 }
 
-//nonoverlap means that all possible dialogue candidates will be chosen at least once before any dialogues are repeated. Note that anything within brackets counts as a single dialogue candidate! This causes the probability issues mentioned in the YAYA tips file. I included an example of a dialogue pool here, if you set those up they'll work properly with nonoverlap. Also note, though: if you set up something like different modes, you should give each one it's own function for dialogue! If you have all your dialogues in one big if, nonoverlap won't have any effect.
+//nonoverlap means that all possible dialogue candidates will be chosen at least once before any dialogues are repeated. Note that sets of brackets (with or without an if statement) count as a single dialogue candidate! That's why I've used the Pool function instead, it'll output everything in the if statement and the probabilities and nonoverlap will be handled properly.
 RandomTalk : nonoverlap
 {
 	"\0\s[0]All your random dialogue goes here!\e"
@@ -34,160 +27,50 @@ RandomTalk : nonoverlap
 	"\0\s[0]Tomorrow will be %(nowday('next'))!\e"
 	"\0\s[0]In two days it'll be %(nowday(weekday + 2))!\e"
 	"\0\s[0]Yesterday was %(nowday('last'))!\e"
-	"\0\s[0]Don't forget you can use the Hook Current Time API in the dev pallete to artificially change the time!\w8\w8 It's great for testing time and date based dialogues.\e"
+	"\0\s[0]Don't forget you can use the Hook Current Time API in the dev palette to artificially change the time!\w8\w8 It's great for testing time and date based dialogues.\e"
 	
 	//This will call the example pool I've set up below. The second argument, %(username != ''), means that this pool will be available so long as the username is not blank. You can put any if check in there! For example: %(month == 2) would make a pool only available in February, while %(nowmode == 'Ultimate Form') would make a pool only available while the nowmode variable is set to "Ultimate Form".
 	parallel Pool("Pool_Example","%(username != '')")
 	
-	//User Environment Ifs - Use as many of these as you like for dynamic dialogue (Note, if you'd like to make these Pools instead, I've included a file in the 000_Dev_Stuff folder with blank pools.)
+	//User Environment Ifs
 	//---Timeslots---
-	if timeslot == "earlymorning" //5am - 8am
-	{
-		if runtime[0] >= 3 //Been open for 3 hours or more, so the user has probably been up all night
-		{
-			
-		}
-		else //Probably just got up
-		{
-			
-		}
-	}
-	if timeslot == "morning" //9am - 11am
-	{
-		
-	}
-	if timeslot == "lunch" //12pm - 2pm
-	{
-		
-	}
-	if timeslot == "afternoon" //3pm - 5pm
-	{
-		
-	}
-	if timeslot == "evening" //6pm - 8pm
-	{
-		
-	}
-	if timeslot == "latenight" //9pm - 12am
-	{
-		
-	}
-	if timeslot == "midnight" //1am - 4am
-	{
-		
-	}
-	
-	//---Days of the week---
-	if wd == "Sun"
-	{
-		
-	}
-	if wd == "Mon"
-	{
-		
-	}
-	if wd == "Tue"
-	{
-		
-	}
-	if wd == "Wed"
-	{
-		
-	}
-	if wd == "Thu"
-	{
-		
-	}
-	if wd == "Fri"
-	{
-		
-	}
-	if wd == "Sat"
-	{
-		
-	}
-	
-	//---Days in the month---
-	if day < 5 //4th and before, start of the month
-	{
-		
-	}
-	if day > 13 && day < 17 //14th-16th, halfway through
-	{
-		
-	}
-	if day > 26 //27th and after, end of the month
-	{
-		
-	}
-	
-	//---Months---
-	if month == 1
-	{
-		
-	}
-	if month == 2
-	{
-		
-	}
-	if month == 3 //Spring start Northern, Autumn start Southern
-	{
-		
-	}
-	if month == 4
-	{
-		
-	}
-	if month == 5
-	{
-		
-	}
-	if month == 6 //Summer start Northern, Winter start Southern
-	{
-		
-	}
-	if month == 7
-	{
-		
-	}
-	if month == 8
-	{
-		
-	}
-	if month == 9 //Autumn start Northern, Spring start Southern
-	{
-		
-	}
-	if month == 10
-	{
-		
-	}
-	if month == 11
-	{
-		
-	}
-	if month == 12 //Winter start Northern, Summer start Southern
-	{
-		
-	}
-	
-	//---Seasons---
-	if season == "Spring"
-	{
-		
-	}
-	if season == "Summer"
-	{
-		
-	}
-	if season == "Autumn"
-	{
-		
-	}
-	if season == "Winter"
-	{
-		
-	}
+	parallel Pool("Pool_timeslot_earlymorning","%(timeslot == 'earlymorning')")
+	parallel Pool("Pool_timeslot_morning","%(timeslot == 'morning')")
+	parallel Pool("Pool_timeslot_lunch","%(timeslot == 'lunch')")
+	parallel Pool("Pool_timeslot_afternoon","%(timeslot == 'afternoon')")
+	parallel Pool("Pool_timeslot_evening","%(timeslot == 'evening')")
+	parallel Pool("Pool_timeslot_latenight","%(timeslot == 'latenight')")
+	parallel Pool("Pool_timeslot_midnight","%(timeslot == 'midnight')")
+
+	parallel Pool("Pool_wd_Sun","%(wd == 'Sun')")
+	parallel Pool("Pool_wd_Mon","%(wd == 'Mon')")
+	parallel Pool("Pool_wd_Tue","%(wd == 'Tue')")
+	parallel Pool("Pool_wd_Wed","%(wd == 'Wed')")
+	parallel Pool("Pool_wd_Thu","%(wd == 'Thu')")
+	parallel Pool("Pool_wd_Fri","%(wd == 'Fri')")
+	parallel Pool("Pool_wd_Sat","%(wd == 'Sat')")
+
+	parallel Pool("Pool_startmonth","%(day < 5)")
+	parallel Pool("Pool_midmonth","%(day > 13 && day < 17)")
+	parallel Pool("Pool_endmonth","%(day > 26)")
+
+	parallel Pool("Pool_month_Jan","%(month == 1)")
+	parallel Pool("Pool_month_Feb","%(month == 2)")
+	parallel Pool("Pool_month_Mar","%(month == 3)")
+	parallel Pool("Pool_month_Apr","%(month == 4)")
+	parallel Pool("Pool_month_May","%(month == 5)")
+	parallel Pool("Pool_month_Jun","%(month == 6)")
+	parallel Pool("Pool_month_Jul","%(month == 7)")
+	parallel Pool("Pool_month_Aug","%(month == 8)")
+	parallel Pool("Pool_month_Sep","%(month == 9)")
+	parallel Pool("Pool_month_Oct","%(month == 10)")
+	parallel Pool("Pool_month_Nov","%(month == 11)")
+	parallel Pool("Pool_month_Dec","%(month == 12)")
+
+	parallel Pool("Pool_season_Spring","%(season == 'Spring')")
+	parallel Pool("Pool_season_Summer","%(season == 'Summer')")
+	parallel Pool("Pool_season_Autumn","%(season == 'Autumn')")
+	parallel Pool("Pool_season_Winter","%(season == 'Winter')")
 	
 	//---Noticing and commenting on other ghosts---
 	//Remember that you have to check for the sakura name of another ghost, not the ghost name.
@@ -210,6 +93,194 @@ Pool_Example : array //username != ""
 	"\0\s[0]This is the fifth dialogue from the pool!\w8\w8 Pools can be placed anywhere,\w4 not just RandomTalk!\e"
 }
 
+//---Timeslots---
+Pool_timeslot_earlymorning : array //timeslot == 'earlymorning' (5am - 8am)
+{
+	
+	//These are sub-pools, I've put them just below this one. Any dialogues you put in them will also get the same probabilities as all other dialogue.
+	parallel Pool("Pool_timeslot_earlymorning_uplate","%(runtime[0] >= 3)") //Been open for 3 hours or more, so the user has probably been up all night
+	parallel Pool("Pool_timeslot_earlymorning_upearly","%(runtime[0] < 3)") //Probably just got up
+}
+
+Pool_timeslot_earlymorning_uplate : array //runtime[0] >= 3 (Been open for 3 hours or more, so the user has probably been up all night)
+{
+	
+}
+
+Pool_timeslot_earlymorning_upearly : array //runtime[0] < 3 (Probably just got up)
+{
+	
+}
+
+Pool_timeslot_morning : array //timeslot == 'morning' (9am - 11am)
+{
+	
+}
+
+Pool_timeslot_lunch : array //timeslot == 'lunch' (12pm - 2pm)
+{
+	
+}
+
+Pool_timeslot_afternoon : array //timeslot == 'afternoon' (3pm - 5pm)
+{
+	
+}
+
+Pool_timeslot_evening : array //timeslot == 'evening' (6pm - 8pm)
+{
+	
+}
+
+Pool_timeslot_latenight : array //timeslot == 'latenight' (9pm - 12am)
+{
+	
+}
+
+Pool_timeslot_midnight : array //timeslot == 'midnight' (1am - 4am)
+{
+	
+}
+
+
+//---Days of the week---
+
+Pool_wd_Sun : array //wd == "Sun"
+{
+	
+}
+
+Pool_wd_Mon : array //wd == "Mon"
+{
+	
+}
+
+Pool_wd_Tue : array //wd == "Tue"
+{
+	
+}
+
+Pool_wd_Wed : array //wd == "Wed"
+{
+	
+}
+
+Pool_wd_Thu : array //wd == "Thu"
+{
+	
+}
+
+Pool_wd_Fri : array //wd == "Fri"
+{
+	
+}
+
+Pool_wd_Sat : array //wd == "Sat"
+{
+	
+}
+
+
+//---Days in the month---
+Pool_startmonth : array //day < 5 (start of the month)
+{
+	
+}
+
+Pool_midmonth : array //day > 13 && day < 17 (middle of the month)
+{
+	
+}
+
+Pool_endmonth : array //day > 26 (end of the month)
+{
+	
+}
+
+
+//---Months--- (Northern hemisphere/Southern hemisphere)
+Pool_month_Jan : array //month == 1
+{
+	
+}
+
+Pool_month_Feb : array //month == 2
+{
+	
+}
+
+Pool_month_Mar : array //month == 3 (Spring start/Autumn start)
+{
+	
+}
+
+Pool_month_Apr : array //month == 4
+{
+	
+}
+
+Pool_month_May : array //month == 5
+{
+	
+}
+
+Pool_month_Jun : array //month == 6 (Summer start/Winter start)
+{
+	
+}
+
+Pool_month_Jul : array //month == 7
+{
+	
+}
+
+Pool_month_Aug : array //month == 8
+{
+	
+}
+
+Pool_month_Sep : array //month == 9 (Autumn start/Spring start)
+{
+	
+}
+
+Pool_month_Oct : array //month == 10
+{
+	
+}
+
+Pool_month_Nov : array //month == 11
+{
+	
+}
+
+Pool_month_Dec : array //month == 12 (Winter start/Summer start)
+{
+	
+}
+
+
+//---Seasons---
+Pool_season_Spring : array //season == 'Spring'
+{
+	
+}
+
+Pool_season_Summer : array //season == 'Summer'
+{
+	
+}
+
+Pool_season_Autumn : array //season == 'Autumn'
+{
+	
+}
+
+Pool_season_Winter : array //season == 'Winter'
+{
+	
+}
+
 //-----------Chains-----------
 
 //Example of a chain. The dialogues will play in order each time the ghost talks until it reaches chain=end.
@@ -226,11 +297,12 @@ achain
 
 OnMinuteChange
 {
-	if minute == 0 //Top of the hour notifications
+	if hour == 0 && minute == 0; AutoUpdates[1] = 0 //Resetting auto updates
+	
+	if minute == 0 && HourNotifs == "On" //Top of the hour notifications
 	{
 		if hour == 0
 		{
-			AutoUpdates[1] = 0
 			if day == 1 && month == 1
 			{
 				"\0\s[0]Happy new year!\e"

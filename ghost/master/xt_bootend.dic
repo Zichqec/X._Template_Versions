@@ -20,7 +20,7 @@ OnFirstBoot //Dialogue when you first open the ghost
 OnBoot //Normal booting
 {
 	BootVars //This sets variables you want to be set on a normal boot, like resetting the runtime. Again, make sure you set these up at the bottom.
-	_timesince = FUNCTIONEX("time_check.dll","how_many_days",lastclosed[0],lastclosed[1],lastclosed[2],0,0,0)
+	_timesince = FUNCTIONEX("saori/time_check.dll","how_many_days",lastclosed[0],lastclosed[1],lastclosed[2],0,0,0)
 	_timesince *= -1 //Multiply it by -1 to get rid of the negative sign, or to add one if the user traveled back in time.
 	"\1\s[-1]" //This line ensures the Kero character does not appear. Feel free to remove if you want a Kero.
 	--
@@ -176,7 +176,7 @@ OnGhostChanged //After switching.
 	else
 	{
 		BootVars
-		_timesince = FUNCTIONEX("time_check.dll","how_many_days",lastclosed[0],lastclosed[1],lastclosed[2],0,0,0)
+		_timesince = FUNCTIONEX("saori/time_check.dll","how_many_days",lastclosed[0],lastclosed[1],lastclosed[2],0,0,0)
 		_timesince *= -1
 		
 		if _timesince >= 90 //If it's been 3 months or more since you opened them, it'll do the 'wow it's been a long time' dialogue instead of switching dialogue. You can change this if you like!
@@ -216,16 +216,13 @@ OnShellChanged //After the shell has changed
 	}
 	elseif reference0 == "Default Shell"
 	{
-		nowshell = "Default Shell"
-		
 		"\0\s[0]Back to the default!\e"
 	}
 	else
 	{
-		nowshell = "Unknown Shell"
-		
 		"\0\s[0]Some other shell!\e"
 	}
+	nowshell = reference0 //Sets nowshell to the new value
 }
 
 OnGetCoords //This gets the x and y coordinates when changing shells
@@ -263,6 +260,10 @@ FirstBootVars
 	totalhours = 0		//Total number of hours the ghost has been run
 	nowshell = "Default Shell" //Make sure to change this if you change your shell name
 	username = "User"
+	heshe = "they"
+	himher = "them"
+	hisher = "their"
+	hesshes = "they're"
 	birthday[0] = "???"	//The user's birthday, written out with words
 	birthday[1] = "???"	//The user's birthday, written in DD/MM format
 	talkrate = "every 5 minutes"

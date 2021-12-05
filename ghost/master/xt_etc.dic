@@ -11,25 +11,23 @@ OnFileDrop2
 	{
 		when ".jpg", ".jpeg", ".bmp", ".png" //These are pictures that they can set to wallpapers. Png works for me, but if it doesn't work for you let us know please, I'm curious about this.
 		{
-			if "]" _in_ reference0 //If the file name contains a character that would break the wallpaper command
+			_file = REPLACE(reference0,"]","\]")
+			
+			"\0\s[0]\b[2]This is %(_filename)%(_fileext)!\w8\w8 I can set it as your wallpaper,\w4 how do you want it?\n\n"
+			--
+			"\![*]\q[Centered,OnWallpaper,%(_file),center]\n/
+			\![*]\q[Tiled,OnWallpaper,%(_file),tile]\n/
+			\![*]\q[Stretched,OnWallpaper,%(_file),stretch]"
+			--
+			if "Windows 7" || "Windows 10" _in_ NotifyOS //These are the 'fit' and 'fill' options available from win 7 on. NotifyOS is set just below, to check what OS you're on
 			{
-				"\0\s[0]This is %(_filename)%(_fileext)!\w8\w8 I could set it as your wallpaper,\w4 but you need to remove any ] characters from the title first,\w4 sorry!\e"
+				"\n\![*]\q[Fill,OnWallpaper,%(_file),stretch-x]/
+				\n\![*]\q[Fit,OnWallpaper,%(_file),stretch-y]"
 			}
-			else
-			{
-				"\0\s[0]This is %(_filename)%(_fileext)!\w8\w8 I can set it as your wallpaper,\w4 how do you want it?\n\n"
-				--
-				"\![*]\q[Centered,OnWallpaper,Center,%(reference0)]\n/
-				\![*]\q[Tiled,OnWallpaper,Tile,%(reference0)]\n/
-				\![*]\q[Stretched,OnWallpaper,Stretch,%(reference0)]"
-				--
-				if "Windows 10" _in_ NotifyOS //NotifyOS is set just below. The Span option is only available if you're on Win 10, so this means it won't display unless you're on Win 10
-				{
-					"\n\![*]\q[Spanned,OnWallpaper,Span,%(reference0)]"
-				}
-				--
-				"\n\n\![*]\q[No thanks,WallpaperCancel]\e"
-			}
+			--
+			if "Windows 10" _in_ NotifyOS; "\n\![*]\q[Spanned,OnWallpaper,%(_file),span]" //Same as above, but for the span option since that's win10 and above
+			--
+			"\n\n\![*]\q[No thanks,WallpaperCancel]\e"
 		}
 		when ".mid", ".wav", ".mp3", ".wma", ".au", ".ogg", ".flac"
 		{
@@ -57,32 +55,15 @@ OnNotifyOSInfo
 
 OnWallpaper
 {
-	if reference0 == "Center"
-	{
-		"\![set,wallpaper,%(reference1),center]"
-		--
-		"\0\s[0]It's centered!\e"
-	}
-	elseif reference0 == "Tile"
-	{
-		"\![set,wallpaper,%(reference1),tile]"
-		--
-		"\0\s[0]It's tiled!\e"
-	}
-	elseif reference0 == "Stretch"
-	{
-		"\![set,wallpaper,%(reference1),stretch]"
-		--
-		"\0\s[0]It's stretched!\e"
-	}
-	elseif reference0 == "Span"
-	{
-		"\![set,wallpaper,%(reference1),span]"
-		--
-		"\0\s[0]It's spanned!\e"
-	}
-	//--
-	//If you want you can add a single line of dialogue for setting wallpapers down here instead of unique lines for each type. Just leave the commands that actually set the wallpaper in place.
+	"\0\![set,wallpaper,%(REPLACE(reference0,']','\]')),%(reference1)]"
+	--
+	//You can remove this if check if you want a single dialogue for changing the wallpaper
+	if reference1 == "center"; "\s[0]It's centered!\e"
+	elseif reference1 == "tile"; "\0\s[0]It's tiled!\e"
+	elseif reference1 == "stretch"; "\0\s[0]It's stretched!\e"
+	elseif reference1 == "stretch-x"; "\0\s[0]It's filled!\e"
+	elseif reference1 == "stretch-y"; "\0\s[0]It's fitted!\e"
+	elseif reference1 == "span"; "\0\s[0]It's spanned!\e"
 }
 
 Select.WallpaperCancel
@@ -266,25 +247,10 @@ OnBIFFComplete
 	elseif reference0 < 100 //less than 100 new emails
 	{
 		
-		if reference7 != "" //Reference7 is the headers. If it's empty(if the user has headers off), no need to run this loop. I STRONGLY ENCOURAGE YOU not to run this loop for more than 100 headers, as it may cause severe amounts of lag/freezing. Also, that's a lot to scroll through.
+		headers = ""
+		if reference7 != "" && reference0 < 100 //AHAHAHA I FINALLY FIGURED OUT HOW TO GET AN ARRAY OF THE HEADERS WITH AUTO TYPE CONVERT ON. They're normally in reference7, but since auto type convert changes the C_BYTE1 characters to commas, any headers with commas screw things up badly. But you can get the nonconverted values! Still need a loop to add menu markers and stuff to the display, but that can happen in the other function...
 		{
-			_buff = reference7
-			_len = ARRAYSIZE(_buff)
-			headers = ""
-			_i = 0
-			while _i < _len //Runs through all the elements of the array
-			{
-				if "<" _in_ _buff[_i] && "@" _in_ _buff[_i] && "." _in_ _buff[_i] && ">" _in_ _buff[_i] //If it has an email address
-				{
-					if _i != 0; headers += "\n\n[half]" //Add line breaks
-					headers += "\![*]%(_buff[_i])" //Add a menu option and the header text
-				}
-				else //If it does not have an email address, it must be a particle
-				{
-					headers += ",%(_buff[_i])" //Add the text
-				}	
-				_i++
-			}
+			headers = SPLIT(reference.raw[7],C_BYTE1)
 		}
 		--
 		_s = ""; if reference0 != 1; _s = "s" //Plural check, adds an s if the number of emails is not 1
@@ -294,23 +260,33 @@ OnBIFFComplete
 		{
 			"\w8\w8 Do you want to see the header%(_s)?"
 			--
-			"\n\n\![*]\q[Yes,OnSeeHeaders]\n\*\![*]\q[No,cancelnodialogue]"
+			"\n\n\![*]\q[Yes,OnSeeHeaders,yes]\n\*\![*]\q[No,OnSeeHeaders,no]"
 		}
-		--
-		"\e"
 	}
 	else //more than 100 new emails
 	{
 		"\0\s[0]You've got %(reference0) new emails."
 	}
+	--
+	"\e"
 }
 
 //Displaying the headers. No need to touch this other than changing the surface, or if you want to make the buttons different or something. Reference0 is the list of headers
 OnSeeHeaders
 {
-	"\0\s[0]\b2\_q%(headers)\*\n\n\![*]\q[Done,cancelnodialogue]"
+	if reference0 == "yes" //It's set up this way so that the headers variable will still be erased if the user says no. If they say no, it'll just erase the headers and say nothing
+	{
+		_display = ""
+		foreach headers; _header
+		{
+			_display += "\![*]"
+			_display += _header
+			_display += "\n\n"
+		}
+		"\0\s[0]\b2\_q%(_display)\*\n\n\![*]\q[Done,cancelnodialogue]"
+	}
 	--
-	headers = NULL //This erases the variable so you're not storing all those headers and bloating your save. Also, privacy reasons.
+	ERASEVAR("headers") //This erases the variable so you're not storing all those headers and bloating your save. Also, privacy reasons.
 }
 
 //Email checking failed
@@ -595,9 +571,9 @@ OnSNTPCompare
 	}
  	else //if your clock doesn't match
 	{
-		"\0\s[0]Your clock doesn't match.\w8\nShould I fix it?"
+		"\0\s[0]Your clock doesn't match.\w8\w8 Should I fix it?"
 		--
-		"\n\n[half]/
+		"\n\n/
 		\![*]\q[Fix it,OnSNTPExecute]\n/
 		\![*]\q[Leave it alone,OnSNTPCancel]\e" 
 	}
@@ -663,11 +639,11 @@ OnShellScaling
 	}
 	elseif reference0 > reference1
 	{
-		"Getting bigger!\e"
+		"\0\s[0]Getting bigger!\e"
 	}
 	elseif reference0 < reference1
 	{
-		"Getting smaller!\e"
+		"\0\s[0]Getting smaller!\e"
 	}
 }
 
@@ -676,36 +652,16 @@ OnKeyPress
 {
 	case reference0
 	{
-		when "t"
-		{
-			OnAiTalk
-		}
-		when "r"
-		{
-			OnLastTalk
-		}
-		when "y" //Starts a commu dialogue with a random ghost
-		{
-			"\![raise,OnStartTalking]"
-		}
-		when "f1"
-		{
-			"\![open,readme]"
-		}
-		when "v"
-		{
-			if debug == 1
-			{
-				OnTestVar
-			}
-		}
-		when "c"
-		{
-			if debug == 1
-			{
-				OnCommuPingMenu
-			}
-		}
+		when "t"; OnAiTalk
+		when "r"; OnLastTalk
+		when "y"; "\![raise,OnStartTalking]" //Starts a commu dialogue with a random ghost
+		when "f1"; "\![open,readme]"
+		when "f5"; {if debug; "\![reload,ghost]"}
+		when "f6"; {if debug; "\![reload,shiori]"}
+		when "f7"; {if debug; "\![reload,shell]"}
+		when "f8"; {if debug; "\![reload,balloon]"}
+		when "v"; {if debug; OnTestVar}
+		when "c"; {if debug; OnCommuPingMenu}
 	}
 }
 

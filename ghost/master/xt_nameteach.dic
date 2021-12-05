@@ -11,11 +11,12 @@ OnNameTeach
 {
 	_firstboot = 0; if "VeryFirstBoot" _in_ SHIORI3FW.LastTalk; _firstboot = 1 //If this is during first boot, set a temp flag
 	
-	_tempname = reference0 //this stores the original name in _tempname
-	reference0 = TOLOWER(reference0) //changes it to lowercase
-	reference0 = REPLACE(reference0," ","") //removes spaces
-	reference0 = REPLACE(reference0,".","") //removes periods
-	reference0 = REPLACE(reference0,"-","") //removes dashes
+	_tempname = CUTSPACE(reference.raw[0]) //this stores the original name in _tempname
+	_name = reference.raw[0] //putting the raw name into _name to do some tests on it
+	_name = TOLOWER(_name) //changes it to lowercase
+	_name = REPLACE(_name," ","") //removes spaces
+	_name = REPLACE(_name,".","") //removes periods
+	_name = REPLACE(_name,"-","") //removes dashes
 	
 	if _firstboot; "\_l[-10000,-10000]\q[ ,VeryFirstBoot]\_l[0,0]" //Prevents balloon from timing out if this is during first boot. Also prevents the user from closing out the input box
 	--
@@ -23,7 +24,7 @@ OnNameTeach
 	{
 		"\0\s[0]Oh,\w4 did you change your mind?"
 	}
-	elseif "template" _in_ reference0 || _tempname == "X." || _tempname == "x." //Checking with _tempname because 'X.' has a period, which would be removed. I don't want to stop someone putting in just X
+	elseif "template" _in_ _name || _tempname == "X." || _tempname == "x." //Checking with _tempname because 'X.' has a period, which would be removed. I don't want to stop someone putting in just X
 	{
 		"\0\s[0]That's my name!\w8\w8 I can't call you that!\w8\w8 Try again."
 		--
@@ -31,7 +32,7 @@ OnNameTeach
 		--
 		"\![open,inputbox,OnNameTeach,-1]\e"
 	}
-	elseif reference0 == "" //If the user doesn't put in anything
+	elseif _name == "" //If the user doesn't put in anything
 	{
 		username = "User"
 		
