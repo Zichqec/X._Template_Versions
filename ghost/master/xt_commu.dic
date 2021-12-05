@@ -46,11 +46,11 @@ OnStartTalking
 	AlreadyResponded = 1
 	if ghostexcount > 0
 	{
-		_num = RAND(ghostexcount)
-		_randghost = "%(ghostexlist[_num])"
+		_ghost = ANY(ghostexlist)
+		if reference0 != ""; _ghost = reference0 //If this was a manual ping
 		--
 		//Checks for the Sakura name
-		case _randghost
+		case _ghost
 		{
 			when "Girl" //Known ghosts, add as many whens as needed.
 			{
@@ -61,9 +61,9 @@ OnStartTalking
 			}
 			others //Ghosts there is no specific response to.
 			{
-				res_reference0 = _randghost
+				res_reference0 = _ghost
 				
-				"\0\s[0]Hello %(_randghost)!\w8\w8\e"
+				"\0\s[0]Hello %(_ghost)!\w8\w8\e"
 			}
 		}
 	}
@@ -147,4 +147,47 @@ RemovePauses //Removes \w tags and quicksection tags - Add more tags if you need
 	_argv[0] = REPLACE(_argv[0],"\w2","")
 	_argv[0] = REPLACE(_argv[0],"\w1","")
 	_argv[0]
+}
+
+//You don't need to edit anything here! This menu is for you only. If you have the debug variable set to 1, you can press C to access this little menu, which lets you send test commu messages to other ghosts!
+OnCommuPingMenu
+{
+	_display = ""
+	foreach ghostexlist; _ghost
+	{
+		_display += "\![*]\q[%(_ghost),OnStartTalking,%(_ghost)]\n"
+	}
+	_display += "\n\![*]\q[Custom ping,OnCustomPing]"
+	_display
+}
+
+OnCommuPing
+{
+	res_reference0 = reference0
+	"\0\s[104]Hey,\w4 %(reference0).\e"
+}
+
+OnCustomPing
+{
+	"What do you want to send?\![open,inputbox,OnCustomCommu,-1]"
+}
+
+OnCustomCommu
+{
+	reference0 = REPLACE(reference0,",","##")
+	_display = ""
+	foreach ghostexlist; _ghost
+	{
+		_display += "\![*]\q[%(_ghost),OnCustomPingSend,%(_ghost),%(reference0)]\n"
+	}
+	"Send to which ghost?\n\n"
+	--
+	_display
+}
+
+OnCustomPingSend
+{
+	res_reference0 = reference0
+	reference1 = REPLACE(reference1,"##",",")
+	"%(reference1)"
 }

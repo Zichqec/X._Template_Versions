@@ -6,7 +6,7 @@ AiTalk
 	}
  	else
 	{
- 		if mikireflag == 0
+ 		if ARRAYSIZE(offscreen) == 0
 		{
 			if CHAIN.IDName == ""
 			{
@@ -20,7 +20,7 @@ AiTalk
 		}
  		else
 		{ 
-			MikireTalk
+			OffscreenTalk
  		}
 	}
 }
@@ -249,9 +249,9 @@ OnMinuteChange
 			"\0\s[0]It's %(hour12) o'clock.\e"
 		}
 	}
-	elseif mikireflag == 1 //If the ghost is off the screen, it will run the off screen dialogue every minute
+	elseif ARRAYSIZE(offscreen) > 0 //If the ghost is off the screen, it will run the off screen dialogue every minute
  	{
- 		MikireTalk
+ 		OffscreenTalk
 	}
 	--
 	if AutoUpdates[0] == "On" && AutoUpdates[1] == 0 //Once a day the ghost will check for updates if the user has auto updates on
@@ -279,15 +279,7 @@ OnSecondChange
 	{
 		runtime[2]++
 	}
-	if mikireflag == 0 && reference1 == 1 //Dialogue for putting them off the screen. You could make this a unique line if you wanted, and have MikireTalk be for if they continue to be offscreen
-	{
-		MikireTalk
-	}
-	elseif mikireflag == 1 && reference1 == 0 //Dialogue for coming back on the screen
-	{
-		EndMikireTalk
-	}
-	elseif reference2 == 1 //This is for if your Sakura and Kero are overlapping. \4 will move the speaking character away from the other character.
+	if reference2 == 1 //This is for if your Sakura and Kero are overlapping. \4 will move the speaking character away from the other character.
 	{
 		"\0\s[0]Me and %(keroname) are overlapping.\4\e"
 	}
@@ -296,15 +288,34 @@ OnSecondChange
 		_b = BalloonCheck
 		if _b == 0; WaitingCommu
 	}
-	mikireflag = reference1 //reference1 is if the ghost is offscreen or not
 }
 
-MikireTalk //Off the screen dialogue. Ctrl Shift F12 will bring characters back onto the screen
+OnOffscreen
+{
+	offscreen = IARRAY //Makes offscreen IARRAY if there's no value
+	_lastvalue = IARRAY
+	if reference0 != ""; offscreen = SPLIT(reference0,",") //An array of the IDs of characters currently off screen. 0 is Sakura, 1 is Kero, etc
+	if reference1 != ""; _lastvalue = SPLIT(reference1,",")
+	//If a character is currently off the screen, their ID will be in the offscreen array, and you can find it with ASEARCH.
+	//reference1 has the values of reference0 from the last time this function ran, so you can use it to tell if a character has been moved back on screen.
+	//I've only set this up for the Sakura, but you can copy this format for other characters too. Just change the number in the ASEARCH.
+	
+	if ASEARCH("0",offscreen) != -1 //Checks if the sakura was moved off screen
+	{
+		OffscreenTalk
+	}
+	elseif ASEARCH("0",_lastvalue) != -1 //Checks if the sakura is no longer off screen
+	{
+		EndOffscreenTalk
+	}
+}
+
+OffscreenTalk //Off the screen dialogue. Ctrl Shift F12 will bring characters back onto the screen
 {
 	"\0\s[0]I'm off the screen.\w8\w8 You can press Ctrl Shift F12 to bring me back.\e"
 }
 
-EndMikireTalk //Being brought back on the screen.
+EndOffscreenTalk //Being brought back on the screen.
 {
 	"\0\s[0]I'm back!\e"
 }

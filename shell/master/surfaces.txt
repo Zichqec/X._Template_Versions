@@ -1,7 +1,9 @@
-version,1 //This is using the new seriko definition. If you want to use the old one, change the version to 0
+//IMPORTANT NOTE ABOUT SERIKO! You CANNOT have mid-line comments! SERIKO errors don't prevent you from loading your ghost, but it will still give annoying errors and cause unexpected behaviors! Put ALL COMMENTS ON THEIR OWN LINES. This will save you a lot of headache, trust me!
+
+version,1
+//This is using the new seriko definition. If you want to use the old one, change the version to 0
 
 //Sakura surfaces
-
 
 surface0
 {

@@ -39,7 +39,7 @@ On_portalrootbutton.caption //Caption for the second list of websites
 
 On_sakura.portalsites //You can make these anything you like. I've set them to link to my template, Zarla's template, and anything else helpful for making ghosts.
 {
-	"Built on X. Template YAYA - v.1.0.4" //I'd appreciate it if you left this link in your ghost so that other people can find the source <3
+	"Built on X. Template YAYA - v.1.0.5" //I'd appreciate it if you left this link in your ghost so that other people can find the source <3
 	--
 	"%ASC(1)https://zichqec.github.io/s-the-skeleton/xtemplate.html%ASC(2)"
 	--

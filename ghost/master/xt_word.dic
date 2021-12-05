@@ -161,6 +161,14 @@ nowmonth //The current month name
 	else; "December"
 }
 
+leapyear //Checks if this is a leap year
+{
+	if year % 4 != 0; 0
+	elseif year % 100 != 0; 1
+	elseif year % 400 != 0; 0
+	else; 1
+}
+
 timeslot //From the GT template. Breaking down the day into a few distinct chunks so you dont have to add checks for every hour.
 {
 	if hour >= 5 && hour <= 8; "earlymorning" //5-8am

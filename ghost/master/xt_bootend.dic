@@ -145,9 +145,9 @@ OnWindowStateRestore //When you bring the ghost back up after minimizing it.
 	"\0\s[0]I'm back!\e"
 }
 
-OnGhostChanging //Changing to another ghost. This is the internal name of your ghost, as written in descript.txt
+OnGhostChanging //Changing to another ghost.
 {
-	if reference0 == "X. Template" //If reloading.
+	if reference0 == sakuraname //If reloading.
 	{
 		"\0\s[0]Ok,\w4 I'll reload!"
 		--
@@ -167,7 +167,7 @@ OnGhostChanged //After switching.
 {
 	"\1\s[-1]\0\s[0]"
 	--
-	if reference0 == "X. Template" //Finished reloading.
+	if reference0 == sakuraname //Finished reloading.
 	{
 		"I'm back!\e"
 	}
@@ -260,13 +260,14 @@ FirstBootVars
 	runtime[1] = 0		//Minutes, replaces passmin
 	runtime[2] = 0		//Seconds, replaces passsec
 	totalhours = 0		//Total number of hours the ghost has been run
-	nowshell = "Default Shell"
+	nowshell = "Default Shell" //Make sure to change this if you change your shell name
 	username = "User"
 	birthday[0] = "???"	//The user's birthday, written out with words
 	birthday[1] = "???"	//The user's birthday, written in DD/MM format
 	talkrate = "every 5 minutes"
 	aitalkinterval = 300
 	totalpunches = 0
+	nowscale = 100		//Current scale, as a percentage
 	//---Petting related variables---
 	stroke[0] = 0		//The stroke value, which resets after each pet
 	stroke[1] = 0		//The stroke value, but it doesn't reset after each pet
@@ -274,8 +275,10 @@ FirstBootVars
 	pethighscore[0] = 0	//The petting high score, as the number of the stroke value
 	pethighscore[1] = 0	//The petting high score, as the number of pets
 	totalpets = 0		//The total times the ghost has been pet
+	offscreen = IARRAY
 	//---
 	deleteshitai = "Off"
+	betaTester = "Off"
 	AutoUpdates = ("On",0)
 	//nowmode = "Default" //Uncomment if you plan to add more modes
 	installdate = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)","%(ghostver)") //This tracks the exact day and time the ghost was installed, in case you want to mess around with that later. It also tracks what version the user installed, which may be helpful for debugging!

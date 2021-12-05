@@ -1,6 +1,6 @@
 This template is very heavily based on Zarla's GT Template. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.0.4
+You're using X. Template YAYA - v1.0.5
 You can use the 'Check Template Version' button to check if there's a new version!
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -74,6 +74,25 @@ Differences devs will see:
 
 
 ---Changelog---
+
+-v1.0.5-
+
+-Fixed a terrible bug I added in 1.0.2, which prevented you from changing the talk rate or the pronouns... Turns out those brackets were necessary!
+-Added a Commu Ping Menu. If the variable debug is set to 1, you can press C to get a nice window with the names of all the currently open ghosts in it. Click a name to send them a generic ping, or click the custom option to type in a custom message to send. Good for easily testing commu dialogues!
+-Added a new hotkey: pressing Y will start a commu conversation with a random ghost, same as clicking the 'Talk to another ghost' option in the menu.
+-Changed to the dedicated OnOffscreen function for offscreen dialogue, instead of using OnSecondChange. The format is a little more complicated, but now you can check if any character is off the screen, not just the sakura.
+-Related, changed the name of MikireTalk and EndMikireTalk to OffscreenTalk and EndOffscreenTalk. Same functions, clearer labels.
+-OnGhostChanging now checks to see if reference0 and sakuraname are the same, so you don't need to actually type your ghost's name in there at all.
+-New function: leapyear. Is 1 if it's currently a leapyear, and 0 if it's not.
+-When email checking fails because the user has their POP settings wrong, it opens the configuration dialogue to the POP page specifically.
+-betaTester and nowscale variables are now properly initialized on first boot
+-Got rid of the currentfile global variable. New system uses a local variable, and uses the SPLITPATH function to grab just the file name and extension instead of the whole path.
+-Viewing headlines/RSS feeds will now display a choice marker in front of every item.
+-Tweaked the format of the name change function and birthday teaching functions to better match the rest of X. Template.
+-Added cancel buttons to the name change function and birthday teaching functions. These cancel buttons will activate a bit of code in the config menu, which closes the appropriate input boxes. If you were in the middle of changing your birthday, this also resets it back to what it was before you tried to change it.
+-Updated surfaces.txt with some new info about SERIKO comments, and tweaked my comments appropriately.
+-Fixed a missing surface call when there was an MD5 error during updates, and corrected an incorrect surface call in the SNTP functions.
+
 
 -v1.0.4-
 

@@ -161,15 +161,20 @@ OnConfigMenu //I moved changing name/pronouns/birthday over to Nameteach, becaus
 {
 	//This is here in case the variables get erased. The buttons will be set to default so the user has something to click. This has happened to my users before and resetting them is a painful process. Do not remove these.
 	if username == ""; username = "User"
-	if heshe == ""; heshe = "they"; himher = "them"; hisher = "their"; hesshes = "they're"
+	if heshe == ""; {heshe = "they"; himher = "them"; hisher = "their"; hesshes = "they're"}
 	if birthday[0] == ""; birthday[0] = "???"
 	if hemisphere == ""; hemisphere = "Northern"
-	if talkrate == ""; talkrate = "every 5 minutes"; aitalkinterval = 300
+	if talkrate == ""; {talkrate = "every 5 minutes"; aitalkinterval = 300}
 	if deleteshitai == ""; deleteshitai = "Off"
 	if AutoUpdates[0] == ""; AutoUpdates[0] = "On"
 	if betaTester == ""; betaTester = "Off"
 	--
 	//the \_l[97] is telling it to put the ---Config--- at x 97, the middle of the balloon I use. Adjust as needed for your balloon, or remove it if you want
+	if reference0 == "cancelled name change"; "\![close,inputbox,OnNameTeach]" //If the user cancels changing their name, it will send them back to the config menu, and run this extra bit of code to close the inputbox. Same deal with the others below, but for the birthday
+	elseif reference0 == "cancelled birthday month"; "\![close,inputbox,OnUserBornMonth]"
+	elseif reference0 == "cancelled birthday day"; "\![close,inputbox,OnUserBornDay]"
+	if "cancelled birthday" _in_ reference0; {birthday = oldbirthday; ERASEVAR("oldbirthday")} //resets the birthday to the old values, erases the temp variable
+	--
 	"\_q\b2\_l[97]---Config---\n\n/
 	Your name: \q[%(username),OnChangeName]\n/
 	Your pronouns: \q[%(heshe)/%(himher)/%(hisher),OnChangePronoun]\n/
