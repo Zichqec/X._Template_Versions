@@ -15,19 +15,19 @@ OnFileDrop2
 			
 			"\0\s[0]\b[2]This is %(_filename)%(_fileext)!\w8\w8 I can set it as your wallpaper,\w4 how do you want it?\n\n"
 			--
-			--; "\![*]\q[Centered,OnWallpaper,%(_file),center]\n"
-			--; "\![*]\q[Tiled,OnWallpaper,%(_file),tile]\n"
-			--; "\![*]\q[Stretched,OnWallpaper,%(_file),stretch]"
-			--
+			all:{
+			"\![*]\q[Centered,OnWallpaper,%(_file),center]\n"
+			"\![*]\q[Tiled,OnWallpaper,%(_file),tile]\n"
+			"\![*]\q[Stretched,OnWallpaper,%(_file),stretch]"
 			if "Windows 7" || "Windows 10" _in_ NotifyOS //These are the 'fit' and 'fill' options available from win 7 on. NotifyOS is set just below, to check what OS you're on
 			{
-				--; "\n\![*]\q[Fill,OnWallpaper,%(_file),stretch-x]"
-				--; "\n\![*]\q[Fit,OnWallpaper,%(_file),stretch-y]"
+				"\n\![*]\q[Fill,OnWallpaper,%(_file),stretch-x]"
+				"\n\![*]\q[Fit,OnWallpaper,%(_file),stretch-y]"
 			}
-			--
 			if "Windows 10" _in_ NotifyOS; "\n\![*]\q[Spanned,OnWallpaper,%(_file),span]" //Same as above, but for the span option since that's win10 and above
-			--
+			
 			"\n\n\![*]\q[No thanks,WallpaperCancel]\e"
+			}
 		}
 		when ".mid", ".wav", ".mp3", ".wma", ".au", ".ogg", ".flac"
 		{
@@ -84,9 +84,11 @@ OnInstallComplete
 	{
 		"\0\s[0]I've installed %(reference1)!\w8\w8 Do you want to bring them here?\n\n"
 		--
-		--; "\![*]\q[Call %(reference1),CallGhost]\n"
-		--; "\![*]\q[Change to %(reference1),ChangeToGhost]\n\n"
-		--; "\![*]\q[No thanks,cancelnodialogue]\e"
+		all:{
+		"\![*]\q[Call %(reference1),CallGhost]\n"
+		"\![*]\q[Change to %(reference1),ChangeToGhost]\n\n"
+		"\![*]\q[No thanks,cancelnodialogue]\e"
+		}
 	}
 	elseif reference0 == "shell"
 	{
@@ -538,9 +540,11 @@ OnSNTPCompare
 	{
 		"\0\s[0]Your clock doesn't match.\w8\w8 Should I fix it?"
 		--
-		--; "\n\n"
-		--; "\![*]\q[Fix it,OnSNTPExecute]\n"
-		--; "\![*]\q[Leave it alone,OnSNTPCancel]\e" 
+		all:{
+		"\n\n"
+		"\![*]\q[Fix it,OnSNTPExecute]\n"
+		"\![*]\q[Leave it alone,OnSNTPCancel]\e"
+		}
 	}
 }
 

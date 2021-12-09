@@ -1,6 +1,6 @@
 This template is originally based on Zarla's GT Template, though I have made numerous changes since then. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.1.1
+You're using X. Template YAYA - v1.1.2
 You can use the 'Check Template Version' button to check if there's a new version! Or you can check on my website here: https://zichqec.github.io/s-the-skeleton/xtemplate
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -48,6 +48,11 @@ Having feedback from other people is incredibly helpful, and we're always glad t
 
 
 ---Changelog---
+
+-v1.1.2-
+-Fixed a critical typo in the reloading code that made the ghost never think it was reloading. Thanks Wormspawn for pointing it out!
+-Updated YAYA to Tc567-1. This gives access to the all, last, and melt modifiers.
+
 
 -v1.1.1-
 

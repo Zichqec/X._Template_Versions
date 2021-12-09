@@ -50,9 +50,11 @@ OnNameTeach
 	{
 		"\w8\w8 Good to meet you!\w8\w8 And how should I refer to you?\n\n"
 		--
-		--;"\![*]\q[He/Him/His,OnPronouns,masc]\n"
-		--; "\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
-		--; "\![*]\q[They/Them/Their,OnPronouns,undef]\*\e"
+		all:{
+		"\![*]\q[He/Him/His,OnPronouns,masc]\n"
+		"\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
+		"\![*]\q[They/Them/Their,OnPronouns,undef]\*\e"
+		}
 	}
 }
 
@@ -60,11 +62,13 @@ OnChangePronoun //Envelope names are the same as the GT template, since I figure
 {
 	"\0\s[0]How should I refer to you?"
 	--
-	--; "\n\n\_q"
-	--;"\![*]\q[He/Him/His,OnPronouns,masc]\n"
-	--; "\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
-	--; "\![*]\q[They/Them/Their,OnPronouns,undef]\n\n"
-	--; "\![*]\q[Cancel,OnConfigMenu]\e"
+	all:{
+	"\n\n\_q"
+	"\![*]\q[He/Him/His,OnPronouns,masc]\n"
+	"\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
+	"\![*]\q[They/Them/Their,OnPronouns,undef]\n\n"
+	"\![*]\q[Cancel,OnConfigMenu]\e"
+	}
 }
 
 

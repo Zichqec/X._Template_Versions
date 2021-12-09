@@ -151,7 +151,7 @@ OnWindowStateRestore //When you bring the ghost back up after minimizing it.
 OnGhostChanging //Changing to another ghost.
 {
 	_path = REPLACE(SHIORI3FW.Path,"\","/")
-	_path = REPLACE(_path,"ghost/master/")
+	_path = REPLACE(_path,"ghost/master/","")
 	
 	if reference3 == _path //If reloading.
 	{
@@ -172,7 +172,7 @@ OnGhostChanging //Changing to another ghost.
 OnGhostChanged //After switching.
 {
 	_path = REPLACE(SHIORI3FW.Path,"\","/")
-	_path = REPLACE(_path,"ghost/master/")
+	_path = REPLACE(_path,"ghost/master/","")
 	
 	"\1\s[-1]\0\s[0]"
 	--
