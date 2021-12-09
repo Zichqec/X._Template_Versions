@@ -46,6 +46,34 @@ filetype
 }
 
 //-----Menu stuff-----
+heshe
+{
+	if pronouns == "masc"; "he"
+	elseif pronouns == "fem"; "she"
+	else; "they"
+}
+
+himher
+{
+	if pronouns == "masc"; "him"
+	elseif pronouns == "fem"; "her"
+	else; "them"
+}
+
+hisher
+{
+	if pronouns == "masc"; "his"
+	elseif pronouns == "fem"; "her"
+	else; "their"
+}
+
+hesshes
+{
+	if pronouns == "masc"; "he's"
+	elseif pronouns == "fem"; "she's"
+	else; "they're"
+}
+
 season //Current season
 {
 	if hemisphere == "Southern"
@@ -78,24 +106,28 @@ nowmin
 	else; "%(minute)"
 }
 
-//Same as above but with the runtime minutes
-runmin
+//Total hours
+totalhours {x.up_total / 60}
+
+//Total hours + minutes
+totalruntime
 {
-	if runtime[1] < 10; "0%(runtime[1])"
-	else; "%(runtime[1])"
+	_hours = x.up_total / 60
+	_mins = x.up_total % 60
+	if _mins <= 9; _mins = "0%(_mins)"
+	
+	"%(_hours):%(_mins)"
 }
 
-//Tracks the hours and minutes that the ghost has been open. This will reset if you reload
-runtime : array
+//Current runtime as hours + minutes
+runtime
 {
-	ghostupmin / 60
-	ghostupmin % 60
+	_hours = x.up_mins / 60
+	_mins = x.up_mins % 60
+	if _mins <= 9; _mins = "0%(_mins)"
+	
+	"%(_hours):%(_mins)"
 }
-
-// totalhours //Would like to find out why this is so far into the negatives for me... How strange.
-// {
-	// ghostupmin_total / 60
-// }
 
 //AM or PM - ampm is 0 during am, and 1 during pm
 ap
@@ -191,6 +223,39 @@ leapyear
 	elseif year % 100 != 0; 1
 	elseif year % 400 != 0; 0
 	else; 1
+}
+
+//Gets the day of the year it currently is, starting from 1 because starting from 0 here is silly
+yearday {GETTIME[7] + 1}
+
+yearweek
+{
+	//Get the current day of the year
+	_days = yearday
+
+	//Get the number of days into the current week that we are
+	_trailingdays = 0
+	while weekday - _trailingdays >= 0
+	{
+		_trailingdays++
+	}
+
+	//Get the number of weeks minus leading and trailing days
+	_days -= _trailingdays
+	_weeks = _days / 7
+	_leadingdays = _days % 7
+
+	//Add in the trailing weeks
+	if _leadingdays > 0; _weeks++
+	if _trailingdays > 0; _weeks++
+
+	//Handles week 53
+	if _weeks == 53
+	{
+		_daysleft = 31 - day
+		if _daysleft + _trailingdays < 7; _weeks = 1
+	}
+	_weeks
 }
 
 //From the GT template. Breaking down the day into a few distinct chunks so you dont have to add checks for every hour.

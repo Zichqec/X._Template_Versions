@@ -1,6 +1,6 @@
 This template is originally based on Zarla's GT Template, though I have made numerous changes since then. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.1.0
+You're using X. Template YAYA - v1.1.1
 You can use the 'Check Template Version' button to check if there's a new version! Or you can check on my website here: https://zichqec.github.io/s-the-skeleton/xtemplate
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -48,6 +48,26 @@ Having feedback from other people is incredibly helpful, and we're always glad t
 
 
 ---Changelog---
+
+-v1.1.1-
+
+-Updated YAYA to Tc566-2. This gives access to the pool modifiers, and 64 bit integers!
+-As a result of the YAYA update, the Pool function has been removed, RandomTalk has been given the nonoverlap_pool modifier, and the pools previously set up have been changed to if checks.
+-Added auto anchor system. Now you can set up simple anchors a bit easier(?).
+-Reworked the timekeeping system since I was not satisfied with it. The version built into the SHIORI resets every time you reload the ghost, and that annoys me, so I recreated the code and set it up to not reset when you reload.
+-Updated the ghost changing functions so that the ghost should always be able to tell the difference between reloading itself vs changing to a ghost of the same name.
+-Updated FormatLinks function; links in string.dic should now be written as alternating strings of names and urls.
+-Removed OnUpdateCheckFailure function because it was no longer in use.
+-Fixed some mojibake in string.dic.
+-Changed pronouns to functions controlled by a single variable. This makes the code more concise and makes it so that pronouns will never show up blank.
+-Added some information about the new version of the iolog commands in system_config.txt.
+-Fixed an issue where the firstboot sequence could be interrupted by the ghost attempting an auto update, or the user petting the ghost.
+-Fixed the name of the function OnOtherGhostVanished, so it should work properly now.
+-Moved OnChoiceSelect out of yaya_shiori3.dic and placed it in anchor.dic instead.
+-Removed a couple of other functions from yaya_shiori3.dic that were not default and were not in use. The shiori files of X. Template now match the default ones that you can download from github ( https://github.com/ponapalt/yaya-dic ). The AiTalk function in aitalk.dic has been changed to OnAiTalk to reflect this.
+-Slightly improved the display of email headers, and increased the maximum default amount to 500.
+
+
 
 -v1.1.0-
 

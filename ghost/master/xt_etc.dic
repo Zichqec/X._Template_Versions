@@ -235,7 +235,7 @@ OnVanished
 
 //When you uninstall another ghost while this ghost is open. If you remove this event, it will just use OnVanished instead.
 //reference0 is the name of the uninstalled ghost
-OnOtherGhostVanish
+OnOtherGhostVanished
 {
 	"\0\s[0]Farewell,\w4 %(reference0).\e"
 }
@@ -255,11 +255,11 @@ OnBIFFComplete
 	{
 		"\0\s[0]Nope,\w4 nothing new.\e"
 	}
-	elseif reference0 < 100 //less than 100 new emails
+	elseif reference0 <= 500 //less than 100 new emails
 	{
 		
 		headers = ""
-		if reference7 != "" && reference0 < 100 //AHAHAHA I FINALLY FIGURED OUT HOW TO GET AN ARRAY OF THE HEADERS WITH AUTO TYPE CONVERT ON. They're normally in reference7, but since auto type convert changes the C_BYTE1 characters to commas, any headers with commas screw things up badly. But you can get the nonconverted values! Still need a loop to add menu markers and stuff to the display, but that can happen in the other function...
+		if reference7 != "" && reference0 <= 500 //AHAHAHA I FINALLY FIGURED OUT HOW TO GET AN ARRAY OF THE HEADERS WITH AUTO TYPE CONVERT ON. They're normally in reference7, but since auto type convert changes the C_BYTE1 characters to commas, any headers with commas screw things up badly. But you can get the nonconverted values! Still need a loop to add menu markers and stuff to the display, but that can happen in the other function...
 		{
 			headers = SPLIT(reference.raw[7],C_BYTE1)
 		}
@@ -274,7 +274,7 @@ OnBIFFComplete
 			"\n\n\![*]\q[Yes,OnSeeHeaders,yes]\n\*\![*]\q[No,OnSeeHeaders,no]"
 		}
 	}
-	else //more than 100 new emails
+	else //more than 500 new emails
 	{
 		"\0\s[0]You've got %(reference0) new emails."
 	}
@@ -292,9 +292,15 @@ OnSeeHeaders
 		{
 			_display += "\![*]"
 			_display += SHIORI3FW.EscapeAllTags(_header)
-			_display += "\n\n"
+			_display += "\n\n[half]"
 		}
-		"\0\s[0]\b2\_q%(_display)\*\n\n\![*]\q[Done,cancelnodialogue]"
+		"\0\s[0]\b2\![set,autoscroll,disable]\*\_q"
+		--
+		"\![*]\q[Done,cancelnodialogue]\n\n"
+		--
+		"%(_display)"
+		--
+		"\n\n\![*]\q[Done,cancelnodialogue]"
 	}
 	--
 	ERASEVAR("headers") //This erases the variable so you're not storing all those headers and bloating your save. Also, privacy reasons.
@@ -409,20 +415,22 @@ Select.NoChangelog
 OnUpdate.OnDownloadBegin
 {
 	_progress = TOINT(reference1) + 1
-    _total = TOINT(reference2) + 1
-	
-	"\0\s[0]\b2\_qDownloading %(reference0)...\n\n"
+	_total = TOINT(reference2) + 1
+
+	"\0\s[0]\b2\_qDownloading %(reference0)...\n\n\f[name,courier new]"
 	--
-    _display = ""
-	_display += "\f[name,courier new]"
-    for _i = 0; _i < _total; _i++
-    {
+	_display = ""
+	for _i = 0; _i < _total; _i++
+	{
 		//Loading bar display - customize with text or images or whatever
-        if _i < _progress; _display += "■" //Files that have already been downloaded
-        else; _display += "□" //Files that have not been downloaded yet
-    }
-    --
-    "%(_display)\n\n%(_progress)/%(_total)\e"
+		_filled = "■" //Files that have already been downloaded
+		_empty = "□" //Files that have not been downloaded yet
+
+		//This is a bit like a ternary operator, for anyone familiar with those... It's just an array with the symbols/images/text specified above, and then the index it picks is based on whether _i < _progress is true or not. Ha, take that, languages like Python that use True/False (but have actual ternary operators)!
+		_display += (_empty,_filled)[_i < _progress]
+	}
+	--
+	"%(_display)\n\n%(_progress)/%(_total)\e"
 }
 
 //reference0 is the reason the update failed
@@ -442,22 +450,6 @@ OnUpdateFailure //If the update fails
 		"\0\s[0]Oh,\w4 did you change your mind?\e"
 	}
 	else //Any other errors
-	{
-		"\0\s[0]Sorry,\w4 I got an error:\w4 '%(reference0)'.\e"
-	}
-}
-
-//Similar to above, but for if the ghost was just checking and not actually updating
-//reference0 is the reason the check failed
-OnUpdateCheckFailure
-{
-	if AutoUpdates[1] == 1; "\e" //Stops the dialogue from showing if it's an auto check
-	--
-	if reference0 == "timeout" //If it timed out
-	{
-		"\0\s[0]Sorry,\w4 the connection timed out.\e"
-	}
-	else
 	{
 		"\0\s[0]Sorry,\w4 I got an error:\w4 '%(reference0)'.\e"
 	}
@@ -655,5 +647,5 @@ OnKeyPress
 //reference0 here is the event that the input box was going to lead to, and reference1 is either timeout or close based on if it timed out or was closed by the user
 OnUserInputCancel
 {
-	if reference0 == "OnNameTeach" && "VeryFirstBoot" _in_ SHIORI3FW.LastTalk; "\C\![open,inputbox,%(reference0)]\e VeryFirstBoot"
+	if reference0 == "OnNameTeach" && IsFirstBoot; "\C\![open,inputbox,%(reference0)]\_l[-10000,-10000]\*\q[ ,__Very_First_Boot__]\e"
 }

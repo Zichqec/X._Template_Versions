@@ -54,7 +54,7 @@ OnMenuRun //Main menu
 	}
 	--; "\![*]\q[Nevermind,Cancel]\n\n"
 	--
-	"\nRuntime: %(runtime[0]):%(runmin)%(newline)\f[align,right]Version %(ghostver)\e"
+	"\nRuntime: %(runtime)%(newline)\f[align,right]Version %(ghostver)\e"
 }
 
 OnLastTalk //Repeats the last thing the ghost said
@@ -172,7 +172,6 @@ OnConfigMenu //I moved changing name/pronouns/birthday over to Nameteach, becaus
 FixDefaultOptions
 {
 	if username == ""; username = "User"
-	if heshe == ""; {heshe = "they"; himher = "them"; hisher = "their"; hesshes = "they're"}
 	if birthday[0] == ""; birthday[0] = "???"
 	if hemisphere == ""; hemisphere = "Northern"
 	if talkrate == ""; {talkrate = "every 5 minutes"; aitalkinterval = 300}

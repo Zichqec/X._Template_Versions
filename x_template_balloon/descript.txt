@@ -1,5 +1,6 @@
 charset,UTF-8
 use_self_alpha,1
+use_input_alpha,1
 
 type,balloon
 name,X. Template Balloon
@@ -8,7 +9,7 @@ craftman,Zichqec
 craftmanw,Zichqec
 craftmanurl,https://zichqec.github.io/s-the-skeleton/
 
-homeurl,https://your.homeurl.com/balloons/yourballoon
+homeurl,https://your.homeurl.com/balloons/yourballoon/
 
 origin.x,9
 origin.y,9

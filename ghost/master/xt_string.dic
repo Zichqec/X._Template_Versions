@@ -14,12 +14,12 @@ On_sakura.recommendsites
 	FormatLinks(recommendsites_sakura)
 }
 
-//These are the websites linked in the top option of the right click menu. Add your websites here! Follow the format carefully here, on the left is the name you want to display, on the right is the url you want it to link to, and between them should be a | with at least one space on either side. You can add as many spaces as you like, but there always has to be at least one. The links will be given the proper formatting by the FormatLinks function below.
+//These are the websites linked in the top option of the right click menu. Add your websites here! Follow the format carefully here, on the left is the name you want to display, on the right is the url you want it to link to. You could make this a single list as well, as long as it alternates between name, url, name, url...
 recommendsites_sakura : array
 {
-	"Your Ghost Website        | https://yourwebsite.githubb.io/yoursite/index.html"
-	"Your Social               | https://www.socialmediaexample.com/you"
-	"Your Character's Toyhouse | https://toyhou.se/yourcharacter"
+	"Your Ghost Website";			"https://yourwebsite.githubb.io/yoursite/index.html"
+	"Your Social";					"https://www.socialmediaexample.com/you"
+	"Your Character's Toyhouse";	"https://toyhou.se/yourcharacter"
 }
  
 On_portalrootbutton.caption //Caption for the second list of websites
@@ -33,18 +33,19 @@ On_sakura.portalsites
 	FormatLinks(portalsites_sakura)
 }
 
-//Same deal as above with the formatting. //I'd appreciate it if you left the X. Template link in your ghost so that other people can find the source <3
+//Same deal as above with the formatting.
 portalsites_sakura : array
 {
-	"Built on X. Template YAYA - v.1.1.0 | https://zichqec.github.io/s-the-skeleton/xtemplate.html"
-	"Zarla's Ghost Template Walkthrough  | http://www.ashido.com/ukagaka/walkthrough.html"
-	"How to set up updates with Github   | https://zichqec.github.io/s-the-skeleton/github.html"
-	"Ukagaka Dream Team Discord          | https://ukagakadreamteam.tumblr.com/discord"
-	"SSP (J)                             | http://ssp.shillest.net/"
-	"Ukadoc (J)                          | http://ssp.shillest.net/ukadoc/manual/list_shiori_event.html"
-	"YAYA Wiki (J)                       | http://emily.shillest.net/ayaya/index.php?"
-	"Crow + SSP Reference (J)            | http://crow.aqrs.jp/reference/all/index.html"
-	"Ghost Documentation (J)             | http://usada.sakura.vg/contents/specification.html"
+	//I'd appreciate it if you left the X. Template link in your ghost so that other people can find the source <3
+	"Built on X. Template YAYA - v1.1.1";	"https://zichqec.github.io/s-the-skeleton/xtemplate.html"
+	"Zarla's Ghost Template Walkthrough";	"http://www.ashido.com/ukagaka/walkthrough.html"
+	"How to set up updates with Github";	"https://zichqec.github.io/s-the-skeleton/github.html"
+	"Ukagaka Dream Team Discord";			"https://ukagakadreamteam.tumblr.com/discord"
+	"SSP (J)"; 								"http://ssp.shillest.net/"
+	"Ukadoc (J)"; 							"http://ssp.shillest.net/ukadoc/manual/list_shiori_event.html"
+	"YAYA Wiki (J)"; 						"http://emily.shillest.net/ayaya/index.php?"
+	"Crow + SSP Reference (J)"; 			"http://crow.aqrs.jp/reference/all/index.html"
+	"Ghost Documentation (J)"; 				"http://usada.sakura.vg/contents/specification.html"
 }
  
 On_kero.recommendbuttoncaption //Caption for the Kero's website list
@@ -59,22 +60,23 @@ On_kero.recommendsites
 
 recommendsites_kero : array //Put any websites you want here, I just included some stuff that was helpful to me when making my website.
 {
-	"Github Pages | https://pages.github.com/"
-	"w3 schools   | https://www.w3schools.com/"
+	"Github Pages"; "https://pages.github.com/"
+	"w3 schools"; 	"https://www.w3schools.com/"
 }
 
 //This is the function that formats the links above! This is based on a function in Konno Yayame that serves a similar purpose. You can see that one here: http://emily.shillest.net/ayaya/index.php?Tips/%E3%81%8A%E6%B0%97%E3%81%AB%E5%85%A5%E3%82%8A%E3%82%92%E6%9B%B8%E3%81%8D%E3%82%84%E3%81%99%E3%81%8F%E3%81%99%E3%82%8B
-//Mine is a bit simpler, but it requires you to leave a space before and after the |. So long as you do that, it'll add the rest of the formatting for you! CUTSPACE is a built in function that gets rid of whitespace characters on the left and right of text.
+//Takes an array of alternating names and urls, and formats them for use with the right click menu
 FormatLinks
 {
-	_output = ""
-	foreach _argv; _element
+	_display = ""
+	for _i = 0; _i < ARRAYSIZE(_argv); _i++
 	{
-		_name = CUTSPACE(_element[0,' | '])
-		_link = CUTSPACE(_element[1,' | '])
-		_output += _name + "%ASC(1)" + _link + "%ASC(2)"
+		_display += _argv[_i] //Add the link/title
+		//Alternate between adding %ASC(1) or %ASC(2)
+		if _i % 2 == 1; _display += "%ASC(2)"
+		else; _display += "%ASC(1)"
 	}
-	_output
+	_display
 }
 
 On_updatebutton.caption //Caption for the update button
@@ -129,7 +131,7 @@ On_quitbutton.caption //Caption for the quit button
 //This stuff is, I believe, written by Umeici.
 //What you need to know is this: ghostexlist is a list of the names of ghosts that are currently open, going by the name of the sakura. ghostexcount is the number of opened ghosts. balloonlist and ballooncount are the same thing but with balloons. I might've added that one but I'm not sure? I can't remember anymore
 
-//---- 소멸 지시 버튼 표시 교체 -------------------------------------------------------
+//---- 消滅指示ボタン表示切り替え -------------------------------------------------------
 On_vanishbutton.visible
  {
  	if deleteshitai == "On"
@@ -142,7 +144,7 @@ On_vanishbutton.visible
 	}
 }
 
-//---- 딳벍뭷궻뫜궻긕?긚긣뼹롦벦 -------------------------------------------------------
+//---- 起動中の他のゴースト名取得 -------------------------------------------------------
 On_otherghostname
 {
 	// ghostexlist = ""

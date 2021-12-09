@@ -3,8 +3,8 @@
 charset,UTF-8
 type,ghost
 
-name,X. Template YAYA - v1.1.0
-directory,x_template_yaya_v1_1_0
+name,X. Template YAYA - v1.1.1
+directory,x_template_yaya_v1_1_1
 
 balloon.directory,x_template_balloon
-//If you decide not to include a balloon with your ghost, remove or comment this line! If you leave it in, it will generate an empty file in the user's balloon folder when they install it, and if someone else also leaves it in, it'll ask about overwriting the balloon... which is very confusing and frustrating for the user.
+//IF YOU DECIDE NOT TO INCLUDE A BALLOON WITH YOUR GHOST, REMOVE OR COMMENT THIS LINE! If you leave it in, it will generate an empty file in the user's balloon folder when they install it, or if they already have this balloon it will ask about overwriting it, which is confusing...

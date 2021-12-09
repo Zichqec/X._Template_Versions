@@ -8,9 +8,7 @@ OnChangeName
 }
 
 OnNameTeach
-{
-	_firstboot = 0; if "VeryFirstBoot" _in_ SHIORI3FW.LastTalk; _firstboot = 1 //If this is during first boot, set a temp flag
-	
+{	
 	_tempname = CUTSPACE(reference.raw[0]) //this stores the original name in _tempname
 	_name = reference.raw[0] //putting the raw name into _name to do some tests on it
 	_name = TOLOWER(_name) //changes it to lowercase
@@ -18,9 +16,9 @@ OnNameTeach
 	_name = REPLACE(_name,".","") //removes periods
 	_name = REPLACE(_name,"-","") //removes dashes
 	
-	if _firstboot; "\_l[-10000,-10000]\q[ ,VeryFirstBoot]\_l[0,0]" //Prevents balloon from timing out if this is during first boot. Also prevents the user from closing out the input box
+	if IsFirstBoot; "\_l[-10000,-10000]\q[ ,VeryFirstBoot]\_l[0,0]" //Prevents balloon from timing out if this is during first boot. Also prevents the user from closing out the input box
 	--
-	if _tempname == username && !_firstboot //If the user gives the exact same name as before. The firstboot check has to be there in case they put in 'user'
+	if _tempname == username && !IsFirstBoot //If the user gives the exact same name as before. The firstboot check has to be there in case they put in 'user'
 	{
 		"\0\s[0]Oh,\w4 did you change your mind?"
 	}
@@ -28,7 +26,7 @@ OnNameTeach
 	{
 		"\0\s[0]That's my name!\w8\w8 I can't call you that!\w8\w8 Try again."
 		--
-		if !_firstboot; "\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]\*" //If changing name through the menu
+		if !IsFirstBoot; "\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]\*" //If changing name through the menu
 		--
 		"\![open,inputbox,OnNameTeach,-1]\e"
 	}
@@ -44,7 +42,7 @@ OnNameTeach
 		"\0\s[0]Ok,\w4 I'll call you %(username) then."
 	}
 	--
-	if !_firstboot //If the user was changing their name through the config menu
+	if !IsFirstBoot //If the user was changing their name through the config menu
 	{
 		"\n\n\![*]\q[Back to config,OnConfigMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 	}
@@ -72,30 +70,9 @@ OnChangePronoun //Envelope names are the same as the GT template, since I figure
 
 OnPronouns
 {
-	if reference0 == "masc"
-	{
-		heshe = "he"
-		himher = "him"
-		hisher = "his"
-		hesshes = "he's"
-	}
-	elseif reference0 == "fem"
-	{
-		heshe = "she"
-		himher = "her"
-		hisher = "her"
-		hesshes = "she's"
-	}
-	else
-	{
-		heshe = "they"
-		himher = "them"
-		hisher = "their"
-		hesshes = "they're"
-		
-	}
+	pronouns = reference0
 	--
-	if "VeryFirstBoot" _in_ SHIORI3FW.LastTalk //This is the end of the firstboot dialogue
+	if IsFirstBoot //This is the end of the firstboot dialogue
 	{
 		"Sounds good!\w8\w8 To access the test variable or the to-do list,\w4 you can open script input with ctrl + s and type \%\(debug = 1)\w8\w8\n\nYou can also check if there's a newer version of the template!\w8\w8 Have fun!"
 		--
