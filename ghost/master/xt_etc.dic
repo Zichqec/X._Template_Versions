@@ -651,5 +651,5 @@ OnKeyPress
 //reference0 here is the event that the input box was going to lead to, and reference1 is either timeout or close based on if it timed out or was closed by the user
 OnUserInputCancel
 {
-	if reference0 == "OnNameTeach" && IsFirstBoot; "\C\![open,inputbox,%(reference0)]\_l[-10000,-10000]\*\q[ ,__Very_First_Boot__]\e"
+	if reference0 == "OnFirstNameTeach"; "\C\![open,inputbox,%(reference0)]\_l[-10000,-10000]\*\t\q[ ,__VERY_FIRST_BOOT__]"
 }

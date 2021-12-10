@@ -51,7 +51,7 @@ RandomTalk : nonoverlap_pool
 	//---Timeslots---
 	if timeslot == "earlymorning" //5am - 8am
 	{
-		if runtime[0] >= 3 //Been open for 3 hours or more, so the user has probably been up all night
+		if totalhours >= 3 //Been open for 3 hours or more, so the user has probably been up all night
 		{
 			
 		}
@@ -222,7 +222,6 @@ achain
 OnMinuteChange
 {
 	if hour == 0 && minute == 0; AutoUpdates[1] = 0 //Resetting auto updates
-	//if runtime[1] == 0; totalhours++ //I tried to use ghostupmin_total for this, but for some of my ghosts it's super far into the negatives for some reason... This is gonna be off but not THAT far off lol
 	
 	if minute == 0 && HourNotifs == "On" //Top of the hour notifications
 	{
@@ -251,7 +250,7 @@ OnMinuteChange
  		OffscreenTalk
 	}
 	--
-	if !IsFirstBoot && AutoUpdates[0] == "On" && AutoUpdates[1] == 0 //Once a day the ghost will check for updates if the user has auto updates on
+	if AutoUpdates[0] == "On" && AutoUpdates[1] == 0 //Once a day the ghost will check for updates if the user has auto updates on
 	{
 		AutoUpdates[1] = 1
 		"\![updatebymyself,checkonly]"
@@ -273,24 +272,26 @@ OnOffscreen
 	offscreen = TOSTR(reference0)
 	CVSTR(reference0)
 	CVSTR(reference1)
-	
-	if "0" _in_ reference0 //Checks if the sakura was moved off screen
-	{
-		OffscreenTalk("0")
-	}
-	elseif "1" _in_ reference0 //Checks if the kero was moved off screen
-	{
-		OffscreenTalk("1")
-	}
-	
-	//Coming back on screen
-	elseif "0" _in_ reference1 //Checks if the sakura is no longer off screen
-	{
-		EndOffscreenTalk("0")
-	}
-	elseif "1" _in_ reference1 //Checks if the kero is no longer off screen
-	{
-		EndOffscreenTalk("1")
+	if !("__VERY_FIRST_BOOT__" _in_ SHIORI3FW.LastTalk) //Bandaid patch, hoping this is a bug in SSP that can be fixed there
+	{	
+		if "0" _in_ reference0 //Checks if the sakura was moved off screen
+		{
+			OffscreenTalk("0")
+		}
+		elseif "1" _in_ reference0 //Checks if the kero was moved off screen
+		{
+			OffscreenTalk("1")
+		}
+		
+		//Coming back on screen
+		elseif "0" _in_ reference1 //Checks if the sakura is no longer off screen
+		{
+			EndOffscreenTalk("0")
+		}
+		elseif "1" _in_ reference1 //Checks if the kero is no longer off screen
+		{
+			EndOffscreenTalk("1")
+		}
 	}
 }
 

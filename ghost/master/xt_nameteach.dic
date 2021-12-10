@@ -16,19 +16,22 @@ OnNameTeach
 	_name = REPLACE(_name,".","") //removes periods
 	_name = REPLACE(_name,"-","") //removes dashes
 	
-	if IsFirstBoot; "\_l[-10000,-10000]\q[ ,VeryFirstBoot]\_l[0,0]" //Prevents balloon from timing out if this is during first boot. Also prevents the user from closing out the input box
+	_is_first_boot = 0; if reference1 == "firstboot"; _is_first_boot = 1
+	_function = "OnNameTeach"; if _is_first_boot; _function = "OnFirstNameTeach"
+	
+	if _is_first_boot; "\_l[-10000,-10000]\q[ ,__VERY_FIRST_BOOT__]\_l[0,0]\*\t" //Prevents balloon from timing out if this is during first boot. Also prevents the user from closing out the input box
 	--
-	if _tempname == username && !IsFirstBoot //If the user gives the exact same name as before. The firstboot check has to be there in case they put in 'user'
+	if _tempname == username && !_is_first_boot //If the user gives the exact same name as before. The firstboot check has to be there in case they put in 'user'
 	{
 		"\0\s[0]Oh,\w4 did you change your mind?"
 	}
-	elseif "template" _in_ _name || _tempname == "X." || _tempname == "x." //Checking with _tempname because 'X.' has a period, which would be removed. I don't want to stop someone putting in just X
+	elseif "template" _in_ _name || TOLOWER(_tempname) == "x." //Checking with _tempname because 'X.' has a period, which would be removed. I don't want to stop someone putting in just X
 	{
 		"\0\s[0]That's my name!\w8\w8 I can't call you that!\w8\w8 Try again."
 		--
-		if !IsFirstBoot; "\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]\*" //If changing name through the menu
+		if !_is_first_boot; "\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]" //If changing name through the menu
 		--
-		"\![open,inputbox,OnNameTeach,-1]\e"
+		"\![open,inputbox,%(_function),-1]"
 	}
 	elseif _name == "" //If the user doesn't put in anything
 	{
@@ -42,7 +45,7 @@ OnNameTeach
 		"\0\s[0]Ok,\w4 I'll call you %(username) then."
 	}
 	--
-	if !IsFirstBoot //If the user was changing their name through the config menu
+	if !_is_first_boot //If the user was changing their name through the config menu
 	{
 		"\n\n\![*]\q[Back to config,OnConfigMenu]\n\![*]\q[I'm done,cancelnodialogue]\e"
 	}
@@ -51,9 +54,9 @@ OnNameTeach
 		"\w8\w8 Good to meet you!\w8\w8 And how should I refer to you?\n\n"
 		--
 		all:{
-		"\![*]\q[He/Him/His,OnPronouns,masc]\n"
-		"\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
-		"\![*]\q[They/Them/Their,OnPronouns,undef]\*\e"
+		"\![*]\q[He/Him/His,OnPronouns,masc,firstboot]\n"
+		"\![*]\q[She/Her/Hers,OnPronouns,fem,firstboot]\n"
+		"\![*]\q[They/Them/Their,OnPronouns,undef,firstboot]"
 		}
 	}
 }
@@ -76,11 +79,9 @@ OnPronouns
 {
 	pronouns = reference0
 	--
-	if IsFirstBoot //This is the end of the firstboot dialogue
+	if reference1 == "firstboot" //This is the end of the firstboot dialogue
 	{
-		"Sounds good!\w8\w8 To access the test variable or the to-do list,\w4 you can open script input with ctrl + s and type \%\(debug = 1)\w8\w8\n\nYou can also check if there's a newer version of the template!\w8\w8 Have fun!"
-		--
-		"\![leave,passivemode]\e"
+		"\0\s[0]Sounds good!\w8\w8 To access the test variable or the to-do list,\w4 you can open script input with ctrl + s and type \%\(debug = 1)\w8\w8\n\nYou can also check if there's a newer version of the template!\w8\w8 Have fun!\e"
 	}
 	else //This is if the user is changing their pronouns through the menu
 	{

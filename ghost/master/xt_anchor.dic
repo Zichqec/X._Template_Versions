@@ -167,13 +167,6 @@ RemoveFlag //Removes all instances of a flag in the array.
 	}
 }
 
-//Tells you if the ghost is still in the middle of the firstboot dialogue or not
-IsFirstBoot
-{
-	if "__Very_First_Boot__" _in_ SHIORI3FW.LastTalk; 1
-	else; 0
-}
-
 //Setting variables in random dialogue
 //You can use this to do detailed variable changes and such in dialogue. If you only need to set one variable, I recommend using EVAL in the line of dialogue, like so:
 //"Some dialogue that changes a variable.\e:eval=somevar='some value'"

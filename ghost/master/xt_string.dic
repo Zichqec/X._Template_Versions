@@ -37,7 +37,7 @@ On_sakura.portalsites
 portalsites_sakura : array
 {
 	//I'd appreciate it if you left the X. Template link in your ghost so that other people can find the source <3
-	"Built on X. Template YAYA - v1.1.2";	"https://zichqec.github.io/s-the-skeleton/xtemplate.html"
+	"Built on X. Template YAYA - v1.1.3";	"https://zichqec.github.io/s-the-skeleton/xtemplate.html"
 	"Zarla's Ghost Template Walkthrough";	"http://www.ashido.com/ukagaka/walkthrough.html"
 	"How to set up updates with Github";	"https://zichqec.github.io/s-the-skeleton/github.html"
 	"Ukagaka Dream Team Discord";			"https://ukagakadreamteam.tumblr.com/discord"
