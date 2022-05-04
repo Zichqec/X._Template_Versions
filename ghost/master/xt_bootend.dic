@@ -1,4 +1,5 @@
-OnFirstBoot //Dialogue when you first open the ghost
+//Dialogue when you first open the ghost
+OnFirstBoot
 {
 	FirstBootVars //Initialize all your variables at the very bottom!
 	
@@ -13,13 +14,12 @@ OnFirstBoot //Dialogue when you first open the ghost
 		"\1\s[-1]\0\s[0]Hi there!\w8\w8 It's me again.\w8\w8 Tell me your name again please?"
 	}
 	--
-	"\![open,inputbox,OnFirstNameTeach]\_l[-10000,-10000]\*\q[ ,__VERY_FIRST_BOOT__]"
+	"\![open,inputbox,OnNameTeach,-1,--reference=firstboot]\_l[-10000,-10000]\*\q[ ,__VERY_FIRST_BOOT__]"
 	//Don't erase the \q tag there! That prevents the box from being closed or timing out before the user inputs their name. If you make significant changes to the first boot, you may want to erase that. There are bits of code that deal with this in etc.dic, use ctrl F to find them. IF THIS GIVES YOU ISSUES PLEASE LET ME KNOW, but I think it should be a lot better than the variable solution I had previously.
 }
 
-OnFirstNameTeach {"\![raise,OnNameTeach,%(Sanitize(reference0)),firstboot]"}
-
-OnBoot //Normal booting
+//Normal booting
+OnBoot
 {
 	BootVars //This sets variables you want to be set on a normal boot, like resetting the variable that saves the previous dialogue. Again, make sure you set these up at the bottom.
 	_timesince = FUNCTIONEX("saori/time_check.dll","how_many_days",lastclosed[0],lastclosed[1],lastclosed[2],0,0,0)
@@ -44,7 +44,8 @@ OnBoot //Normal booting
 	}
 }
 
-TimeBoot //This will be called if it's been at least 3 months since you opened the ghost last.
+//This will be called if it's been at least 3 months since you opened the ghost last.
+TimeBoot
 {
 	_timesince = _argv[0] //Days since opened ghost last
 	
@@ -94,6 +95,7 @@ NormalBoot : pool
 	}
 }
 
+//Closing the ghost
 OnClose : pool
 {
 	CloseVars
@@ -145,12 +147,14 @@ OnWindowStateMinimize
 	"\0\s[0]Minimizing.\w8 You can bring me back by double clicking my icon in the task tray!\e"
 }
 
-OnWindowStateRestore //When you bring the ghost back up after minimizing it.
+//When you bring the ghost back up after minimizing it
+OnWindowStateRestore
 {
 	"\0\s[0]I'm back!\e"
 }
 
-OnGhostChanging //Changing to another ghost.
+//Changing to another ghost
+OnGhostChanging
 {
 	_path = REPLACE(SHIORI3FW.Path,"\","/")
 	_path = REPLACE(_path,"ghost/master/","")
@@ -158,29 +162,28 @@ OnGhostChanging //Changing to another ghost.
 	if reference3 == _path //If reloading.
 	{
 		"\0\s[0]Ok,\w4 I'll reload!"
-		--
-		"\w8\w8\e" //Gives the user a moment to read the dialogue before they disappear
 	}
 	else
 	{
 		CloseVars
 		
 		"\0\s[0]Ok,\w4 say hi to %(reference0) for me!"
-		--
-		"\w8\w8\e"
 	}
+	--
+	"\w8\w8\e" //Gives the user a moment to read the dialogue before they disappear
 }
 
-OnGhostChanged //After switching.
+//After switching
+OnGhostChanged
 {
 	_path = REPLACE(SHIORI3FW.Path,"\","/")
 	_path = REPLACE(_path,"ghost/master/","")
 	
-	"\1\s[-1]\0\s[0]"
+	"\1\s[-1]"
 	--
 	if reference3 == _path //Finished reloading.
 	{
-		"I'm back!\e"
+		"\0\s[0]I'm back!\e"
 	}
 	else
 	{
@@ -194,12 +197,13 @@ OnGhostChanged //After switching.
 		}
 		else //Switching to this ghost from another ghost
 		{
-			"Cya %(reference0)!\e"
+			"\0\s[0]Cya %(reference0)!\e"
 		}
 	}
 }
 
-OnShellChanging //Starting to change the shell
+//Starting to change the shell
+OnShellChanging
 {
 	if reference0 == nowshell
 	{
@@ -213,7 +217,8 @@ OnShellChanging //Starting to change the shell
 	"\w8\w8\e"
 }
 
-OnShellChanged //After the shell has changed
+//After the shell has changed
+OnShellChanged
 {
 	_old = nowshell
 	nowshell = reference0 //Sets nowshell to the new value
@@ -255,7 +260,7 @@ CloseVars
 UpdateVars
 {
 	FixDefaultOptions //Putting this here too, since the variable issues I've had seemed to happen mostly when updates went wrong!
-	//if ISVAR("examplevariable") == 0; examplevariable = 0
+	//if !ISVAR("examplevariable"); examplevariable = 0 //If examplevariable does _not_ already exist, initialize it
 }
 
 //These are all the variables that need to be initialized when the user first installs the ghost.
@@ -266,7 +271,7 @@ FirstBootVars
 	username = "User"
 	pronouns = "undef"
 	birthday[0] = "???"	 //The user's birthday, written out with words
-	birthday[1] = "???"	 //The user's birthday, written in DD/MM format
+	birthday[1] = "??/??"	 //The user's birthday, written in DD/MM format
 	talkrate = "every 5 minutes"
 	aitalkinterval = 300
 	totalpunches = 0
@@ -280,19 +285,25 @@ FirstBootVars
 	totalpets = 0		 //The total times the ghost has been pet
 	offscreen = IARRAY
 	//---
-	deleteshitai = "Off"
+	deletebutton = "Off"
 	AutoUpdates = ("On",0)
 	//nowmode = "Default" //Uncomment if you plan to add more modes
 	installdate = ("%(year)","%(month)","%(day)","%(hour)","%(minute)","%(second)","%(ghostver)") //This tracks the exact day and time the ghost was installed, in case you want to mess around with that later. It also tracks what version the user installed, which may be helpful for debugging!
-	MiscFlags = IARRAY	 //For the flag system
+	FlagArray = IARRAY	 //For the flag system
 	
 	x.boot_min = GETSECCOUNT / 60 //What time (epoch) the ghost was booted
 	x.up_all = 0 //How many minutes the ghost was up for in total, not including current session
 }
 
 //How many minutes the ghost was up in total, including current session
-x.up_total {x.up_all + x.up_mins}
+x.up_total
+{
+	x.up_all + x.up_mins
+}
 
 //How long the ghost has been up in the current session
-x.up_mins {(GETSECCOUNT / 60) - x.boot_min}
+x.up_mins
+{
+	(GETSECCOUNT / 60) - x.boot_min
+}
 

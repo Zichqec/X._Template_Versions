@@ -4,7 +4,7 @@ OnChangeName
 {
 	"\0\s[0]Ok,\w4 what should I call you?"
 	--
-	"\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]\![set,balloontimeout,-1]\![open,inputbox,OnNameTeach,-1]\e"
+	"\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]\*\![open,inputbox,OnNameTeach,-1]\e"
 }
 
 OnNameTeach
@@ -16,8 +16,7 @@ OnNameTeach
 	_name = REPLACE(_name,".","") //removes periods
 	_name = REPLACE(_name,"-","") //removes dashes
 	
-	_is_first_boot = 0; if reference1 == "firstboot"; _is_first_boot = 1
-	_function = "OnNameTeach"; if _is_first_boot; _function = "OnFirstNameTeach"
+	_is_first_boot = 0; if reference2 == "firstboot"; _is_first_boot = 1
 	
 	if _is_first_boot; "\_l[-10000,-10000]\q[ ,__VERY_FIRST_BOOT__]\_l[0,0]\*\t" //Prevents balloon from timing out if this is during first boot. Also prevents the user from closing out the input box
 	--
@@ -25,13 +24,11 @@ OnNameTeach
 	{
 		"\0\s[0]Oh,\w4 did you change your mind?"
 	}
-	elseif "template" _in_ _name || TOLOWER(_tempname) == "x." //Checking with _tempname because 'X.' has a period, which would be removed. I don't want to stop someone putting in just X
+	elseif _name == "xtemplate" || TOLOWER(_tempname) == "x." //Checking with _tempname because 'X.' has a period, which would be removed. I don't want to stop someone putting in just X
 	{
 		"\0\s[0]That's my name!\w8\w8 I can't call you that!\w8\w8 Try again."
 		--
-		if !_is_first_boot; "\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]" //If changing name through the menu
-		--
-		"\![open,inputbox,%(_function),-1]"
+		EnterNameAgain
 	}
 	elseif _name == "" //If the user doesn't put in anything
 	{
@@ -42,6 +39,7 @@ OnNameTeach
 	else //if it's none of these above names, we can use it. You can add names that just have comments and can still be used, just don't add a \e at the end.
 	{
 		username = SHIORI3FW.EscapeAllTags(_tempname) //Escape any tags the user might've stuck in there
+		
 		"\0\s[0]Ok,\w4 I'll call you %(username) then."
 	}
 	--
@@ -51,26 +49,41 @@ OnNameTeach
 	}
 	else //This is continuing from FirstBoot
 	{
-		"\w8\w8 Good to meet you!\w8\w8 And how should I refer to you?\n\n"
+		"\w8\w8 Good to meet you!\w8\w8 And how should I refer to you?"
 		--
-		all:{
-		"\![*]\q[He/Him/His,OnPronouns,masc,firstboot]\n"
-		"\![*]\q[She/Her/Hers,OnPronouns,fem,firstboot]\n"
-		"\![*]\q[They/Them/Their,OnPronouns,undef,firstboot]"
+		all:/
+		{
+			"\n\n\t\*"
+			"\![*]\q[He/Him/His,OnPronouns,masc,firstboot]\n"
+			"\![*]\q[She/Her/Hers,OnPronouns,fem,firstboot]\n"
+			"\![*]\q[They/Them/Their,OnPronouns,undef,firstboot]"
 		}
 	}
 }
 
-OnChangePronoun //Envelope names are the same as the GT template, since I figured most people will be used to them.
+//If the user put in an invalid name
+EnterNameAgain
+{
+	_is_first_boot = 0; if reference2 == "firstboot"; _is_first_boot = 1
+	_function = "OnNameTeach"; if _is_first_boot; _function = "OnFirstNameTeach"
+	
+	if !_is_first_boot; "\n\n\![*]\q[Cancel,OnConfigMenu,OnNameTeach]" //If changing name through the menu
+	--
+	"\![open,inputbox,OnNameTeach,-1,--reference=firstboot]\e"
+}
+
+//Envelope names are the same as the GT template, since I figured most people will be used to them.
+OnChangePronoun
 {
 	"\0\s[0]How should I refer to you?"
 	--
-	all:{
-	"\n\n\_q"
-	"\![*]\q[He/Him/His,OnPronouns,masc]\n"
-	"\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
-	"\![*]\q[They/Them/Their,OnPronouns,undef]\n\n"
-	"\![*]\q[Cancel,OnConfigMenu]\e"
+	all:/
+	{
+		"\n\n\_q"
+		"\![*]\q[He/Him/His,OnPronouns,masc]\n"
+		"\![*]\q[She/Her/Hers,OnPronouns,fem]\n"
+		"\![*]\q[They/Them/Their,OnPronouns,undef]\n\n"
+		"\![*]\q[Cancel,OnConfigMenu]\e"
 	}
 }
 
@@ -98,49 +111,43 @@ OnPronouns
 
 OnChangeBirthday //Pulled a lot of this from the GT template, but I also modified it a lot
 {
-	oldbirthday = birthday
-	
 	"\0\s[0]Sure!\w8\w8 What month were you born in?\w8\w8 Name or number."
 	--
-	"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornMonth]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\e"
+	"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornMonth]\![open,inputbox,OnUserBornMonth,-1]\*\e"
 }
 
 //birthday[0] - word birthday
 //birthday[1] - number birthday
-//birthday[2] - word month
-//birthday[3] - word day
-//birthday[4] - number month
-//birthday[5] - number day
 //Use birthday[0] to display the user's birthday, and birthday[1] to do checks with the numbers
-
 OnUserBornMonth
 {
 	_tempmonth = reference0 //this stores what the user put in as a variable called _tempmonth
 	_tempmonth = TOLOWER(_tempmonth) //changes it to lowercase
+	_month = 0
 	
-	if _tempmonth == "january" || _tempmonth == "1" {birthday[4] = 1; birthday[2] = "January"}
-	elseif _tempmonth == "february" || _tempmonth == "2" {birthday[4] = 2; birthday[2] = "February"}
-	elseif _tempmonth == "march" || _tempmonth == "3" {birthday[4] = 3; birthday[2] = "March"}
-	elseif _tempmonth == "april" || _tempmonth == "4" {birthday[4] = 4; birthday[2] = "April"}
-	elseif _tempmonth == "may" || _tempmonth == "5" {birthday[4] = 5; birthday[2] = "May"}
-	elseif _tempmonth == "june" || _tempmonth == "6" {birthday[4] = 6; birthday[2] = "June"}
-	elseif _tempmonth == "july" || _tempmonth == "7" {birthday[4] = 7; birthday[2] = "July"}
-	elseif _tempmonth == "august" || _tempmonth == "8" {birthday[4] = 8; birthday[2] = "August"}
-	elseif _tempmonth == "september" || _tempmonth == "9" {birthday[4] = 9; birthday[2] = "September"}
-	elseif _tempmonth == "october" || _tempmonth == "10" {birthday[4] = 10; birthday[2] = "October"}
-	elseif _tempmonth == "november" || _tempmonth == "11" {birthday[4] = 11; birthday[2] = "November"}
-	elseif _tempmonth == "december" || _tempmonth == "12" {birthday[4] = 12; birthday[2] = "December"}
+	if _tempmonth == "january" || _tempmonth == "1"; _month = 1
+	elseif _tempmonth == "february" || _tempmonth == "2"; _month = 2
+	elseif _tempmonth == "march" || _tempmonth == "3"; _month = 3
+	elseif _tempmonth == "april" || _tempmonth == "4"; _month = 4
+	elseif _tempmonth == "may" || _tempmonth == "5"; _month = 5
+	elseif _tempmonth == "june" || _tempmonth == "6"; _month = 6
+	elseif _tempmonth == "july" || _tempmonth == "7"; _month = 7
+	elseif _tempmonth == "august" || _tempmonth == "8"; _month = 8
+	elseif _tempmonth == "september" || _tempmonth == "9"; _month = 9
+	elseif _tempmonth == "october" || _tempmonth == "10"; _month = 10
+	elseif _tempmonth == "november" || _tempmonth == "11"; _month = 11
+	elseif _tempmonth == "december" || _tempmonth == "12"; _month = 12
 	else //if the month isn't a valid month, like 32 or something.
 	{
 		"\0\s[0]%(_tempmonth) isn't a valid month,\w4 try again."
 		--
-		"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornMonth]\![open,inputbox,OnUserBornMonth,-1]\![set,balloontimeout,-1]\*\e"
+		"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornMonth]\![open,inputbox,OnUserBornMonth,-1]\*\e"
 	}
 	--
 	//If it's a valid month
-	"%(birthday[2]) huh?\w8\w8 Ok,\w4 what day?"
+	"%(Capitalize(MonthName(_month))) huh?\w8\w8 Ok,\w4 what day?"
 	--
-	"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornDay]\![open,inputbox,OnUserBornDay,-1]\![set,balloontimeout,-1]\*\e"
+	"\n\n\![*]\q[Cancel,OnConfigMenu,OnUserBornDay]\![open,inputbox,OnUserBornDay,-1,--reference=%(_month)]\*\e"
 }
 
 OnUserBornDay
@@ -153,15 +160,12 @@ OnUserBornDay
 	_tempday = REPLACE(_tempday,"rd","")
 	_tempday = REPLACE(_tempday,"th","")
 	_tempday = TOINT(_tempday) //Converts it to an integer
-	_month = birthday[4] //Just for readability
+	_month = reference2 //Just for readability
 	
-	if ((_month == 1 || _month == 3 || _month == 5 || _month == 7 || _month == 8 || _month == 10 || _month == 12) && _tempday >= 1 && _tempday <= 31) || (_month == 2 && _tempday >= 1 && _tempday <= 29) || ((_month == 4 || _month == 6 || _month == 9 || _month == 11) && _tempday >= 1 && _tempday <= 30) //This ugly function checks if the day falls into a valid range.
+	if IsValidDay(_month,_tempday)
 	{
-		birthday[5] = _tempday
-		birthday[3] = Printday
-		birthday[1] = "%(birthday[4])/%(birthday[5])" //If you want to write dates as DD/MM, feel free to swap this around
-		birthday[0] = "%(birthday[2]) %(birthday[3])"
-		ERASEVAR("oldbirthday")
+		birthday[0] = "%(Capitalize(MonthName(_month))) %(NumSuffix(_tempday))"
+		birthday[1] = "%(_month)/%(_tempday)" //If you want to write dates as DD/MM, feel free to swap this around
 		
 		if birthday[1] == "%(month)/%(day)" //if today is the user's birthday. Don't forget to switch this if you change the format to DD/MM
 		{
@@ -186,23 +190,3 @@ OnUserBornDay
 	}
 	
 }
-
-Printday //Sets the appropriate suffix
-{
-	if birthday[5] == 1 || birthday[5] == 21 || birthday[5] == 31
-	{
-		"%(birthday[5])st"
-	}
-	elseif birthday[5] == 2 || birthday[5] == 22
-	{
-		"%(birthday[5])nd"
-	}
-	elseif birthday[5] == 3 || birthday[5] == 23
-	{
-		"%(birthday[5])rd"
-	}
-	else
-	{
-		"%(birthday[5])th"
-	}
-}	

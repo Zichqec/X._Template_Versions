@@ -4,7 +4,8 @@ On_homeurl
 	"https://YourGhostDirectoryHere.com/YourGhost/"
 }
 
-On_recommendrootbutton.caption //Change [Your Username] to your username, or change the whole caption to whatever you want. This is the top list of websites in the right click menu.
+//Change [Your Username] to your username, or change the whole caption to whatever you want. This is the top list of websites in the right click menu.
+On_recommendrootbutton.caption
 {
 	"More from [Your Username]"
 }
@@ -21,8 +22,9 @@ recommendsites_sakura : array
 	"Your Social";					"https://www.socialmediaexample.com/you"
 	"Your Character's Toyhouse";	"https://toyhou.se/yourcharacter"
 }
- 
-On_portalrootbutton.caption //Caption for the second list of websites
+
+//Caption for the second list of websites
+On_portalrootbutton.caption
 {
 	"Reference Sites"
 }
@@ -37,7 +39,7 @@ On_sakura.portalsites
 portalsites_sakura : array
 {
 	//I'd appreciate it if you left the X. Template link in your ghost so that other people can find the source <3
-	"Built on X. Template YAYA - v1.1.3";	"https://zichqec.github.io/s-the-skeleton/xtemplate.html"
+	"Built on X. Template YAYA - v1.1.4";	"https://zichqec.github.io/s-the-skeleton/xtemplate.html"
 	"Zarla's Ghost Template Walkthrough";	"http://www.ashido.com/ukagaka/walkthrough.html"
 	"How to set up updates with Github";	"https://zichqec.github.io/s-the-skeleton/github.html"
 	"Ukagaka Dream Team Discord";			"https://ukagakadreamteam.tumblr.com/discord"
@@ -48,7 +50,8 @@ portalsites_sakura : array
 	"Ghost Documentation (J)"; 				"http://usada.sakura.vg/contents/specification.html"
 }
  
-On_kero.recommendbuttoncaption //Caption for the Kero's website list
+ //Caption for the Kero's website list
+On_kero.recommendbuttoncaption
 {
 	"More websites"
 }
@@ -58,68 +61,75 @@ On_kero.recommendsites
 	FormatLinks(recommendsites_kero)
 }
 
-recommendsites_kero : array //Put any websites you want here, I just included some stuff that was helpful to me when making my website.
+//Put any websites you want here, I just included some stuff that was helpful to me when making my website.
+recommendsites_kero : array
 {
 	"Github Pages"; "https://pages.github.com/"
 	"w3 schools"; 	"https://www.w3schools.com/"
 }
 
-//This is the function that formats the links above! This is based on a function in Konno Yayame that serves a similar purpose. You can see that one here: http://emily.shillest.net/ayaya/index.php?Tips/%E3%81%8A%E6%B0%97%E3%81%AB%E5%85%A5%E3%82%8A%E3%82%92%E6%9B%B8%E3%81%8D%E3%82%84%E3%81%99%E3%81%8F%E3%81%99%E3%82%8B
 //Takes an array of alternating names and urls, and formats them for use with the right click menu
-FormatLinks
+FormatLinks : all
 {
-	_display = ""
 	for _i = 0; _i < ARRAYSIZE(_argv); _i++
 	{
-		_display += _argv[_i] //Add the link/title
+		_argv[_i] //Add the link/title
 		//Alternate between adding %ASC(1) or %ASC(2)
-		if _i % 2 == 1; _display += "%ASC(2)"
-		else; _display += "%ASC(1)"
+		if _i % 2 == 1; "%ASC(2)"
+		else; "%ASC(1)"
 	}
-	_display
 }
 
-On_updatebutton.caption //Caption for the update button
+//Caption for the update button
+On_updatebutton.caption
 {
 	"Check for updates"
 }
 
-On_headlinesenserootbutton.caption //Caption for the RSS/Headlines button
+//Caption for the RSS/Headlines button
+On_headlinesenserootbutton.caption
 {
 	"Headlines and RSS"
 }
 
-On_readmebutton.caption //Caption for the Readme button
+//Caption for the Readme button
+On_readmebutton.caption
 {
 	"Readme"
 }
 
-On_vanishbutton.caption //Caption for the uninstall button
+//Caption for the uninstall button
+On_vanishbutton.caption
 {
 	"Uninstall"
 }
 
-On_shellrootbutton.caption //Caption for the change shell button
+//Caption for the change shell button
+On_shellrootbutton.caption
 {
 	"Change Shell"
 }
 
-On_ghostrootbutton.caption //Caption for the change ghost button
+//Caption for the change ghost button
+On_ghostrootbutton.caption
 {
 	"Change Ghost"
 }
 
-On_callghostrootbutton.caption //Caption for the call ghost button
+//Caption for the call ghost button
+On_callghostrootbutton.caption
 {
 	"Call Ghost"
 }
 
-On_hidebutton.caption //Caption for the minimize/iconify button
+//Caption for the minimize/iconify button
+On_hidebutton.caption
 {
 	"Minimize"
 }
 
-On_quitbutton.caption //Caption for the quit button
+//Caption for the quit button
+On_quitbutton.caption
 {
 	"Quit"
 }
@@ -131,35 +141,16 @@ On_quitbutton.caption //Caption for the quit button
 //This stuff is, I believe, written by Umeici.
 //What you need to know is this: ghostexlist is a list of the names of ghosts that are currently open, going by the name of the sakura. ghostexcount is the number of opened ghosts. balloonlist and ballooncount are the same thing but with balloons. I might've added that one but I'm not sure? I can't remember anymore
 
-//---- 消滅指示ボタン表示切り替え -------------------------------------------------------
+//Switches the Uninstall button on and off in the right click menu, so you don't accidentally click it
 On_vanishbutton.visible
  {
- 	if deleteshitai == "On"
- 	{
-		"1"
-	}
-	else
-	{
-		"0"
-	}
+ 	if deletebutton == "On"; "1"
+	else; "0"
 }
 
-//---- 起動中の他のゴースト名取得 -------------------------------------------------------
+//Gets other ghost names and saves them to a list
 On_otherghostname
 {
-	// ghostexlist = ""
-	// _i = 0
-	// while _i >= 0
-	// {
-		// _ghostname = NAMETOVALUE("reference%_i")
-		// if _ghostname != ""
-		// {
-			// if _i > 0; ghostexlist += ","
-			// ghostexlist += _ghostname[0]
-			// _i++
-		// }
-		// else; _i = -1
-	// }
 	//Rewrote this... because I wanted to split it up by C_BYTE1 and I figured this is probably more efficient
 	ghostexlist = ""
 	foreach reference; _ghost
@@ -170,25 +161,19 @@ On_otherghostname
 	ghostexcount = ARRAYSIZE(SPLIT(ghostexlist,C_BYTE1))
 }
 
+//Gets the names of all installed balloons and saves them to a list
 On_installedballoonname
 {
 	balloonlist = ""
-	_i = 0
-	while _i >= 0
+	foreach reference; _balloon
 	{
-		_ghostname = NAMETOVALUE("reference%_i")
-		if _ghostname != ""
-		{
-			if _i > 0; balloonlist += ","
-			balloonlist += _ghostname[0]
-			_i++
-		}
-		else; _i = -1
+		if balloonlist != ""; balloonlist += C_BYTE1
+		balloonlist += _balloon[0]
 	}
-	ballooncount = ARRAYSIZE(balloonlist)
+	ballooncount = ARRAYSIZE(SPLIT(balloonlist,C_BYTE1))
 }
 
-//---- SHIORI 関連情報 ------------------------------------------------------------------
+//SHIORI related information
 On_version
 {
 	GETSETTING(AYAINFO_VERSION)
@@ -209,19 +194,19 @@ On_name
 	"AYA"
 }
 
-//---- Owned SSTP 用 uniqueid 取得 ------------------------------------------------------
+//Get uniqueid for Owned SSTP
 On_uniqueid
 {
 	uniqueid = reference0
 }
 
-//---- hwnd 取得 ------------------------------------------------------------------------
+//Get hwnd
 On_hwnd
 {
-	sakurahwnd    = reference0[0]
-	kerohwnd      = reference0[1]
+	sakurahwnd = reference0[0]
+	kerohwnd = reference0[1]
 	sakurablnhwnd = reference1[0]
-	keroblnhwnd   = reference1[1]
+	keroblnhwnd = reference1[1]
 }
 
 On_username

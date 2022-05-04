@@ -175,7 +175,7 @@ load
 
 	//過去互換用（ascii変数）
 	if ISFUNC('restore_old_variables') {
-		restore_old_variables
+		EVAL('restore_old_variables')
 	}
 	
 	AyaLoad.FuncEnumExec('OnSystemLoad','ascending')
@@ -307,7 +307,7 @@ C_BYTE1
 	ERASEVAR('tempvarname')
 	
 	SHIORI3FW.ClearChainVariable
-	SHIORI3FW.ClearReferenceVariable
+	SHIORI3FW.ClearReferenceAndPassThruInsVariable
 	SHIORI3FW.ClearValueexVariable
 	SHIORI3FW.ClearAdditionalReturnVariable
 }
@@ -535,7 +535,7 @@ OnRequest
 	case REQ.COMMAND {
 	when "NOTIFY" {
 		// NOTIFYリクエスト
-		_result = SHIORI3FW.RaiseIDEvent
+		void SHIORI3FW.RaiseIDEvent
 		"SHIORI/3.0 204 No Content%(C_CRLF)Charset: %(S_CHARSET)%(C_CRLF)"
 		--
 		SHIORI3FW.AssembleReferenceHeader(1)
@@ -697,6 +697,7 @@ SHIORI3FW.AssembleReferenceHeader
 	
 	_result = ""
 	_before = ""
+	_value = ""
 	
 	if _is_notify == 0 {
 		_r = GETTYPEEX('res_reference')
@@ -782,9 +783,7 @@ SHIORI3FW.RaiseIDEvent
 	if SHIORI3FW.Eventid == "OnSecondChange" {
 		// OnSecondChangeならランダムトーク関連処理
 		_event = SHIORI3FW.ControlAITalk(_event)
-		if eventtranslate_exist {
-			_event = EVAL('OnGhostEventTranslate(_event)')
-		}
+		_event = SHIORI3FW.TranslateEvent(_event)
 	}
 	
 	if _event != 'OnSecondChange' {
@@ -834,7 +833,7 @@ SHIORI3FW.RaiseIDEvent
 		for _i = 0 ; _i < _n ; _i += 1 {
 			if _delim[_i] == EVAL_DELIM {
 				// 遅延EVAL
-				_trash = EVAL(_talk[_i + 1])
+				void EVAL(_talk[_i + 1])
 			}
 			elseif _delim[_i] == CHAIN_DELIM {
 				// チェイン処理
@@ -1002,7 +1001,7 @@ SHIORI3FW.MakeReferenceAndPassThruInsVariable : void {
 
 			if SHIORI3FW.REF_ACCEL==0 {//1にすると高速化
 				_varname = 'reference'+_refnum
-				EVAL(_varname+' = _value')
+				LETTONAME(_varname, _value)
 				SHIORI3FW.ReferenceList ,= _varname
 			}
 		}
@@ -1011,7 +1010,7 @@ SHIORI3FW.MakeReferenceAndPassThruInsVariable : void {
 			_value = var.req.value[_i]
 
 			_varname = 'PassThru_Ins.'+_PassThru_Ins_Name
-			EVAL(_varname+' = _value')
+			LETTONAME(_varname, _value)
 			SHIORI3FW.PassThru_Ins_List ,= _varname
 		}
 	}
@@ -1202,8 +1201,8 @@ SHIORI3FW.ExecuteDl2ToDll
 	// 拡張子dl2をdllへ名前変更する　旧dllは消去する
 	foreach _targets; _target {
 		_path = _argv[0] + '\' + _target
-		_dmy = FDEL(_path + '.dll')
-		_dmy = FRENAME(_path + '.dl2', _path + '.dll')
+		void FDEL(_path + '.dll')
+		void FRENAME(_path + '.dl2', _path + '.dll')
 	}
 }
 
@@ -1286,6 +1285,10 @@ SHIORI3FW.StructInstalledGhostList
 //------------------------------------------------------------------------------
 SHIORI3FW.GetGhostNameFromDescriptTxt
 {
+	_charset = SHIORI3FW.GetCharsetFromDescriptTxt(_argv[0])
+	if _charset == ''
+		_charset = 'Shift_JIS'
+	FCHARSET(_charset)
 	if !FOPEN(_filename = "%_argv[0]\ghost\master\descript.txt", "r")
 		return
 
@@ -1312,6 +1315,33 @@ SHIORI3FW.GetGhostNameFromDescriptTxt
 
 	FCLOSE(_filename)
 	_ghostname
+}
+
+//------------------------------------------------------------------------------
+//関数名：SHIORI3FW.GetCharsetFromDescriptTxt
+//機能　：descript.txtからcharsetを取得します
+//引数　：_argv[0] 取得対象のゴーストディレクトリ
+//------------------------------------------------------------------------------
+SHIORI3FW.GetCharsetFromDescriptTxt
+{
+	if !FOPEN(_filename = "%_argv[0]\ghost\master\descript.txt", "r")
+		return
+
+	_charset = ''
+	_flag = 0
+	while _flag != 1 {
+		if (_line = FREAD(_filename)) == -1; break
+		
+		case TOLOWER(CUTSPACE(_line[0])) {
+			when 'charset' {
+				_charset = CUTSPACE(_line[1])
+				_flag++
+			}
+		}
+	}
+
+	FCLOSE(_filename)
+	_charset
 }
 
 //******************************************************************************
@@ -1472,7 +1502,7 @@ SHIORI3FW.MakeValueexVariable
 	for _i = 0; _i < _sz; _i++ {
 		if SUBSTR(_keyname = var.lib.key[_i], 0, 5) == "Value" {
 			_varname = "valueex%(SUBSTR(_keyname, 5, 3))"
-			void EVAL("%(_varname) = var.lib.value[_i]")
+			LETTONAME(_varname, var.lib.value[_i])
 			SHIORI3FW.ValueexList ,= _varname
 			valueex[TOINT(SUBSTR(_keyname, 5, 3))] = var.lib.value[_i]
 		}
@@ -1585,19 +1615,19 @@ REVERSE
 
 UNIQUE
 {
-	_v = _argv
-	_n = ARRAYSIZE(_v)
+	ARRAYDEDUP(_argv)
+				   
+ 
+							  
+								  
+						
+				   
+		   
+		   
 	
-	for _i = 0 ; _i < _n ; _i++ {
-		for _j = _i+1 ; _j < _n ; _j++ {
-			if _v[_i] == _v[_j] {
-				_v[_j] = IARRAY
-				_n -= 1
-				_j -= 1
-			}
-		}
-	}
-	_v
+   
+  
+   
 }
 
 SPLITEX

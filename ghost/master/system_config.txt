@@ -19,3 +19,5 @@ ignoreiolog, ID: OnMouse        //OnMouse系無視
 //iolog.filter.mode,whitelist
 //iolog.filter.keyword,OnSecondChange
 //iolog.filter.keyword,OnMouse
+
+maxlognum,1000

@@ -15,18 +15,19 @@ OnFileDrop2
 			
 			"\0\s[0]\b[2]This is %(_filename)%(_fileext)!\w8\w8 I can set it as your wallpaper,\w4 how do you want it?\n\n"
 			--
-			all:{
-			"\![*]\q[Centered,OnWallpaper,%(_file),center]\n"
-			"\![*]\q[Tiled,OnWallpaper,%(_file),tile]\n"
-			"\![*]\q[Stretched,OnWallpaper,%(_file),stretch]"
-			if "Windows 7" || "Windows 10" _in_ NotifyOS //These are the 'fit' and 'fill' options available from win 7 on. NotifyOS is set just below, to check what OS you're on
+			all:/
 			{
-				"\n\![*]\q[Fill,OnWallpaper,%(_file),stretch-x]"
-				"\n\![*]\q[Fit,OnWallpaper,%(_file),stretch-y]"
-			}
-			if "Windows 10" _in_ NotifyOS; "\n\![*]\q[Spanned,OnWallpaper,%(_file),span]" //Same as above, but for the span option since that's win10 and above
-			
-			"\n\n\![*]\q[No thanks,WallpaperCancel]\e"
+				"\![*]\q[Centered,OnWallpaper,%(_file),center]\n"
+				"\![*]\q[Tiled,OnWallpaper,%(_file),tile]\n"
+				"\![*]\q[Stretched,OnWallpaper,%(_file),stretch]"
+				if "Windows 7" || "Windows 10" _in_ NotifyOS //These are the 'fit' and 'fill' options available from win 7 on. NotifyOS is set just below, to check what OS you're on
+				{
+					"\n\![*]\q[Fill,OnWallpaper,%(_file),stretch-x]"
+					"\n\![*]\q[Fit,OnWallpaper,%(_file),stretch-y]"
+				}
+				if "Windows 10" _in_ NotifyOS; "\n\![*]\q[Spanned,OnWallpaper,%(_file),span]" //Same as above, but for the span option since that's win10 and above
+				
+				"\n\n\![*]\q[No thanks,WallpaperCancel]\e"
 			}
 		}
 		when ".mid", ".wav", ".mp3", ".wma", ".au", ".ogg", ".flac"
@@ -84,10 +85,11 @@ OnInstallComplete
 	{
 		"\0\s[0]I've installed %(reference1)!\w8\w8 Do you want to bring them here?\n\n"
 		--
-		all:{
-		"\![*]\q[Call %(reference1),CallGhost]\n"
-		"\![*]\q[Change to %(reference1),ChangeToGhost]\n\n"
-		"\![*]\q[No thanks,cancelnodialogue]\e"
+		all:/
+		{
+			"\![*]\q[Call %(reference1),CallGhost]\n"
+			"\![*]\q[Change to %(reference1),ChangeToGhost]\n\n"
+			"\![*]\q[No thanks,cancelnodialogue]\e"
 		}
 	}
 	elseif reference0 == "shell"
@@ -132,8 +134,9 @@ Select.ChangeToGhost
 	"\![change,ghost,lastinstalled]\e"
 }
 
+//If the install fails
 //reference0 is the reason the install failed
-OnInstallFailure //If the install fails
+OnInstallFailure
 {
 	if reference0 == "artificial" //If the user cancels by double clicking the balloon
 	{
@@ -444,8 +447,8 @@ OnUpdateFailure //If the update fails
 	}
 	elseif reference0 == "md5 miss" //If the update files have not been uploaded correctly and don't match the updates2.dau
 	{
-		_currentfile = SPLITPATH(reference1)[2] + SPLITPATH(reference1)[3] //This gets the name and extension of the offending file
-		"\0\s[0]The MD5 values don't match.\w8\w8 You should contact the ghost author and let them know that '%(_currentfile)' is giving an MD5 error.\e"
+		_file = SPLITPATH(reference1)[2] + SPLITPATH(reference1)[3] //This gets the name and extension of the offending file
+		"\0\s[0]The MD5 values don't match.\w8\w8 You should contact the ghost author and let them know that '%(_file)' is giving an MD5 error.\e"
 	}
 	elseif reference0 == "artificial" //If the user cancels the update by double clicking the balloon
 	{
@@ -463,25 +466,19 @@ OnHeadlinesenseBegin
 	"\0\s[0]Ok,\w4 I'll open %(reference0)!\e"
 }
 
-//Taken from Zarla's GT template. Slightly modified because the top part was redundant as far as I could tell..?
+//Menu layout from Zarla's GT Template, but at this point the code is pretty different
 //reference0 is the site name, reference1 is the url, reference3 is the headlines
 OnHeadlinesense.OnFind
 {
 	_display = REPLACE(reference3,"\_a[","\![*]\_a[")
- 	//---- Headlines
 	"\0\b2%(reference0):\n\n%(_display)\n"
  	--
-	//---- Pages
  	if reference2 == "First" || reference2 == "Next"
 	{
- 		//---- Bottom buttons
-		"\![*]\q[Next,] - \![*]\q[Stop,Headline_Cancel]\e"
+		"\![*]\q[Next,] - "
  	}
-	else
- 	{
-		//---- Bottom buttons
- 		"\![*]\q[Stop,Headline_Cancel]\e"
- 	}
+	--
+	"\![*]\q[Stop,Headline_Cancel]\e"
 }
 
 Select.Headline_Cancel
@@ -540,10 +537,11 @@ OnSNTPCompare
 	{
 		"\0\s[0]Your clock doesn't match.\w8\w8 Should I fix it?"
 		--
-		all:{
-		"\n\n"
-		"\![*]\q[Fix it,OnSNTPExecute]\n"
-		"\![*]\q[Leave it alone,OnSNTPCancel]\e"
+		all:/
+		{
+			"\n\n"
+			"\![*]\q[Fix it,OnSNTPExecute]\n"
+			"\![*]\q[Leave it alone,OnSNTPCancel]\e"
 		}
 	}
 }

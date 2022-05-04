@@ -24,7 +24,7 @@ OnCommunicate
 		elseif reference2 != "timerraise" //If it's already triggered the timerraise once, it won't do it again
 		{
 			//If the ghost is in a menu or the middle of talking, it'll run this timerraise command and try again in 5 seconds. If the second attempt fails, it will give up.
-			"\C\![timerraise,5000,1,OnCommunicate,%(Sanitize(reference0)),%(Sanitize(reference1)),timerraise]"
+			"\C\![timerraise,5000,1,OnCommunicate,""%(reference0)"",""%(reference1)"",timerraise]"
 		}
  	}
 }
@@ -63,7 +63,8 @@ OnStartTalking
 	}
 }
 
-ReplyToGhost //This is your ghost receiving a communication.
+//This is your ghost receiving a communication
+ReplyToGhost
 {
 	_speech = SPLIT(reference1,"\e")[0] //Everything the ghost said that the user can see
 	ConvoTag = SPLIT(reference1,"\e")[1] //Everything after the \e, which will be the invisible tags that track the conversation
@@ -101,7 +102,8 @@ ReplyToGhost //This is your ghost receiving a communication.
 	
 }
 
-TalkToGirl //All responses to Girl would be here. Make one of these for each ghost they talk to so you can keep them separate easily! Or you can put it all in the function above, whatever works for you.
+//All responses to Girl would be here. Make one of these for each ghost they talk to so you can keep them separate easily! Or you can put it all in the function above, whatever works for you
+TalkToGirl
 {
 	if "GirlTriangleHello02" _in_ ConvoTag
 	{
@@ -123,7 +125,8 @@ TalkToGirl //All responses to Girl would be here. Make one of these for each gho
 	}
 }
 
-RemovePauses //Removes pauses and quicksections
+//Removes pauses and quicksections
+RemovePauses
 {
 	_argv[0] = RE_REPLACE(_argv[0],"\\!\[quicksection,(true|false|1|0)\]","")
 	_argv[0] = REPLACE(_argv[0],"\_q","")
@@ -154,7 +157,7 @@ OnCustomCommu
 	_display = ""
 	foreach REPLACE(ghostexlist,C_BYTE1,","); _ghost
 	{
-		_display += "\![*]\q[%(_ghost),OnCustomPingSend,%(_ghost),%(Sanitize(reference0))]\n"
+		_display += "\![*]\q[%(_ghost),OnCustomPingSend,%(_ghost),""%(reference0)""]\n"
 	}
 	"Send to which ghost?\n\n"
 	--

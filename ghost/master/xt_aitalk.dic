@@ -213,7 +213,7 @@ achain
 	"\0\s[0]Here's another part of the chain!\e"
 	"\0\s[0]Here's a third part of the chain!\e"
 	"\0\s[0]Here's a fourth part of the chain!\e"
-	"\0\s[0]Here's the end of a chain!\e:chain=end"
+	"\0\s[0]Here's the end of the chain!\e:chain=end"
 }}CHAIN
 
 
@@ -223,26 +223,26 @@ OnMinuteChange
 {
 	if hour == 0 && minute == 0; AutoUpdates[1] = 0 //Resetting auto updates
 	
-	if minute == 0 && HourNotifs == "On" //Top of the hour notifications
+	if minute == 0
 	{
-		if hour == 0
+		if hour == 0 && day == 0 && month == 0 //New year's
 		{
-			if day == 1 && month == 1
-			{
-				"\0\s[0]Happy new year!\e"
-			}
-			else
+			"\0\s[0]Happy new year!\e"
+		}
+		elseif HourNotifs == "On" //Top of the hour notifications
+		{
+			if hour == 0
 			{
 				"\0\s[0]It's midnight.\e"
 			}
-		}
-		elseif hour == 12
-		{
-			"\0\s[0]It's noon.\e"
-		}
-		else
-		{
-			"\0\s[0]It's %(hour12) o'clock.\e"
+			elseif hour == 12
+			{
+				"\0\s[0]It's noon.\e"
+			}
+			else
+			{
+				"\0\s[0]It's %(hour12) o'clock.\e"
+			}
 		}
 	}
 	elseif ARRAYSIZE(offscreen) > 0 //If the ghost is off the screen, it will run the off screen dialogue every minute
@@ -295,7 +295,8 @@ OnOffscreen
 	}
 }
 
-OffscreenTalk //Off the screen dialogue. Ctrl Shift F12 will bring characters back onto the screen. _argv[0] here contains the number of the character who is off screen, 0 for sakura, 1 for kero, 2 and up for extra chars
+//Off the screen dialogue. Ctrl Shift F12 will bring characters back onto the screen. _argv[0] here contains the number of the character who is off screen, 0 for sakura, 1 for kero, 2 and up for extra chars
+OffscreenTalk
 {
 	if _argv[0] == "0" //If the sakura is off screen
 	{
@@ -307,7 +308,8 @@ OffscreenTalk //Off the screen dialogue. Ctrl Shift F12 will bring characters ba
 	}
 }
 
-EndOffscreenTalk //Being brought back on the screen. _argv[0] here contains the number of the character who was brought back on screen, 0 for sakura, 1 for kero, 2 and up for extra chars
+//Being brought back on the screen. _argv[0] here contains the number of the character who was brought back on screen, 0 for sakura, 1 for kero, 2 and up for extra chars
+EndOffscreenTalk
 {
 	if _argv[0] == "0" //If the sakura was brought back on screen
 	{
@@ -319,7 +321,12 @@ EndOffscreenTalk //Being brought back on the screen. _argv[0] here contains the 
 	}
 }
 
-OnSurfaceRestore //OnSurfaceRestore happens around 30 seconds after the ghost's last dialogue. reference0 here stores the number of the previous surface, so you can have them comment when they change back if you like.
+//OnSurfaceRestore happens around 30 seconds after the ghost's last dialogue. reference0 here stores the number of the previous surface, so you can have them comment when they change back if you like.
+OnSurfaceRestore
 {
-	"\1\s[-1]\0\s[0]\e"
+	"\1\s[-1]"
+	--
+	"\0\s[0]"
+	--
+	"\e"
 }

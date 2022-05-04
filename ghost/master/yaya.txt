@@ -15,10 +15,11 @@ dic, xt_menu.dic
 dic, xt_mouse.dic
 dic, xt_nameteach.dic
 dic, xt_string.dic
+dic, xt_tools.dic
 dic, xt_word.dic
 dic, zzz_todo.dic
 
 
+
 //log, ayame.log
-msglang,english
 messagetxt,system/messagetxt/english.txt
