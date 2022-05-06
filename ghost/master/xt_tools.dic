@@ -58,17 +58,29 @@ EndsWith
 }
 
 //Sets the appropriate suffix for whatever number you pass in
-NumSuffix
+NumSuffix : all
 {
 	_str = TOSTR(_argv[0])
 	_last = SUBSTR(_str,STRLEN(_str) - 1,1)
+	_last2 = SUBSTR(_str,STRLEN(_str) - 2,2)
+	CVINT(_last2)
 	
+	_str //Add the number, suffixes added below
+	
+	//Handle teen numbers
+	if _last2 >= 11 && _last2 <= 13
+	{
+		"th"
+		return
+	}
+	
+	//Everything else
 	case TOINT(_last)
 	{
-		when 1; _argv[0] + "st"
-		when 2; _argv[0] + "nd"
-		when 3; _argv[0] + "rd"
-		others; _argv[0] + "th"
+		when 1; "st"
+		when 2; "nd"
+		when 3; "rd"
+		others; "th"
 	}
 }
 

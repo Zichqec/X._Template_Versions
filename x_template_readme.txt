@@ -1,6 +1,6 @@
 This template is originally based on Zarla's GT Template, though I have made numerous changes since then. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.1.4
+You're using X. Template YAYA - v1.1.5
 You can use the 'Check Template Version' button to check if there's a new version! Or you can check on my website here: https://zichqec.github.io/s-the-skeleton/xtemplate
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -56,6 +56,13 @@ Any code in this template is free to take and study and use in your own ghosts. 
 
 
 ————————————————— Changelog ——————————————————
+
+— v1.1.5 —
+
+• Fixed NumSuffix function.
+• Changed dialogue for when there is a template update; it will now direct you to the repository for X. Template so that you can see all the exact changes.
+• I forgot to mention it last time, but the main menu now has a display to show what X. Template version you're running and what YAYA version you have, if debug mode is on.
+
 
 — v1.1.4 —
 
