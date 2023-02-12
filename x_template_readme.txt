@@ -1,6 +1,8 @@
 This template is originally based on Zarla's GT Template, though I have made numerous changes since then. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.1.5
+You're using X. Template YAYA - v1.1.6
+NOTE: This version of the template has AUTO_DATA_CONVERT *on* by default, as it was originally built that way and I have not yet updated it. If you're not sure what that means, read up here: https://ukagakadreamteam.com/wiki/guide/aya_yaya/what_is_auto_data_convert_zichqec
+I would like to change this in the future, but there are a lot of little things I would need to fix in this template in order to make that change. So if you want to change it yourself, be warned that it will take some work.
 You can use the 'Check Template Version' button to check if there's a new version! Or you can check on my website here: https://zichqec.github.io/s-the-skeleton/xtemplate
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -12,27 +14,29 @@ This ghost includes a to-do list of the basic stuff every ghost needs. If you wa
 If you need a place to host network updates, I've set up a tutorial on how you can do that with Github! https://zichqec.github.io/s-the-skeleton/github
 
 
-I've included 3 Saoris with X. Template. Saoris are basically plugins you can add to your ghost with unique functions. The ones I've included are:
+I've included 3 SAORI with X. Template. The ones I've included are:
 Gomi - Allows the ghost to interact with the recycle bin, seeing how many items are in it and emptying it.
 CPUID - Gathers system information.
 Time_Check - Does time based math, so you can check the time between two dates, for example.
-If you want to read what we've learned about these saoris and how to use them, you can see it here https://docs.google.com/document/d/1EJSeEMGdN2eHSfWGyS-acG0DzfqpqEvMU-kYuGjbBtk/edit
+If you want to read what we've learned about these SAORI and how to use them, you can see it here https://docs.google.com/document/d/1EJSeEMGdN2eHSfWGyS-acG0DzfqpqEvMU-kYuGjbBtk/edit
 
 
 Here are the resources I most recommend when making ghosts, I use these almost daily and they will save you so much headache.
 
-http://umeici.onjn.jp/files/tama_v1p1.zip This is Tama, a debugging tool for AYA and YAYA. All you need to do is reload your ghost while Tama is running, and it will show you all kinds of information. If your ghost has errors upon startup, Tama can help you find them.
+https://ukagakadreamteam.com/wiki/tool/tama_umeici This is Tama, a debugging tool for AYA and YAYA. All you need to do is reload your ghost while Tama is running, and it will show you all kinds of information. If your ghost has errors upon startup, Tama can help you find them.
 
-http://ssp.shillest.net/ukadoc/manual/list_shiori_event.html This is a list of Shiori events and what information they give you.
+https://ukagakadreamteam.github.io/ukadoc/manual/list_shiori_event.html This is a list of Shiori events and what information they give you.
 
-http://ssp.shillest.net/ukadoc/manual/list_sakura_script.html This is a list of sakurascript tags and what they do.
+https://ukagakadreamteam.github.io/ukadoc/manual/list_sakura_script.html This is a list of sakurascript tags and what they do.
 
 http://emily.shillest.net/ayaya/index.php? This is the YAYA wiki, where you can find more information about programming with YAYA. I'd come here if you're looking to do anything complicated.
 
-https://drive.google.com/file/d/16JYyweRFNPhq-BzLQhPu5EPwG557hFto/view?usp=sharing This is a download for Coordin, a little program that can help you make simple collisions. Just drag and drop your surface onto it, then click and drag an area, and it'll copy the coordinates to your clipboard for you to paste right into surfaces.txt!
+https://ukagakadreamteam.com/wiki/tool/coordin This is Coordin, a little program that can help you make simple collisions. Just drag and drop your surface onto it, then click and drag an area, and it'll copy the coordinates to your clipboard for you to paste right into surfaces.txt!
 
-You can't go wrong with those resources on your side! If by some chance you are not a part of the Ukagaka Dream Team Discord Server, you can join us here. https://ukagakadreamteam.tumblr.com/discord
+You can't go wrong with those resources on your side! If by some chance you are not a part of the Ukagaka Dream Team Discord Server, you can join us here. https://ukagakadreamteam.com/wiki/info/ukagaka_dream_team#where_to_find_us
 Having feedback from other people is incredibly helpful, and we're always glad to meet more ghost devs!
+
+Much thanks to Ayakamtka for translating the config.dic file!
 
 
 ———————————————— Permissions —————————————————
@@ -54,8 +58,13 @@ Any code in this template is free to take and study and use in your own ghosts. 
 • It can check for template updates, so that when you start a new ghost you can always be sure you have the latest version.
 
 
-
 ————————————————— Changelog ——————————————————
+
+— v1.1.6 —
+
+• Updated YAYA to Tc571-5.
+• Updated some of the links/info in X. Template's readme.
+
 
 — v1.1.5 —
 
@@ -109,7 +118,6 @@ Any code in this template is free to take and study and use in your own ghosts. 
 • Moved OnChoiceSelect out of yaya_shiori3.dic and placed it in anchor.dic instead.
 • Removed a couple of other functions from yaya_shiori3.dic that were not default and were not in use. The shiori files of X. Template now match the default ones that you can download from github ( https://github.com/ponapalt/yaya-dic ). The AiTalk function in aitalk.dic has been changed to OnAiTalk to reflect this.
 • Slightly improved the display of email headers, and increased the maximum default amount to 500.
-
 
 
 — v1.1.0 —
