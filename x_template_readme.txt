@@ -1,8 +1,13 @@
+Hi! You shouldn't use this template. It is old, it is FAR too large, it takes hours to fill in the basic stuff, it is too complicated, and you can and should do better. I am leaving this template available for historical reasons, and also because some of the utility functions may be useful to folks, but please, please, PLEASE do yourself a favor, and go download my Simplicity Template instead. https://zichqec.github.io/s-the-skeleton/simplicity_template
+Simplicity is a much cleaner template that is a breeze to use! Download it, take a look at the files and how small they are, and then decide for yourself. If there's stuff in this template that you really want, you can always copy it over into Simplicity!
+I'm not planning to update this template any further, unless security issues present themselves.
+
+
+
+
 This template is originally based on Zarla's GT Template, though I have made numerous changes since then. If you need a template that is more of a walkthrough, try that one here: http://ashido.com/ukagaka/
 
-You're using X. Template YAYA - v1.1.6
-NOTE: This version of the template has AUTO_DATA_CONVERT *on* by default, as it was originally built that way and I have not yet updated it. If you're not sure what that means, read up here: https://ukagakadreamteam.com/wiki/guide/aya_yaya/what_is_auto_data_convert_zichqec
-I would like to change this in the future, but there are a lot of little things I would need to fix in this template in order to make that change. So if you want to change it yourself, be warned that it will take some work.
+You're using X. Template YAYA - v1.1.7
 You can use the 'Check Template Version' button to check if there's a new version! Or you can check on my website here: https://zichqec.github.io/s-the-skeleton/xtemplate
 
 If you find any bugs in this template, please tell me so I can correct them!
@@ -59,6 +64,11 @@ Any code in this template is free to take and study and use in your own ghosts. 
 
 
 ————————————————— Changelog ——————————————————
+
+— v1.1.7 —
+
+• Updated YAYA dic files.
+• Turned off AUTO_DATA_CONVERT by default.
 
 — v1.1.6 —
 
